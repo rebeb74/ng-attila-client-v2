@@ -1,0 +1,18 @@
+<mat-sidenav-container>
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <mat-toolbar fxLayout>
+            <h3 fxFlex="50%" fxLayoutAlign="start">{{ 'notifications' | translate }}</h3>
+            <span fxFlex="50%" fxLayoutAlign="end">
+                <button mat-mini-fab (click)="onClose()">
+                    <mat-icon>skip_next</mat-icon>
+                </button>
+            </span>
+            
+        </mat-toolbar>
+        <ng-template ngFor [ngForOf]="currentUserNotifications$ | async" let-notification>
+            <ng-container [ngSwitch]="notification.message">
+                <app-friend-request [notificationDate]="notification.createdOn" [senderUsername]="notification.senderUsername" [senderEmail]="notification.senderEmail" *ngSwitchCase="'friend_request'"></app-friend-request>
+            </ng-container>
+        </ng-template>
+    </div>
+</mat-sidenav-container>

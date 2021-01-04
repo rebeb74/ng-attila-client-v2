@@ -1,0 +1,25 @@
+<section class="menu-margin" fxLayout.gt-md="row" fxLayoutGap="20px" fxLayoutAlign="center center">
+  <mat-card fxLayoutAlign="center center" fxLayout="column">
+    <mat-card-title>{{ 'connection' | translate }}</mat-card-title>
+    <mat-card-content>
+      <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px" [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()">
+        <mat-form-field>
+          <input type="email" matInput [placeholder]="'your_email' | translate" formControlName="email" name="email">
+          <mat-hint>{{ "valid_email" | translate }}</mat-hint>
+          <mat-error>{{ "missing_email" | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="password" matInput [placeholder]="'your_pw' | translate" formControlName="password">
+          <mat-hint>{{ "enter_pw" | translate }}</mat-hint>
+          <mat-error>{{ "missing_pw" | translate }}</mat-error>
+        </mat-form-field>
+        <button *ngIf="!(isLoading$ | async)" type="submit" mat-raised-button color="primary"
+        [disabled]="loginForm.invalid">{{ "submit" | translate }}</button>
+        <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
+      </form>
+    </mat-card-content>
+    <span class="small-text">{{ 'no_account' | translate }} <a routerLink="/signup" [routerLinkActive]="['signup']">{{ 'signup' | translate }}</a></span>
+    <span class="small-text">{{ 'forgot_password' | translate }} <a routerLink="/password-reset" [routerLinkActive]="['password-reset']">{{ 'password_reset' | translate }}</a></span>
+  </mat-card>
+</section>

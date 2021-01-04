@@ -1,0 +1,11 @@
+mat-sidenav-container, mat-sidenav-content {
+    height: 100%;
+}
+
+.notifications-sidenav {
+    width: 300px;
+}
+
+.menu-sidenav {
+    width: 250px;
+}

@@ -1,0 +1,210 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$md-attila-primary: (
+    50 :#dfe0e2,
+    100 : #bec6d0,
+    200 : #93a0b1,
+    300 : #687a92,
+    400 : #475e7a,
+    500 : #274163,
+    600 : #233b5b,
+    700 : #1d3251,
+    800 : #172a47,
+    900 : #0e1c35,
+    A100 : #71a0ff,
+    A200 : #3e7eff,
+    A400 : #0b5cff,
+    A700 : #0050f1,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$md-attila-accent: (
+    50 : #e3fbfb,
+    100 : #b8f6f4,
+    200 : #89f0ed,
+    300 : #59e9e5,
+    400 : #36e5e0,
+    500 : #12e0da,
+    600 : #10dcd6,
+    700 : #0dd8d0,
+    800 : #0ad3cb,
+    900 : #05cbc2,
+    A100 : #f4fffe,
+    A200 : #c1fffc,
+    A400 : #8efff9,
+    A700 : #75fff8,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$md-attila-warn: (
+    50 : #f1e0e0,
+    100 : #ddb3b3,
+    200 : #c78080,
+    300 : #b04d4d,
+    400 : #9f2626,
+    500 : #8e0000,
+    600 : #860000,
+    700 : #7b0000,
+    800 : #710000,
+    900 : #5f0000,
+    A100 : #ff9090,
+    A200 : #ff5d5d,
+    A400 : #ff2a2a,
+    A700 : #ff1010,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
+
+$mat-dark-theme-background: (
+  status-bar: black,
+  app-bar:    map-get($md-attila-primary, 900),
+  background: map-get($md-attila-primary, 900),
+  hover:      rgba(white, 0.5), 
+  card:       map-get($md-attila-primary, 800),
+  dialog:     map-get($md-attila-primary, 800),
+  disabled-button: rgba(white, 0.12),
+  raised-button: map-get($md-attila-primary, 800),
+  focused-button: $light-focused,
+  selected-button: map-get($md-attila-primary, 900),
+  selected-disabled-button: map-get($md-attila-primary, 800),
+  disabled-button-toggle: black,
+  unselected-chip: map-get($md-attila-primary, 700),
+  disabled-list-option: black,
+  tooltip: map-get($md-attila-primary, 700),
+);
+
+$mat-dark-theme-foreground: (
+  base:              white,
+  divider:           $light-dividers,
+  dividers:          $light-dividers,
+  disabled:          $light-disabled-text,
+  disabled-button:   rgba(white, 0.3),
+  disabled-text:     $light-disabled-text,
+  elevation:         black,
+  hint-text:         $light-disabled-text,
+  secondary-text:    map-get($md-attila-primary, 100),
+  icon:              white,
+  icons:             white,
+  text:              map-get($md-attila-primary, 100),
+  slider-min:        white,
+  slider-off:        rgba(white, 0.3),
+  slider-off-active: rgba(white, 0.3),
+);
+
+
+$mat-theming-primary: mat-palette($md-attila-primary, 100, 300, 900);
+$mat-theming-accent: mat-palette($md-attila-accent, 500, A100, A400);
+$mat-theming-warn: mat-palette($md-attila-warn, A100);
+
+
+// Create the theme objects (a Sass map containing all of the palettes).
+// $mat-light-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+$mat-dark-theme: mat-dark-theme($mat-theming-primary, $mat-theming-accent, $mat-theming-warn);
+
+
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+// .theme-dark {
+  @include angular-material-theme($mat-dark-theme);
+// }
+
+// .theme-light {
+//   @include app-theme($mat-light-theme);
+// }
+
+@media only screen and (max-width: 960px) {
+  .menu-margin {
+    margin-top: 80px;
+    margin-bottom: 80px;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .menu-margin {
+    margin-top: 150px;
+    margin-bottom: 150px;
+  }
+}
+
+mat-card {
+  max-width: 300px;
+  min-width: 300px;
+}
+
+mat-form-field {
+  width: 250px;
+}
+
+a {
+  text-decoration: none;
+  color: mat-color($md-attila-primary, 300)
+}

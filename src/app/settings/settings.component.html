@@ -1,0 +1,97 @@
+<section class="menu-margin" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px" fxLayoutAlign.gt-sm="center top" fxLayoutAlign="center center">
+
+  <div fxLayout="column" fxLayoutGap="10px">
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-title>
+        {{ 'account' | translate }}
+      </mat-card-title>
+      <mat-card-content>
+        <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="accountForm"
+          (ngSubmit)="onUpdateAccount()">
+          <mat-form-field>
+            <input type="email" matInput [placeholder]=" 'your_email' | translate" formControlName="email" name="email">
+            <mat-error>{{ "valid_email" | translate }}</mat-error>
+            <mat-error>{{ "missing_email" | translate }}</mat-error>
+          </mat-form-field>
+          <mat-form-field [hintLabel]=" 'four_char_long' | translate">
+            <input type="text" matInput [placeholder]=" 'your_username' | translate" formControlName="username"
+              minlength="6" name="username">
+            <mat-hint align="end">{{ accountForm.value?.username.length }} / 4</mat-hint>
+            <mat-error>{{ "four_char_long" | translate }}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [placeholder]=" 'your_bd' | translate" [matDatepicker]="picker" [max]="maxDate"
+              [min]="minDate" formControlName="birthdate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <button *ngIf="!(isLoading$ | async)" mat-raised-button color="primary"
+            [disabled]="accountForm.invalid">{{ "update" | translate }}</button>
+          <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div fxLayout="column" fxLayoutGap="20px">
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-title>
+        {{ 'language' | translate }}
+      </mat-card-title>
+      <mat-card-actions fxLayoutAlign="center center">
+        <mat-button-toggle-group #selectedLang="matButtonToggleGroup" name="language" [value]="currentLang$ | async"
+          (change)="switchLang(selectedLang.value)">
+          <mat-button-toggle *ngFor="let l of (languages$ | async)" [value]="l">
+            {{ l.toUpperCase() }}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-title>
+        {{ 'pw_reset' | translate }}
+      </mat-card-title>
+      <span></span>
+      <mat-card-content *ngIf="!showConfirmMessage" fxLayoutAlign="center center">
+        <button *ngIf="!(isLoading$ | async)" type="submit" mat-raised-button color="primary"
+          (click)="sendPasswordResetRequest()">{{ "password_reset" | translate }}</button>
+        <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
+        <p *ngIf="showConfirmMessage">{{ 'reset_pw_msg_sent' | translate }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div fxLayout="column" fxLayoutGap="20px">
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-title>
+        {{ 'share_title' | translate }}
+      </mat-card-title>
+      <mat-card-content>
+        <mat-list role="list">
+          <mat-list-item role="listitem"><mat-checkbox>Item 1</mat-checkbox></mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item role="listitem"><mat-checkbox>Item 1</mat-checkbox></mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item role="listitem"><mat-checkbox>Item 1</mat-checkbox></mat-list-item>
+          <mat-divider></mat-divider>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions fxLayout="row" fxLayoutAlign="center">
+        <div fxFlex="50%" fxLayoutAlign="start">
+          <button mat-mini-fab color="primary">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <div fxFlex="50%" fxLayoutAlign="end">
+          <button mat-mini-fab color="primary">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <button (click)="addnotif()">ADD</button>
+  <button routerLink="/login">LOGIN</button>
+</section>
