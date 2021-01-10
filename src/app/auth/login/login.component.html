@@ -5,7 +5,7 @@
       <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px" [formGroup]="loginForm"
         (ngSubmit)="onSubmit()">
         <mat-form-field>
-          <input type="email" matInput [placeholder]="'your_email' | translate" formControlName="email" name="email">
+          <input type="email" matInput [placeholder]="'your_username' | translate" formControlName="username" name="username">
           <mat-hint>{{ "valid_email" | translate }}</mat-hint>
           <mat-error>{{ "missing_email" | translate }}</mat-error>
         </mat-form-field>

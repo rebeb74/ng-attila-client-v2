@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -13,15 +13,15 @@ import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavComponent } from './navigation/sidenav/sidenav.component';
 import { MaterialModule } from './material/material.module';
 import { WelcomeComponent } from './welcome/welcome.component';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './auth/services/auth.service';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UIService } from './shared/ui.service';
+import { UIService } from './shared/services/ui.service';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './app.reducer';
+// import { metaReducers, reducers } from './app.reducer';
 import { AngularFireModule } from '@angular/fire';
-import { environment } from 'src/environments/environment';
 import { CalendarComponent } from './calendar/calendar.component';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -31,6 +31,16 @@ import { PasswordResetComponent } from './auth/password-reset/password-reset.com
 import { ConfirmPasswordResetComponent } from './auth/confirm-password-reset/confirm-password-reset.component';
 import { SidenavNotificationsComponent } from './sidenav-notifications/sidenav-notifications.component';
 import { FriendRequestComponent } from './sidenav-notifications/friend-request/friend-request.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { DefaultDataServiceConfig, EntityDataModule, EntityDataService, EntityDefinitionService } from '@ngrx/data';
+import { entityConfig, entityMetadata } from './entity-metadata';
+import { AuthEffects } from './auth/auth.effects';
+import { UserEntityService } from './shared/services/user-entity.service';
+import { TokenInterceptor } from './token.interceptor';
+import { UserResolver } from './navigation/sidenav/user.resolver';
 
 @NgModule({
   declarations: [
@@ -67,16 +77,49 @@ import { FriendRequestComponent } from './sidenav-notifications/friend-request/f
     FormsModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    StoreModule.forRoot(reducers)
+    StoreModule.forRoot(reducers, {
+      // metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+        strictActionSerializability: true,
+        strictStateSerializability: true
+      }
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([AuthEffects]),
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'router',
+      routerState: RouterState.Minimal
+    }),
+    EntityDataModule.forRoot(entityConfig)
   ],
-  entryComponents:[AskPasswordComponent],
+  entryComponents: [AskPasswordComponent],
   providers: [
     AuthService,
-    UIService
+    UIService,
+    UserEntityService,
+    UserResolver,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: DefaultDataServiceConfig,
+      useValue: {root: environment.apiUrl},
+    },
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    private eds: EntityDefinitionService,
+    private entityDataService: EntityDataService,
+    ) {
+    eds.registerMetadataMap(entityMetadata);
+  }
+ }
 
 // AOT compilation support
 export function httpTranslateLoader(http: HttpClient) {

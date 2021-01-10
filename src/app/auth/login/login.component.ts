@@ -3,8 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth.service';
-import { UIService } from 'src/app/shared/ui.service';
+import { AuthService } from '../services/auth.service';
+import { UIService } from 'src/app/shared/services/ui.service';
 
 @Component({
   selector: 'app-login',
@@ -25,8 +25,8 @@ export class LoginComponent implements OnInit {
     this.uiService.setCurrentPageName('login');
     this.isLoading$ = this.store.select(fromRoot.getIsLoading);
     this.loginForm = new FormGroup({
-      email: new FormControl('', {
-        validators: [Validators.required, Validators.email]
+      username: new FormControl('', {
+        validators: [Validators.required]
       }),
       password: new FormControl('', { validators: [Validators.required] })
     });
@@ -34,8 +34,8 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.authService.login({
-      email: this.loginForm.value.email,
+      username: this.loginForm.value.username,
       password: this.loginForm.value.password
-    });
+    }).subscribe();
   }
 }

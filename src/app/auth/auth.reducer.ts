@@ -1,29 +1,41 @@
+import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
+import { AuthActions } from './action-types';
+import { Tokens } from './model/tokens.model';
 
-import { AuthActions, SET_AUTHENTICATED, SET_UNAUTHENTICATED } from './auth.actions';
 
 
-export interface State {
-    isAuhtenticated: boolean;
+export interface AuthState {
+    user: string;
+    tokens: Tokens;
 }
 
-const initialState: State = {
-    isAuhtenticated: false
+export const initialAuthState: AuthState = {
+    user: undefined,
+    tokens: undefined
 };
 
-export function authReducer(state = initialState, action: AuthActions) {
-    switch (action.type) {
-        case SET_AUTHENTICATED:
-            return {
-                isAuhtenticated: true
-            }
-        case SET_UNAUTHENTICATED:
-            return {
-                isAuhtenticated: false
-            }
-        default: {
-            return state;
-        }
-    }
-}
+export const authReducer = createReducer(
 
-export const getIsAuthenticated = (state: State) => state.isAuhtenticated;
+    initialAuthState,
+
+    on(AuthActions.login, (state, action) => {
+        return {
+            user: action.user,
+            tokens: action.tokens
+        }
+    }),
+
+    on(AuthActions.logout, (state, action) => {
+        return {
+            user: undefined,
+            tokens: undefined
+        }
+    })
+
+);
+
+export const selectAuthState = createFeatureSelector<AuthState>('auth');
+export const selectIsLoggedIn = createSelector(selectAuthState, auth => !!auth.tokens);
+export const selectIsLoggedOut = createSelector(selectIsLoggedIn, loggedIn => !loggedIn);
+export const selectTokens = createSelector(selectAuthState, state => state.tokens);
+export const selectCurrentUserId = createSelector(selectAuthState, state => state.user);

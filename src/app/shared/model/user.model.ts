@@ -1,11 +1,11 @@
 export interface User {
-    userId: string;
+    _id: string;
     email: string;
     lang: string;
     username: string;
-    birthdate: Date;
-    createdOn: Date;
-    updatedOn: Date;
+    birthdate: string;
+    createdOn: string;
+    updatedOn: string;
     share?: [{
         userId: string,
         email: string,
@@ -19,11 +19,3 @@ export interface User {
     isAdmin?: false;
 }
 
-export interface Notification extends User {
-    notificationId?: string;
-    message: string;
-    read: boolean;
-    senderUsername: string;
-    senderEmail: string;
-    createdOn: Date;
-}

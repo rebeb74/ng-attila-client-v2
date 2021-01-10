@@ -1,5 +1,6 @@
 import { Action } from "@ngrx/store";
-import { User } from "../auth/user.model";
+import { User } from "../model/user.model";
+import { Notification } from "../model/notification.model";
 
 
 export const START_LOADING = '[UI] Start Loading';

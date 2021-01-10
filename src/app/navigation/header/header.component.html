@@ -22,14 +22,14 @@
   <div fxFlex fxLayout="row" fxLayoutAlign="center center">
 
     <div fxFlex="30%" fxLayoutAlign="start">
-      <button *ngIf="isAuth$ | async" mat-stroked-button class="nav-button" (click)="onLogout()">
+      <button *ngIf="isLoggedIn$ | async" mat-stroked-button class="nav-button" (click)="onLogout()">
         <mat-icon>eject</mat-icon>
         {{ 'logout' | translate }}
       </button>
     </div>
 
     <div fxFlex="40%" fxFlex fxLayout="row" fxLayoutAlign="center center">
-      <div *ngIf="isAuth$ | async" fxFlex="20%" fxLayoutAlign="end center" fxLayout="column" routerLink="/calendar"
+      <div *ngIf="isLoggedIn$ | async" fxFlex="20%" fxLayoutAlign="end center" fxLayout="column" routerLink="/calendar"
         class="top-cal-list-button">
         <mat-icon fxLayoutAlign="center center" class="top-cal-list-icon">event</mat-icon>
         <span fxLayoutAlign="center center" class="top-text-icon">{{ 'calendar' | translate}}</span>
@@ -38,7 +38,7 @@
       <div fxFlex="60%" fxLayoutAlign="center center" class="top-home-button" routerLink="/">
       </div>
 
-      <div *ngIf="isAuth$ | async" fxFlex="20%" fxLayoutAlign="start center" fxLayout="column" routerLink="/checklist"
+      <div *ngIf="isLoggedIn$ | async" fxFlex="20%" fxLayoutAlign="start center" fxLayout="column" routerLink="/checklist"
         class="top-cal-list-button">
         <mat-icon fxLayoutAlign="center center" class="top-cal-list-icon">list_alt</mat-icon>
         <span fxLayoutAlign="center center" class="top-text-icon">{{ 'checklist' | translate}}</span>
@@ -47,7 +47,7 @@
 
     <div fxFlex="30%" fxLayoutAlign="end">
 
-      <div *ngIf="!(isAuth$ | async)">
+      <div *ngIf="isLoggedOut$ | async">
         <button mat-stroked-button class="nav-button" routerLink="/signup" routerLinkActive="active">
           <mat-icon>face</mat-icon>
           {{ 'signup' | translate }}
@@ -58,7 +58,7 @@
         </button>
       </div>
 
-      <div *ngIf="isAuth$ | async">
+      <div *ngIf="isLoggedIn$ | async">
         <button mat-icon-button class="nav-button" routerLink="/settings" routerLinkActive="active">
           <mat-icon>settings</mat-icon>
         </button>
@@ -78,7 +78,7 @@
   </div>
 </mat-toolbar>
 
-<mat-toolbar class="bot-toolbar" fxHide.gt-sm fxFlex fxLayout="row" fxLayoutAlign="center center" *ngIf="isAuth$ | async">
+<mat-toolbar class="bot-toolbar" fxHide.gt-sm fxFlex fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoggedIn$ | async">
   <div fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/calendar"  [routerLinkActive]="['calendar']" class="bot-cal-list-button">
     <mat-icon fxLayoutAlign="center center" class="bot-cal-list-icon">event</mat-icon>
     <span fxLayoutAlign="center center" class="bot-text-icon">{{ 'calendar' | translate}}</span>

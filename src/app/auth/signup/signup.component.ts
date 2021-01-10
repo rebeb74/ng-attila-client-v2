@@ -5,9 +5,9 @@ import { DateAdapter } from '@angular/material/core';
 import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import * as fromRoot from '../../app.reducer';
-import { UIService } from 'src/app/shared/ui.service';
+import { UIService } from 'src/app/shared/services/ui.service';
 
 @Component({
   selector: 'app-signup',
@@ -57,8 +57,8 @@ export class SignupComponent implements OnInit {
         password: this.signupForm.value.password,
         username: this.signupForm.value.username,
         birthdate: this.signupForm.value.birthdate,
-        lang: currentLang
-      });
+        lang: currentLang.toString()
+      }).subscribe();
     });
   }
 

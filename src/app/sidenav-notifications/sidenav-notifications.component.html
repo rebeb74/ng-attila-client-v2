@@ -1,18 +1,41 @@
 <mat-sidenav-container>
-    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
-        <mat-toolbar fxLayout>
-            <h3 fxFlex="50%" fxLayoutAlign="start">{{ 'notifications' | translate }}</h3>
-            <span fxFlex="50%" fxLayoutAlign="end">
-                <button mat-mini-fab (click)="onClose()">
-                    <mat-icon>skip_next</mat-icon>
-                </button>
-            </span>
-            
-        </mat-toolbar>
-        <ng-template ngFor [ngForOf]="currentUserNotifications$ | async" let-notification>
-            <ng-container [ngSwitch]="notification.message">
-                <app-friend-request [notificationDate]="notification.createdOn" [senderUsername]="notification.senderUsername" [senderEmail]="notification.senderEmail" *ngSwitchCase="'friend_request'"></app-friend-request>
-            </ng-container>
-        </ng-template>
-    </div>
+  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <mat-toolbar fxLayout>
+      <h3 fxFlex="50%" fxLayoutAlign="start">{{ 'notifications' | translate }}</h3>
+      <span fxFlex="50%" fxLayoutAlign="end">
+        <button mat-mini-fab (click)="onClose()">
+          <mat-icon>skip_next</mat-icon>
+        </button>
+      </span>
+
+    </mat-toolbar>
+    <ng-template ngFor [ngForOf]="currentUserNotifications$ | async" let-notification>
+      <ng-container [ngSwitch]="notification.message">
+        <mat-card class="notif-card">
+          <mat-card-title fxLayout>
+                  {{ 'notif_friend_request' | translate }}
+          </mat-card-title>
+          <mat-card-subtitle>
+              {{ notification.date }}
+          </mat-card-subtitle>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+              <p>{{ 'sender_friend_request' | translate }} {{ notification.senderUsername }} ({{ notification.senderEmail }}) {{ 'content_friend_request' | translate }}</p>
+          </mat-card-content>
+          <mat-card-actions fxLayout="row" fxLayoutAlign="center center" >
+              <div fxFlex="50%" fxLayoutAlign="start">
+                  <button class="accept-decline-btn" mat-mini-fab (click)="onAccept()" fxLayoutAlign="center center">
+                      <mat-icon class="accept-decline-icon">done</mat-icon>
+                  </button>
+              </div>
+              <div fxFlex="50%" fxLayoutAlign="end">
+                  <button class="accept-decline-btn" mat-mini-fab (click)="onDecline(notification.notificationId)" color="warn" fxLayoutAlign="center center">
+                      <mat-icon class="accept-decline-icon">close</mat-icon>
+                  </button>
+              </div>
+          </mat-card-actions>
+      </mat-card>
+      </ng-container>
+    </ng-template>
+  </div>
 </mat-sidenav-container>

@@ -2,8 +2,9 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as fromRoot from '../../app.reducer';
 import { Store } from '@ngrx/store';
-import { AuthService } from 'src/app/auth/auth.service';
-import { UIService } from 'src/app/shared/ui.service';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { UIService } from 'src/app/shared/services/ui.service';
+import { selectIsLoggedIn, selectIsLoggedOut } from 'src/app/auth/auth.reducer';
 
 @Component({
   selector: 'app-sidenav',
@@ -12,9 +13,10 @@ import { UIService } from 'src/app/shared/ui.service';
 })
 export class SidenavComponent implements OnInit {
   @Output() sidenavClose = new EventEmitter<void>()
-  isAuth$: Observable<boolean>;
   currentLang$: Observable<string>;
   languages$: Observable<string[]>;
+  isLoggedIn$: Observable<boolean>;
+  isLoggedOut$: Observable<boolean>;
   
   constructor(
     private store: Store<fromRoot.State>,
@@ -25,7 +27,8 @@ export class SidenavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isAuth$ = this.store.select(fromRoot.getIsAuth);
+    this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
+    this.isLoggedOut$ = this.store.select(selectIsLoggedOut);
     this.currentLang$ = this.store.select(fromRoot.getCurrentLanguage);
     this.languages$ = this.store.select(fromRoot.getLanguages);
   }

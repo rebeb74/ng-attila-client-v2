@@ -1,17 +1,17 @@
 <mat-nav-list>
-  <a *ngIf="!(isAuth$ | async)" mat-list-item routerLink="/signup" [routerLinkActive]="['signup']" (click)="onClose()">
+  <a *ngIf="isLoggedOut$ | async" mat-list-item routerLink="/signup" [routerLinkActive]="['signup']" (click)="onClose()">
     <mat-icon>face</mat-icon>
     <span class="nav-caption">{{ 'signup' | translate }}</span>
   </a>
-  <a *ngIf="!(isAuth$ | async)" mat-list-item routerLink="/login" [routerLinkActive]="['login']" (click)="onClose()">
+  <a *ngIf="isLoggedOut$ | async" mat-list-item routerLink="/login" [routerLinkActive]="['login']" (click)="onClose()">
     <mat-icon>input</mat-icon>
     <span class="nav-caption">{{ 'login' | translate }}</span>
   </a>
-  <a *ngIf="isAuth$ | async" mat-list-item routerLink="/settings" [routerLinkActive]="['settings']" (click)="onClose()">
+  <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="/settings" [routerLinkActive]="['settings']" (click)="onClose()">
     <mat-icon>settings</mat-icon>
     <span class="nav-caption">{{ 'settings' | translate }}</span>
   </a>
-  <mat-list-item *ngIf="isAuth$ | async" (click)="onLogout()">
+  <mat-list-item *ngIf="isLoggedIn$ | async" (click)="onLogout()">
     <button mat-icon-button>
       <mat-icon>eject</mat-icon>
       <span class="nav-caption">{{ 'logout' | translate }}</span>

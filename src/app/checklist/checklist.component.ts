@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UIService } from '../shared/ui.service';
+import { UIService } from '../shared/services/ui.service';
 
 @Component({
   selector: 'app-checklist',

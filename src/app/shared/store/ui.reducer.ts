@@ -1,5 +1,6 @@
 
-import { User } from '../auth/user.model';
+import { User } from '../model/user.model';
+import { Notification } from '../model/notification.model';
 import {
     UIActions,
     START_LOADING,

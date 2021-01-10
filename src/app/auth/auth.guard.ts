@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Route } from 
 import * as fromRoot from '../app.reducer';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
+import { selectIsLoggedIn } from './auth.reducer';
 
 
 @Injectable()
@@ -14,7 +15,7 @@ export class AuthGuard implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.select(fromRoot.getIsAuth).pipe(take(1));
+        return this.store.select(selectIsLoggedIn).pipe(take(1));
     }
 
 }
