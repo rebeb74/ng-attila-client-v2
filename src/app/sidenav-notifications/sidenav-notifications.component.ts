@@ -48,7 +48,6 @@ export class SidenavNotificationsComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserNotifications$ = this.store.select(fromRoot.getCurrentUserNotifications);
     this.store.select(fromRoot.getCurrentUser).subscribe((currentUser: User) => {
-      console.log('curentUser: ', currentUser)
       this.currentUser = currentUser;
     })
   }

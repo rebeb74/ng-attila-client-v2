@@ -1,4 +1,5 @@
 export interface User {
+    filter(arg0: (user: any) => boolean): any;
     _id: string;
     email: string;
     lang: string;

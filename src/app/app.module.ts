@@ -36,11 +36,18 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { DefaultDataServiceConfig, EntityDataModule, EntityDataService, EntityDefinitionService } from '@ngrx/data';
-import { entityConfig, entityMetadata } from './entity-metadata';
+import { entityConfig } from './entity-metadata';
 import { AuthEffects } from './auth/auth.effects';
 import { UserEntityService } from './shared/services/user-entity.service';
 import { TokenInterceptor } from './token.interceptor';
-import { UserResolver } from './navigation/sidenav/user.resolver';
+import { UserResolver } from './user.resolver';
+import { BaseComponent } from './base/base.component';
+import { UserDataService } from './shared/services/user-data.service';
+
+const defaultDataServiceConfig: DefaultDataServiceConfig = {
+  root: environment.apiUrl,
+  timeout: 3000, // request timeout
+}
 
 @NgModule({
   declarations: [
@@ -58,7 +65,8 @@ import { UserResolver } from './navigation/sidenav/user.resolver';
     PasswordResetComponent,
     ConfirmPasswordResetComponent,
     SidenavNotificationsComponent,
-    FriendRequestComponent
+    FriendRequestComponent,
+    BaseComponent
   ],
   imports: [
     BrowserModule,
@@ -100,24 +108,22 @@ import { UserResolver } from './navigation/sidenav/user.resolver';
     UIService,
     UserEntityService,
     UserResolver,
+    UserDataService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
     },
-    {
-      provide: DefaultDataServiceConfig,
-      useValue: {root: environment.apiUrl},
-    },
+    { provide: DefaultDataServiceConfig, useValue: defaultDataServiceConfig }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(
-    private eds: EntityDefinitionService,
     private entityDataService: EntityDataService,
+    private userDataService: UserDataService
     ) {
-    eds.registerMetadataMap(entityMetadata);
+    entityDataService.registerService('User', userDataService);
   }
  }
 

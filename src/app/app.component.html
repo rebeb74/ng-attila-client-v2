@@ -1,18 +1,4 @@
-<mat-sidenav-container>
-  <mat-sidenav class="menu-sidenav" #sidenav role="navigation" mode="push">
-    <app-sidenav (sidenavClose)="sidenav.close()"></app-sidenav>
-  </mat-sidenav>
-  <mat-sidenav class="notifications-sidenav" #sidenavNotifications role="navigation" position="end">
-    <app-sidenav-notifications (sidenavNotificationsClose)="sidenavNotifications.close()"></app-sidenav-notifications>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <app-header (sidenavToggle)="sidenav.toggle()" (sidenavNotificationsToggle)="sidenavNotifications.toggle()">
-    </app-header>
-    <main>
-      <div class="spinner-container" *ngIf="loading">
-        <mat-spinner></mat-spinner>
-      </div>
-      <router-outlet></router-outlet>
-    </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<!-- <div class="spinner-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div> -->
+<router-outlet></router-outlet>

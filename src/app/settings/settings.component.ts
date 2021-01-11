@@ -49,11 +49,8 @@ export class SettingsComponent implements OnInit {
     this.isLoading$ = this.store.select(fromRoot.getIsLoading);
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 10);
     this.minDate.setFullYear(this.minDate.getFullYear() - 99);
-    this.currentUser$ = this.userDataService.entities$.pipe(
-      map((users) => users[0] as User),
-      take(1)
-    )
-    this.currentUser$.subscribe((user: User) => this.currentUser = user)
+    this.currentUser$ = this.userDataService.entities$.pipe(map((users) => users[0] as User), take(1));
+    this.currentUser$.subscribe((user: User) => this.currentUser = user);
 
     this.accountForm = new FormGroup({
       email: new FormControl(this.currentUser.email, {

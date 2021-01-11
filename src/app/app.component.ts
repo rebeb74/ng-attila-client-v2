@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     const user: string = JSON.parse(localStorage.getItem('user'))
     if (tokens.accessToken) {
       this.store.dispatch(AuthActions.login({ user, tokens }));
-      this.userDataService.getByKey(user['_id']);
+      // this.userDataService.getByKey(user['_id']);
     }
 
     this.router.events.subscribe(event => {
