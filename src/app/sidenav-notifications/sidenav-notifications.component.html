@@ -10,13 +10,13 @@
 
     </mat-toolbar>
     <ng-template ngFor [ngForOf]="currentUserNotifications$ | async" let-notification>
-      <ng-container [ngSwitch]="notification.message">
-        <mat-card class="notif-card">
+      <ng-container [ngSwitch]="notification.code">
+        <mat-card @leave class="notif-card">
           <mat-card-title fxLayout>
                   {{ 'notif_friend_request' | translate }}
           </mat-card-title>
           <mat-card-subtitle>
-              {{ notification.date }}
+              {{ getFormat(notification.createdOn) }}
           </mat-card-subtitle>
           <mat-divider></mat-divider>
           <mat-card-content>
@@ -29,7 +29,7 @@
                   </button>
               </div>
               <div fxFlex="50%" fxLayoutAlign="end">
-                  <button class="accept-decline-btn" mat-mini-fab (click)="onDecline(notification.notificationId)" color="warn" fxLayoutAlign="center center">
+                  <button class="accept-decline-btn" mat-mini-fab (click)="onDecline(notification)" color="warn" fxLayoutAlign="center center">
                       <mat-icon class="accept-decline-icon">close</mat-icon>
                   </button>
               </div>

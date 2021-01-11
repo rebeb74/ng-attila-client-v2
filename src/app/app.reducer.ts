@@ -1,61 +1,46 @@
 
-import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromUi from './shared/store/ui.reducer';
-import * as fromAuth from './auth/auth.reducer';
-import { AuthState } from './auth/auth.reducer';
+import { authReducer, AuthState } from './auth/auth.reducer';
+import { ActionReducer, ActionReducerMap, createFeatureSelector, createSelector, MetaReducer } from '@ngrx/store';
+import { environment } from '../environments/environment';
+import { getSelectors, routerReducer, RouterReducerState } from '@ngrx/router-store';
+import { uiReducer, UiState } from './shared/store/ui.reducer';
 
-export interface State {
-    ui: fromUi.State;
+export interface AppState {
+    ui: UiState;
     auth: AuthState;
+    router: RouterReducerState<any>;
 }
 
-export const reducers: ActionReducerMap<State> = {
-    ui: fromUi.uiReducer,
-    auth: fromAuth.authReducer
+export const reducers: ActionReducerMap<AppState> = {
+    ui: uiReducer,
+    auth: authReducer,
+    router: routerReducer
 };
 
-export const getUiState = createFeatureSelector<fromUi.State>('ui');
-export const getIsLoading = createSelector(getUiState, fromUi.getIsLoading);
-export const getCurrentUser = createSelector(getUiState, fromUi.getCurrentUser);
-export const getPageName = createSelector(getUiState, fromUi.getPageName);
-export const getLanguages = createSelector(getUiState, fromUi.getLanguages);
-export const getCurrentLanguage = createSelector(getUiState, fromUi.getCurrentLanguage);
-export const getCurrentUserNotifications = createSelector(getUiState, fromUi.getCurrentUserNotifications);
+export function logger(reducer: ActionReducer<any>)
+: ActionReducer<any> {
+    return (state, action) => {
+        // console.log("state before: ", state);
+        // console.log("action", action);
+        
+        return reducer(state, action);
+    }
+    
+}
 
-// export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
-// export const getIsAuth = createSelector(getAuthState, fromAuth.getIsAuthenticated);
+export const selectRouter = createFeatureSelector<AppState, RouterReducerState>('router');
+  
+export const {
+    selectCurrentRoute,   // select the current route
+    selectFragment,       // select the current route fragment
+    selectQueryParams,    // select the current route query params
+    selectQueryParam,     // factory function to select a query param
+    selectRouteParams,    // select the current route params
+    selectRouteParam,     // factory function to select a route param
+    selectRouteData,      // select the current route data
+    selectUrl,            // select the current url
+  } = getSelectors(selectRouter);
 
 
-// import {
-//     ActionReducer,
-//     ActionReducerMap,
-//     createFeatureSelector,
-//     createSelector,
-//     MetaReducer
-//   } from '@ngrx/store';
-//   import { environment } from '../environments/environment';
-//   import {routerReducer} from '@ngrx/router-store';
-  
-//   export interface AppState {
-  
-//   }
-  
-//   export const reducers: ActionReducerMap<AppState> = {
-//       router: routerReducer
-//   };
-  
-//   export function logger(reducer:ActionReducer<any>)
-//       : ActionReducer<any> {
-//       return (state, action) => {
-//           console.log("state before: ", state);
-//           console.log("action", action);
-  
-//           return reducer(state, action);
-//       }
-  
-//   }
-  
-  
-//   export const metaReducers: MetaReducer<AppState>[] =
-//       !environment.production ? [logger] : [];
-  
+export const metaReducers: MetaReducer<AppState>[] =
+    !environment.production ? [logger] : [];

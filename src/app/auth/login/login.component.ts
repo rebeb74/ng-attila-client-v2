@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../app.reducer';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { UIService } from 'src/app/shared/services/ui.service';
+import { selectIsLoading } from 'src/app/shared/store/ui.reducer';
+import { Router } from '@angular/router';
+import { AppState } from '../../app.reducer';
 
 @Component({
   selector: 'app-login',
@@ -17,13 +18,12 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private store: Store<fromRoot.State>,
-    private uiService: UIService
+    private store: Store<AppState>,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.uiService.setCurrentPageName('login');
-    this.isLoading$ = this.store.select(fromRoot.getIsLoading);
+    this.isLoading$ = this.store.select(selectIsLoading);
     this.loginForm = new FormGroup({
       username: new FormControl('', {
         validators: [Validators.required]
@@ -36,6 +36,10 @@ export class LoginComponent implements OnInit {
     this.authService.login({
       username: this.loginForm.value.username,
       password: this.loginForm.value.password
-    }).subscribe();
+    }).subscribe(result => {
+      if(result) {
+        this.router.navigateByUrl('/');
+      } 
+    });
   }
 }

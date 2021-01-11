@@ -12,10 +12,11 @@ import { UserResolver } from './user.resolver';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { NotificationResolver } from './notification.resolver';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
-  { path: '', component: BaseComponent, resolve: { user: UserResolver }, children: [
+  { path: '', component: BaseComponent, resolve: { user: UserResolver, notification: NotificationResolver }, children: [
     { path: 'welcome', component: WelcomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },

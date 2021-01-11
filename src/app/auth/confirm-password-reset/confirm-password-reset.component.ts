@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
 import { AuthService } from '../services/auth.service';
+import { selectIsLoading } from 'src/app/shared/store/ui.reducer';
+import { AppState } from '../../app.reducer';
 
 @Component({
   selector: 'app-confirm-password-reset',
@@ -17,12 +19,12 @@ export class ConfirmPasswordResetComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private store: Store<fromRoot.State>,
+    private store: Store<AppState>,
     private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.isLoading$ = this.store.select(fromRoot.getIsLoading);
+    this.isLoading$ = this.store.select(selectIsLoading);
     this.frmSetNewPassword = new FormGroup({
       password: new FormControl('', {
         validators: [Validators.required, Validators.pattern('.{4,}')]

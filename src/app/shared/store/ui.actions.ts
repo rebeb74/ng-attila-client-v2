@@ -1,52 +1,27 @@
-import { Action } from "@ngrx/store";
-import { User } from "../model/user.model";
 import { Notification } from "../model/notification.model";
+import { createAction, props } from '@ngrx/store';
 
 
-export const START_LOADING = '[UI] Start Loading';
-export const STOP_LOADING = '[UI] Stop Loading';
-export const SET_CURRENT_USER = '[UI] Set Current User';
-export const SET_CURRENT_USER_NOTIFICATIONS = '[UI] Set Current User Notifications';
-export const SET_LANGUAGES = '[UI] Set Languages';
-export const SET_CURRENT_LANGUAGE = '[UI] Set Current Language';
-export const SET_PAGE_NAME = '[UI] Set Page Name';
+export const startLoading = createAction(
+    "[Ui] Start Loading"
+);
 
-export class StartLoading implements Action {
-    readonly type = START_LOADING;
-}
+export const stopLoading = createAction(
+    "[UI] Stop Loading"
+);
 
-export class StopLoading implements Action {
-    readonly type = STOP_LOADING;
-}
+export const setNotifications = createAction(
+    "[UI] Set Notifications",
+    props<{ notifications: Notification[] }>()
+);
 
-export class SetCurrentUser implements Action {
-    readonly type = SET_CURRENT_USER;
+export const setLanguages = createAction(
+    "[UI] Set Languages",
+    props<{ languages: string[] }>()
+);
 
-    constructor(public user: User) {}
-}
+export const setCurrentLanguage = createAction(
+    "[UI] Set Current Language",
+    props<{ currentLanguage: string }>()
+);
 
-export class SetCurrentUserNotifications implements Action {
-    readonly type = SET_CURRENT_USER_NOTIFICATIONS;
-
-    constructor(public notifications: Notification[]) {}
-}
-
-export class SetCurrentLanguage implements Action {
-    readonly type = SET_CURRENT_LANGUAGE;
-
-    constructor(public currentLanguage: string) {}
-}
-
-export class SetLanguages implements Action {
-    readonly type = SET_LANGUAGES;
-
-    constructor(public languages: string[]) {}
-}
-
-export class SetPageName implements Action {
-    readonly type = SET_PAGE_NAME;
-
-    constructor(public PageName: string) {}
-}
-
-export type UIActions = StartLoading | StopLoading | SetCurrentUser | SetPageName | SetLanguages | SetCurrentLanguage | SetCurrentUserNotifications;

@@ -4,12 +4,13 @@ import { UserEntityService } from './shared/services/user-entity.service';
 import { UIService } from './shared/services/ui.service';
 import { Observable } from 'rxjs';
 import { User } from './shared/model/user.model';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@capacitor/core';
 import { AuthActions } from './auth/action-types';
 import { Tokens } from './auth/model/tokens.model';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { selectIsLoggedIn } from './auth/auth.reducer';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +38,6 @@ export class AppComponent implements OnInit {
     const user: string = JSON.parse(localStorage.getItem('user'))
     if (tokens.accessToken) {
       this.store.dispatch(AuthActions.login({ user, tokens }));
-      // this.userDataService.getByKey(user['_id']);
     }
 
     this.router.events.subscribe(event => {
@@ -59,17 +59,8 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // this.userDataService.entities$.subscribe(entities => this.currentUser$ = entities[0]))
-    // this.authService.initAuthListener();
-    // this.uiService.initLang();
-    // // this.authDataService.entities$.subscribe(data => console.log('DATA USER', data))
-    // this.userDataService.entities$
-    // .pipe(
-    //   map((users) => {
-    //     return users[0] as User;
-    //   })
-    // )
-    // .subscribe((user: User) => console.log('USER', user))
+    this.uiService.initLang();
+ 
   }
 
 }

@@ -1,8 +1,10 @@
 export interface Notification {
-    notificationId?: string;
-    message: string;
+    _id?: string;
+    notificationUserId: string;
+    code: string;
     read: boolean;
+    senderUserId: string;
     senderUsername: string;
     senderEmail: string;
-    createdOn: Date;
+    createdOn: string;
 }

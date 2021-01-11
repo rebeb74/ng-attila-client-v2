@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UIService } from '../shared/services/ui.service';
 
 @Component({
   selector: 'app-calendar',
@@ -9,11 +8,9 @@ import { UIService } from '../shared/services/ui.service';
 export class CalendarComponent implements OnInit {
 
   constructor(
-    private uiService: UIService
   ) { }
 
   ngOnInit(): void {
-    this.uiService.setCurrentPageName('calendar');
   }
 
 }

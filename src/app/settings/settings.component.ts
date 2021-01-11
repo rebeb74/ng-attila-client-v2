@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UIService } from '../shared/services/ui.service';
-import * as fromRoot from '../app.reducer';
 import { Store } from '@ngrx/store';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
@@ -10,9 +9,10 @@ import { DbService } from '../shared/services/db.service';
 import { AuthService } from '../auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AskPasswordComponent } from './ask-password.component'
-import { map, take, tap } from 'rxjs/operators';
-import * as moment from 'moment';
+import { map, take } from 'rxjs/operators';
 import { UserEntityService } from '../shared/services/user-entity.service';
+import { selectCurrentLanguage, selectIsLoading, selectLanguages } from '../shared/store/ui.reducer';
+import { AppState } from '../app.reducer';
 
 @Component({
   selector: 'app-settings',
@@ -32,7 +32,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private uiService: UIService,
-    private store: Store<fromRoot.State>,
+    private store: Store<AppState>,
     private dateAdapter: DateAdapter<any>,
     private db: DbService,
     private authService: AuthService,
@@ -42,11 +42,10 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.uiService.setCurrentPageName('settings');
-    this.store.select(fromRoot.getCurrentLanguage).subscribe(lang => this.datePickerLocale(lang));
-    this.languages$ = this.store.select(fromRoot.getLanguages);
-    this.currentLang$ = this.store.select(fromRoot.getCurrentLanguage);
-    this.isLoading$ = this.store.select(fromRoot.getIsLoading);
+    this.languages$ = this.store.select(selectLanguages);
+    this.currentLang$ = this.store.select(selectCurrentLanguage);
+    this.currentLang$.subscribe(lang => this.datePickerLocale(lang));
+    this.isLoading$ = this.store.select(selectIsLoading);
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 10);
     this.minDate.setFullYear(this.minDate.getFullYear() - 99);
     this.currentUser$ = this.userDataService.entities$.pipe(map((users) => users[0] as User), take(1));
@@ -74,55 +73,38 @@ export class SettingsComponent implements OnInit {
   }
 
   onUpdateAccount() {
-      const dialogRef = this.dialog.open(AskPasswordComponent, {
-      });
-      dialogRef.afterClosed().subscribe(password => {
-        if (password) {
+    const dialogRef = this.dialog.open(AskPasswordComponent, {
+    });
+    dialogRef.afterClosed().subscribe(password => {
+      if (password) {
+        this.currentUser$.subscribe((user: User) => {
           this.authService
-            .updateEmail(this.currentUser.email, password, this.accountForm.value.email)
-            .then((result) => {
-              if (result) {
-                const user: User = {
-                  ...this.currentUser,
-                  ...this.accountForm.value
+            .login({ username: user.username, password })
+            .subscribe(
+              (success) => {
+                console.log('SUCCESS', success)
+                if (!!success) {
+                  const user: User = {
+                    ...this.currentUser,
+                    ...this.accountForm.value
+                  }
+                  this.userDataService.update(user)
+                  this.uiService.showSnackbar('account_update_success', null, 3000, 'success');
+                } else {
+                  this.uiService.showSnackbar('account_update_failed', null, 3000, 'error');
                 }
-                this.userDataService.update(user)
-                // this.db.updateUserById(this.currentUser.userId, {
-                //   ...this.currentUser,
-                //   email: this.accountForm.value.email,
-                //   username: this.accountForm.value.username,
-                //   birthdate: this.accountForm.value.birthdate,
-                //   updatedOn: new Date().toISOString()
-                // });
+              },
+              (error) => {
+                this.uiService.showSnackbar(error, null, 3000, 'error');
               }
-            })
-        }
-      });
-    // this.store.select(fromRoot.getCurrentUser).pipe(take(1)).subscribe(user => {
-    //   const dialogRef = this.dialog.open(AskPasswordComponent, {
-    //   });
-    //   dialogRef.afterClosed().subscribe(password => {
-    //     if (password) {
-    //       this.authService
-    //         .updateEmail(user.email, password, this.accountForm.value.email)
-    //         .then((result) => {
-    //           if (result) {
-    //             this.db.updateUserById(user.userId, {
-    //               ...user,
-    //               email: this.accountForm.value.email,
-    //               username: this.accountForm.value.username,
-    //               birthdate: this.accountForm.value.birthdate,
-    //               updatedOn: new Date().toISOString()
-    //             });
-    //           }
-    //         })
-    //     }
-    //   });
-    // });
+            );
+        });
+      }
+    });
   }
 
   sendPasswordResetRequest() {
-    this.store.select(fromRoot.getCurrentUser).pipe(take(1)).subscribe((user: User) => {
+    this.userDataService.entities$.pipe(take(1), map(users => users[0])).subscribe((user: User) => {
       this.authService.sendPasswordResetRequest(user.email).then((result) => {
         if (result) {
           this.showConfirmMessage = true;
@@ -133,6 +115,6 @@ export class SettingsComponent implements OnInit {
   };
 
   addnotif() {
-    this.db.addNotification('bertrandpetit10@gmail.com', 'friend_request');
+    this.db.addNotification('Bertrand', 'friend_request');
   }
 }

@@ -6,8 +6,8 @@ import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import * as fromRoot from '../../app.reducer';
-import { UIService } from 'src/app/shared/services/ui.service';
+import { selectCurrentLanguage, selectIsLoading } from 'src/app/shared/store/ui.reducer';
+import { AppState } from '../../app.reducer';
 
 @Component({
   selector: 'app-signup',
@@ -22,16 +22,14 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private store: Store<fromRoot.State>,
-    private uiService: UIService,
+    private store: Store<AppState>,
     private dateAdapter: DateAdapter<any>
   ) { }
 
   ngOnInit() {
     // this.translate();
-    this.store.select(fromRoot.getCurrentLanguage).subscribe(lang => this.datePickerLocale(lang));
-    this.uiService.setCurrentPageName('signup');
-    this.isLoading$ = this.store.select(fromRoot.getIsLoading);
+    this.store.select(selectCurrentLanguage).subscribe(lang => this.datePickerLocale(lang));
+    this.isLoading$ = this.store.select(selectIsLoading);
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 10);
     this.minDate.setFullYear(this.minDate.getFullYear() - 99);
     this.signupForm = new FormGroup({
@@ -51,7 +49,7 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
-    this.store.select(fromRoot.getCurrentLanguage).subscribe(currentLang => {
+    this.store.select(selectCurrentLanguage).subscribe(currentLang => {
       this.authService.registerUser({
         email: this.signupForm.value.email,
         password: this.signupForm.value.password,

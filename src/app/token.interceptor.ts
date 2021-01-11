@@ -22,19 +22,23 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log('request', request);
 
-    if (this.store.select(selectIsLoggedIn)) {
-      request = this.addToken(request, localStorage.getItem('ACCESS_TOKEN'));
-    }
+    this.store.select(selectIsLoggedIn).pipe(take(1)).subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        request = this.addToken(request, localStorage.getItem('ACCESS_TOKEN'));
+      }
+    });
 
-    return next.handle(request).pipe(catchError(error => {
-      console.log('error', error.error);
-
-      if (error instanceof HttpErrorResponse && error.status === 401) {
+    return next.handle(request)
+    .pipe(
+      catchError(error => {
+      console.error('Error in TokenInterceptor', error.error);
+      if (error instanceof HttpErrorResponse && error.status === 401 && error.error.name !== 'bad_credentials') {
         return this.handle401Error(request, next);
       } else {
         return throwError(error);
       }
-    }));
+    })
+    );
   }
 
   private addToken(request: HttpRequest<any>, token: string) {
@@ -46,11 +50,11 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-    console.log('error 401 request', request);
+    console.error('error 401 request', request);
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
-
+      console.log('PASS 1')
       return this.authService.refreshToken().pipe(
         switchMap((token: any) => {
           this.isRefreshing = false;

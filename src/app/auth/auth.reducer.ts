@@ -35,7 +35,7 @@ export const authReducer = createReducer(
 );
 
 export const selectAuthState = createFeatureSelector<AuthState>('auth');
-export const selectIsLoggedIn = createSelector(selectAuthState, auth => !!auth.tokens);
+export const selectIsLoggedIn = createSelector(selectAuthState, auth => !!auth.user);
 export const selectIsLoggedOut = createSelector(selectIsLoggedIn, loggedIn => !loggedIn);
 export const selectTokens = createSelector(selectAuthState, state => state.tokens);
 export const selectCurrentUserId = createSelector(selectAuthState, state => state.user);

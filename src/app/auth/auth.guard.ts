@@ -4,13 +4,14 @@ import * as fromRoot from '../app.reducer';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import { selectIsLoggedIn } from './auth.reducer';
+import { AppState } from '../app.reducer';
 
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
 
-    constructor(private store: Store<fromRoot.State>) {
+    constructor(private store: Store<AppState>) {
 
     }
 

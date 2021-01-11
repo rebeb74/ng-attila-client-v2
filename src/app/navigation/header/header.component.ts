@@ -1,11 +1,13 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import * as fromRoot from '../../app.reducer';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { Notification } from 'src/app/shared/model/notification.model';
 import { selectIsLoggedIn, selectIsLoggedOut } from 'src/app/auth/auth.reducer';
+import { selectCurrentLanguage, selectLanguages } from 'src/app/shared/store/ui.reducer';
+import { NotificationEntityService } from 'src/app/shared/services/notification-entity.service';
+import { AppState , selectUrl } from '../../app.reducer';
 
 @Component({
   selector: 'app-header',
@@ -23,19 +25,20 @@ export class HeaderComponent implements OnInit {
   isLoggedOut$: Observable<boolean>;
 
   constructor(
-    private store: Store<fromRoot.State>,
+    private store: Store<AppState>,
     private authService: AuthService,
     private uiService: UIService,
+    private notificationDataService: NotificationEntityService,
   ) {
   }
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
     this.isLoggedOut$ = this.store.select(selectIsLoggedOut);
-    this.pageName$ = this.store.select(fromRoot.getPageName);
-    this.currentLang$ = this.store.select(fromRoot.getCurrentLanguage);
-    this.languages$ = this.store.select(fromRoot.getLanguages);
-    this.currentUserNotifications$ = this.store.select(fromRoot.getCurrentUserNotifications);
+    this.pageName$ = this.store.select(selectUrl);
+    this.currentLang$ = this.store.select(selectCurrentLanguage);
+    this.languages$ = this.store.select(selectLanguages);
+    this.currentUserNotifications$ = this.notificationDataService.entities$;
   }
 
   switchLang(newLang) {
@@ -51,7 +54,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
-    this.authService.logout();
+    this.authService.logout().subscribe();
   }
 
 

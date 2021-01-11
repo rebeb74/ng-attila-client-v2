@@ -2,26 +2,27 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { DefaultDataService, DefaultDataServiceConfig, HttpUrlGenerator } from "@ngrx/data";
 import { Observable } from "rxjs";
-import { User } from '../model/user.model';
+import { Notification } from '../model/notification.model';
 import { environment } from '../../../environments/environment'
 import { map, tap } from "rxjs/operators";
 
 @Injectable()
-export class UserDataService extends DefaultDataService<User>{
+export class NotificationDataService extends DefaultDataService<Notification>{
 
     constructor(
         http: HttpClient,
         httpUrlGenerator: HttpUrlGenerator,
         config: DefaultDataServiceConfig
     ) {
-        super('User', http, httpUrlGenerator, config);
+        super('Notification', http, httpUrlGenerator, config);
     }
 
-    getAll(): Observable<User[]> {
+    getAll(): Observable<Notification[]> {
         const userId: string = JSON.parse(localStorage.getItem('user'))
         return super.getAll()
             .pipe(
-                map(users => users.filter(user => user._id === userId)),
+                map(notifications => notifications.filter(notification => notification.notificationUserId === userId)),
             );
     }
+   
 }

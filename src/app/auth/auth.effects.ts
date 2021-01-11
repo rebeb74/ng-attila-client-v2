@@ -5,6 +5,8 @@ import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Tokens } from './model/tokens.model';
 import { User } from '../shared/model/user.model';
+import { UserEntityService } from '../shared/services/user-entity.service';
+import { NotificationEntityService } from '../shared/services/notification-entity.service';
 
 
 @Injectable()
@@ -18,7 +20,9 @@ export class AuthEffects {
             .pipe(
                 ofType(AuthActions.login),
                 tap(action => {
-                    this.storeTokensAndUser(action.tokens, action.user)
+                    this.storeTokensAndUser(action.tokens, action.user),
+                    this.userDataService.getAll(),
+                    this.notificationDataService.getAll()
                 })
             )
         ,
@@ -31,13 +35,19 @@ export class AuthEffects {
                 tap(action => {
                     this.removeTokens();
                     this.router.navigateByUrl('/login');
+                    this.userDataService.clearCache();
+                    this.notificationDataService.clearCache();
                 })
             )
         , { dispatch: false });
 
 
-    constructor(private actions$: Actions,
-        private router: Router) {
+    constructor(
+        private actions$: Actions,
+        private router: Router,
+        private userDataService: UserEntityService,
+        private notificationDataService: NotificationEntityService
+        ) {
 
     }
 

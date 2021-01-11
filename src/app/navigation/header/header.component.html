@@ -87,7 +87,7 @@
   <!-- <div *ngIf="!((pageName$ | async) === 'calendar' || (pageName$ | async) === 'checklist')" fxFlex="34%" fxLayoutAlign="center center" class="bot-home-button" routerLink="/">
   </div> -->
 
-  <div mat-fab *ngIf="(pageName$ | async) === 'calendar' || (pageName$ | async) === 'checklist'" fxFlex="20%" fxLayoutAlign="center center" class="bot-add-button" routerLink="/" [routerLinkActive]="['welcome']">
+  <div mat-fab *ngIf="(pageName$ | async) === '/calendar' || (pageName$ | async) === '/checklist'" fxFlex="20%" fxLayoutAlign="center center" class="bot-add-button" routerLink="/" [routerLinkActive]="['welcome']">
     <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
   </div>
 

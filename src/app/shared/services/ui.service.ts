@@ -2,29 +2,32 @@ import { Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Store } from "@ngrx/store";
 import { TranslateService } from '@ngx-translate/core';
-import { take } from "rxjs/operators";
+import { map, take } from "rxjs/operators";
 import * as fromRoot from '../../app.reducer';
 import { DbService } from "./db.service";
 import * as UI from '../store/ui.actions';
+import { UserEntityService } from "./user-entity.service";
+import { UiActions } from "../store/action-types";
+import { selectCurrentLanguage, selectLanguages } from "../store/ui.reducer";
+import { AppState } from "../../app.reducer";
 
 
 @Injectable()
 export class UIService {
-    languages = ['fr', 'en', 'de'];
 
     constructor(
         public translate: TranslateService,
         private snackbar: MatSnackBar,
-        private store: Store<fromRoot.State>,
-        private dbService: DbService
+        private store: Store<AppState>,
+        private dbService: DbService,
+        private userDataService: UserEntityService
     ) {
 
     }
 
     initLang() {
-        this.store.dispatch(new UI.SetLanguages(this.languages));
-        this.store.select(fromRoot.getLanguages).subscribe(languages => this.translate.addLangs(languages));
-        this.store.select(fromRoot.getCurrentLanguage).subscribe(currentLanguage => {
+        this.store.select(selectLanguages).subscribe(languages => this.translate.addLangs(languages));
+        this.store.select(selectCurrentLanguage).subscribe(currentLanguage => {
             this.translate.setDefaultLang(currentLanguage)}
             );
     }
@@ -44,9 +47,9 @@ export class UIService {
     }
 
     switchLang(newLang: string) {
-        this.store.dispatch(new UI.SetCurrentLanguage(newLang));
+        this.store.dispatch(UiActions.setCurrentLanguage({currentLanguage: newLang}));
         this.translate.use(newLang);
-        this.store.select(fromRoot.getCurrentUser).pipe(take(1)).subscribe(user => {
+        this.userDataService.entities$.pipe(take(1),map(users => users[0])).subscribe(user => {
             if(user) {
                 this.dbService.updateUserById(user._id, {...user, lang: newLang})
                 .then(() => {
@@ -60,8 +63,5 @@ export class UIService {
         })
     }
 
-    setCurrentPageName(pageName: string) {
-        this.store.dispatch(new UI.SetPageName(pageName));
-    }
-
 }
+

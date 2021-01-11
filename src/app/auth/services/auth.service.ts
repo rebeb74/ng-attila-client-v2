@@ -20,6 +20,9 @@ import { environment as env } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Tokens } from '../model/tokens.model';
 import { of } from 'rxjs';
+import { UiActions } from 'src/app/shared/store/action-types';
+import { selectCurrentLanguage } from 'src/app/shared/store/ui.reducer';
+import { AppState } from '../../app.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -27,104 +30,60 @@ import { of } from 'rxjs';
 export class AuthService {
   private readonly ACCESS_TOKEN = 'ACCESS_TOKEN';
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
-  private loggedUser: string;
 
   constructor(
     private router: Router,
     private afAuth: AngularFireAuth,
     private uiService: UIService,
-    private store: Store<fromRoot.State>,
-    private dbService: DbService,
-    private http: HttpClient
+    private store: Store<AppState>,
+    private http: HttpClient,
   ) { }
 
-  initAuthListener() {
-
-    this.afAuth.authState.subscribe(user => {
-      if (user) {
-        // this.store.dispatch(AuthActions.login({user}));
-        this.router.navigate(['/']);
-        this.dbService.getAndStoreUserById(user.uid);
-        this.dbService.getAndStoreUserNotificationsByUserId(user.uid);
-      } else {
-        this.router.navigate(['/login']);
-      }
-    })
-  }
 
   login(authData: AuthData): Observable<User> {
+    this.store.dispatch(UiActions.startLoading());
     return this.http.post<any>(`${env.apiUrl}/login`, authData)
       .pipe(
         tap(res => {
+          console.log('res', res)
           const user: string = res.user;
           const tokens: Tokens = res.tokens;
           this.store.dispatch(AuthActions.login({ user, tokens }))
-          this.router.navigateByUrl('/');
+          this.store.dispatch(UiActions.stopLoading());
         }),
         catchError(error => {
-          console.log('error', error.error);
+          this.store.dispatch(UiActions.stopLoading());
+          console.log('error2', error.error);
+          this.uiService.showSnackbar(error.error.message, null, 3000, 'error');
           return of(null);
         })
       );
-    // this.store.dispatch(new UI.StartLoading());
-    // this.afAuth
-    //   .signInWithEmailAndPassword(
-    //     authData.email,
-    //     authData.password
-    //   )
-    //   .then(result => {
-    //     this.store.dispatch(new UI.StopLoading());
-    //   })
-    //   .catch(error => {
-    //     this.store.dispatch(new UI.StopLoading());
-    //     this.uiService.showSnackbar(error.code, null, 3000, 'error');
-    //   });
   }
 
   registerUser(signupData): Observable<User> {
-    console.log('signupData', signupData)
+    this.store.dispatch(UiActions.startLoading());
     return this.http.post<User>(`${env.apiUrl}/user`, signupData)
       .pipe(
         tap(res => {
           console.log('REGISTER RES', res)
-          this.login({ username: signupData.username, password: signupData.password } as AuthData).subscribe()
+          this.login({ username: signupData.username, password: signupData.password } as AuthData).subscribe();
+          this.store.dispatch(UiActions.stopLoading());
         }),
         catchError(error => {
+          this.store.dispatch(UiActions.stopLoading());
           console.log('error', error.error);
+          this.uiService.showSnackbar(error.error.message, null, 3000, 'error');
           return of(null);
         })
       );
-
-    // this.store.dispatch(new UI.StartLoading());
-    // this.afAuth
-    //   .createUserWithEmailAndPassword(
-    //     signupData.email,
-    //     signupData.password
-    //   ).then(result => {
-    //     this.dbService.createUser({
-    //       _id: result.user.uid,
-    //       email: signupData.email,
-    //       username: signupData.username,
-    //       lang: signupData.lang,
-    //       birthdate: new Date(signupData.birthdate).toISOString(),
-    //       createdOn: new Date().toISOString(),
-    //       updatedOn: new Date().toISOString()
-    //     });
-    //     this.store.dispatch(new UI.StopLoading());
-    //   })
-    //   .catch(error => {
-    //     this.store.dispatch(new UI.StopLoading());
-    //     this.uiService.showSnackbar(error.code, null, 3000, 'error');
-    //   });
   }
 
   logout() {
-    this.store.dispatch(new UI.SetCurrentUser(null));
-    this.store.dispatch(new UI.SetCurrentUserNotifications([]));
-    return this.http.post<any>(`${env.apiUrl}/logout`, {
-      'token': this.getRefreshToken()
-    })
+    return this.http.post<any>(`${env.apiUrl}/logout`, {'token': this.getRefreshToken()})
       .pipe(
+        tap(res => {
+          this.store.dispatch(AuthActions.logout());
+        }),
         mapTo(true),
         catchError(error => {
           console.log('error', error.error);
@@ -132,54 +91,36 @@ export class AuthService {
         }));
   }
 
-  updateEmail(oldEmail, password, newEmail) {
-    this.store.dispatch(new UI.StartLoading());
-    return new Promise((resolve, reject) => {
-      this.afAuth
-        .signInWithEmailAndPassword(oldEmail, password)
-        .then((userCredential) => {
-          userCredential.user.updateEmail(newEmail);
-          this.uiService.showSnackbar('account_update_success', null, 3000, 'success');
-          this.store.dispatch(new UI.StopLoading());
-          resolve(true);
-        })
-        .catch(error => {
-          this.uiService.showSnackbar(error.code, null, 3000, 'error');
-          this.store.dispatch(new UI.StopLoading());
-          resolve(false);
-        })
-    })
-  }
 
   resetPassword(code, password) {
-    this.store.dispatch(new UI.StartLoading());
+    this.store.dispatch(UiActions.startLoading());
     this.afAuth
       .confirmPasswordReset(code, password)
       .then(() => {
         this.router.navigate(['login']);
         this.uiService.showSnackbar('reset_password_success', null, 3000, 'success');
-        this.store.dispatch(new UI.StopLoading());
+        this.store.dispatch(UiActions.stopLoading());
       })
       .catch(error => {
         this.uiService.showSnackbar(error.code, null, 3000, 'error');
-        this.store.dispatch(new UI.StopLoading());
+        this.store.dispatch(UiActions.stopLoading());
       });
   }
 
   sendPasswordResetRequest(email) {
-    this.store.dispatch(new UI.StartLoading());
+    this.store.dispatch(UiActions.startLoading());
     return new Promise((resolve, reject) => {
-      this.store.select(fromRoot.getCurrentLanguage).subscribe(currentLang => {
+      this.store.select(selectCurrentLanguage).subscribe(currentLang => {
         firebase.default.auth().languageCode = currentLang;
       });
       this.afAuth.sendPasswordResetEmail(email).then(
         () => {
-          this.store.dispatch(new UI.StopLoading());
+          this.store.dispatch(UiActions.stopLoading());
           resolve(true);
         },
         error => {
           this.uiService.showSnackbar(error.code, null, 3000, 'error');
-          this.store.dispatch(new UI.StopLoading());
+          this.store.dispatch(UiActions.stopLoading());
           resolve(false);
         }
       );
@@ -198,6 +139,7 @@ export class AuthService {
 
 
   private getRefreshToken() {
+    console.log('PAS')
     return localStorage.getItem(this.REFRESH_TOKEN);
   }
 
