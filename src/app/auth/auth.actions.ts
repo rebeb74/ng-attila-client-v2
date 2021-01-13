@@ -2,7 +2,6 @@
 
 import { createAction, props } from '@ngrx/store';
 import { Tokens } from "./model/tokens.model";
-import { User } from '../shared/model/user.model';
 
 
 export const login = createAction(

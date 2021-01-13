@@ -23,11 +23,10 @@ export class SignupComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private store: Store<AppState>,
-    private dateAdapter: DateAdapter<any>
+    private dateAdapter: DateAdapter<any>,
   ) { }
 
   ngOnInit() {
-    // this.translate();
     this.store.select(selectCurrentLanguage).subscribe(lang => this.datePickerLocale(lang));
     this.isLoading$ = this.store.select(selectIsLoading);
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 10);

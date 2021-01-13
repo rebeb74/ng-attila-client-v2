@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { User } from '../shared/model/user.model';
-import { DbService } from '../shared/services/db.service';
 import { AuthService } from '../auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AskPasswordComponent } from './ask-password.component'
@@ -13,6 +12,7 @@ import { map, take } from 'rxjs/operators';
 import { UserEntityService } from '../shared/services/user-entity.service';
 import { selectCurrentLanguage, selectIsLoading, selectLanguages } from '../shared/store/ui.reducer';
 import { AppState } from '../app.reducer';
+import { NotificationEntityService } from '../shared/services/notification-entity.service';
 
 @Component({
   selector: 'app-settings',
@@ -34,10 +34,10 @@ export class SettingsComponent implements OnInit {
     private uiService: UIService,
     private store: Store<AppState>,
     private dateAdapter: DateAdapter<any>,
-    private db: DbService,
     private authService: AuthService,
     private dialog: MatDialog,
-    private userDataService: UserEntityService
+    private userDataService: UserEntityService,
+    private notificationDataService: NotificationEntityService
   ) { }
 
   ngOnInit(): void {
@@ -82,16 +82,20 @@ export class SettingsComponent implements OnInit {
             .login({ username: user.username, password })
             .subscribe(
               (success) => {
-                console.log('SUCCESS', success)
                 if (!!success) {
                   const user: User = {
                     ...this.currentUser,
                     ...this.accountForm.value
                   }
-                  this.userDataService.update(user)
-                  this.uiService.showSnackbar('account_update_success', null, 3000, 'success');
-                } else {
-                  this.uiService.showSnackbar('account_update_failed', null, 3000, 'error');
+                  this.userDataService.update(user).subscribe(
+                    (success) => {
+                      this.uiService.showSnackbar('account_update_success', null, 3000, 'success');
+                    },
+                    (error) => {
+                      this.accountForm.patchValue(this.currentUser);
+                      this.uiService.showSnackbar(error.error.error.code, null, 3000, 'error');
+                    }
+                  );
                 }
               },
               (error) => {
@@ -103,18 +107,33 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  addnotif() {
+    const targetUsername = 'Bertrand';
+    const code = 'friend_request';
+    this.userDataService.getByKey('username/' + targetUsername).subscribe((targetUser: User) => {
+      this.userDataService.entities$.pipe(take(1), map(users => users[0])).subscribe((currentUser: User) => {
+        this.notificationDataService.add({
+          notificationUserId: targetUser._id,
+          code: code,
+          read: false,
+          senderUserId: currentUser._id,
+          senderUsername: currentUser.username,
+          senderEmail: currentUser.email,
+          createdOn: (new Date()).toISOString()
+        });
+      });
+    });
+  }
+
   sendPasswordResetRequest() {
     this.userDataService.entities$.pipe(take(1), map(users => users[0])).subscribe((user: User) => {
-      this.authService.sendPasswordResetRequest(user.email).then((result) => {
-        if (result) {
-          this.showConfirmMessage = true;
-        }
-      })
+      this.authService.sendPasswordResetRequest(user.email).subscribe(
+        (result) => {
+          if (result) {
+            this.showConfirmMessage = true;
+          }
+        })
     }
     )
   };
-
-  addnotif() {
-    this.db.addNotification('Bertrand', 'friend_request');
-  }
 }

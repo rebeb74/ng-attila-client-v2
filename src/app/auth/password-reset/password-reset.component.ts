@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../app.reducer';
 import { AuthService } from '../services/auth.service';
 import { selectIsLoading } from 'src/app/shared/store/ui.reducer';
 import { AppState } from '../../app.reducer';
@@ -35,7 +34,7 @@ export class PasswordResetComponent implements OnInit {
   sendPasswordResetRequest() {
     const email = this.frmPasswordReset.controls['email'].value;
 
-    this.authService.sendPasswordResetRequest(email).then((result) => {
+    this.authService.sendPasswordResetRequest(email).subscribe((result) => {
       if (result) {
         this.showConfirmMessage = true;
       }

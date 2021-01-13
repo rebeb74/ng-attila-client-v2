@@ -3,10 +3,6 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse
 import { AuthService } from './auth/services/auth.service';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, filter, take, switchMap } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { AppState } from '@capacitor/core';
-import { selectIsLoggedIn, selectTokens } from './auth/auth.reducer';
-import { Tokens } from './auth/model/tokens.model';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -16,23 +12,20 @@ export class TokenInterceptor implements HttpInterceptor {
 
   constructor(
     public authService: AuthService,
-    private store: Store<AppState>
     ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log('request', request);
 
-    this.store.select(selectIsLoggedIn).pipe(take(1)).subscribe(isLoggedIn => {
-      if (isLoggedIn) {
-        request = this.addToken(request, localStorage.getItem('ACCESS_TOKEN'));
-      }
-    });
+    if (this.authService.getAccessToken()) {
+      request = this.addToken(request, this.authService.getAccessToken());
+    }
 
     return next.handle(request)
     .pipe(
       catchError(error => {
       console.error('Error in TokenInterceptor', error.error);
-      if (error instanceof HttpErrorResponse && error.status === 401 && error.error.name !== 'bad_credentials') {
+      if (error instanceof HttpErrorResponse && error.status === 401 && error.error.message !== 'username_password_invalid') {
         return this.handle401Error(request, next);
       } else {
         return throwError(error);

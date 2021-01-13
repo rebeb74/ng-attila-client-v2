@@ -33,7 +33,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
-import { DefaultDataServiceConfig, EntityDataModule, EntityDataService, EntityDefinitionService } from '@ngrx/data';
+import { DefaultDataServiceConfig, EntityDataModule, EntityDataService } from '@ngrx/data';
 import { entityConfig } from './entity-metadata';
 import { AuthEffects } from './auth/auth.effects';
 import { UserEntityService } from './shared/services/user-entity.service';
@@ -43,7 +43,6 @@ import { BaseComponent } from './base/base.component';
 import { UserDataService } from './shared/services/user-data.service';
 import { NotificationEntityService } from './shared/services/notification-entity.service';
 import { NotificationDataService } from './shared/services/notification-data.service';
-import { NotificationResolver } from './notification.resolver';
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.apiUrl,
@@ -111,7 +110,6 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     UserDataService,
     NotificationEntityService,
     NotificationDataService,
-    NotificationResolver,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

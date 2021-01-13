@@ -2,8 +2,6 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { fadeOutUpOnLeaveAnimation } from 'angular-animations';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/shared/model/user.model';
-import { DbService } from 'src/app/shared/services/db.service';
-import * as fromRoot from '../app.reducer';
 import { Observable } from 'rxjs';
 import { Notification } from '../shared/model/notification.model';
 import { first } from 'rxjs/operators';
