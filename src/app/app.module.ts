@@ -20,7 +20,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UIService } from './shared/services/ui.service';
 import { StoreModule } from '@ngrx/store';
 import { metaReducers, reducers } from './app.reducer';
-import { AngularFireModule } from '@angular/fire';
 import { CalendarComponent } from './calendar/calendar.component';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -83,7 +82,6 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFireModule.initializeApp(environment.firebase),
     StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {
