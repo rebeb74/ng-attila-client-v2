@@ -42,6 +42,7 @@ import { BaseComponent } from './base/base.component';
 import { UserDataService } from './shared/services/user-data.service';
 import { NotificationEntityService } from './shared/services/notification-entity.service';
 import { NotificationDataService } from './shared/services/notification-data.service';
+import { AskNewShareUserComponent } from './settings/ask-new-share-user.component';
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.apiUrl,
@@ -64,7 +65,8 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     PasswordResetComponent,
     ConfirmPasswordResetComponent,
     SidenavNotificationsComponent,
-    BaseComponent
+    BaseComponent,
+    AskNewShareUserComponent
   ],
   imports: [
     BrowserModule,
@@ -99,7 +101,7 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     }),
     EntityDataModule.forRoot(entityConfig)
   ],
-  entryComponents: [AskPasswordComponent],
+  entryComponents: [AskPasswordComponent, AskNewShareUserComponent],
   providers: [
     AuthService,
     UIService,

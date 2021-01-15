@@ -18,11 +18,11 @@ export class NotificationDataService extends DefaultDataService<Notification>{
     }
 
     getAll(): Observable<Notification[]> {
-        const userId: string = JSON.parse(localStorage.getItem('user'))
+        // const userId: string = JSON.parse(localStorage.getItem('user'))
         return super.getAll()
-            .pipe(
-                map(notifications => notifications.filter(notification => notification.notificationUserId === userId)),
-            );
+            // .pipe(
+            //     map(notifications => notifications.filter(notification => notification.notificationUserId === userId)),
+            // );
     }
    
 }

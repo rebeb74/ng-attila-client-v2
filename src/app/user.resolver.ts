@@ -25,7 +25,6 @@ export class UserResolver implements Resolve<boolean> {
             accessToken: localStorage.getItem('ACCESS_TOKEN'),
             refreshToken: localStorage.getItem('REFRESH_TOKEN')
         }
-        const user: string = JSON.parse(localStorage.getItem('user'))
         const userId: string = JSON.parse(localStorage.getItem('user'))
         if (!!userId) {
             return this.userDataService.loaded$
@@ -34,7 +33,7 @@ export class UserResolver implements Resolve<boolean> {
                     map(([userLoaded, notificationsLoaded]) => {
                         if (!userLoaded && !notificationsLoaded) {
                             if (tokens.accessToken) {
-                                this.store.dispatch(AuthActions.login({ user, tokens }));
+                                this.store.dispatch(AuthActions.login({ user: userId, tokens }));
                             }
                         }
                         return userLoaded;

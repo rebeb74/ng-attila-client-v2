@@ -195,11 +195,6 @@ body {
   }
 }
 
-mat-card {
-  max-width: 300px;
-  min-width: 300px;
-}
-
 mat-form-field {
   width: 250px;
 }
@@ -207,4 +202,8 @@ mat-form-field {
 a {
   text-decoration: none;
   color: mat-color($md-attila-primary, 300)
+}
+
+.accent {
+  color: mat-color($md-attila-accent, 500)
 }

@@ -20,8 +20,8 @@ export class AuthEffects {
                 ofType(AuthActions.login),
                 tap(action => {
                     this.storeTokensAndUser(action.tokens, action.user);
-                    this.userDataService.getAll();
-                    this.notificationDataService.getAll();
+                    this.userDataService.getAll().subscribe();
+                    this.notificationDataService.getAll().subscribe();
                 })
             )
         ,

@@ -8,6 +8,7 @@ import { selectIsLoggedIn, selectIsLoggedOut } from 'src/app/auth/auth.reducer';
 import { selectCurrentLanguage, selectLanguages } from 'src/app/shared/store/ui.reducer';
 import { NotificationEntityService } from 'src/app/shared/services/notification-entity.service';
 import { AppState , selectUrl } from '../../app.reducer';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -33,12 +34,16 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const userId: string = JSON.parse(localStorage.getItem('user'))
     this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
     this.isLoggedOut$ = this.store.select(selectIsLoggedOut);
     this.pageName$ = this.store.select(selectUrl);
     this.currentLang$ = this.store.select(selectCurrentLanguage);
     this.languages$ = this.store.select(selectLanguages);
-    this.currentUserNotifications$ = this.notificationDataService.entities$;
+    this.currentUserNotifications$ = this.notificationDataService.entities$
+      .pipe(
+        map((allNotifications: Notification[]) => allNotifications.filter((userNotifications) => userNotifications.notificationUserId === userId))
+        );
   }
 
   switchLang(newLang) {

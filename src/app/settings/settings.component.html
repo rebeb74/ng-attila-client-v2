@@ -1,7 +1,7 @@
 <section class="menu-margin" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px" fxLayoutAlign.gt-sm="center top" fxLayoutAlign="center center">
 
   <div fxLayout="column" fxLayoutGap="10px">
-    <mat-card fxLayout="column" fxLayoutGap="10px">
+    <mat-card class="settings-card" fxLayout="column" fxLayoutGap="10px">
       <mat-card-title>
         {{ 'account' | translate }}
       </mat-card-title>
@@ -25,7 +25,7 @@
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-          <button *ngIf="!(isLoading$ | async)" mat-raised-button color="primary"
+          <button *ngIf="!(isLoading$ | async)" mat-raised-button color="accent"
             [disabled]="accountForm.invalid">{{ "update" | translate }}</button>
           <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
         </form>
@@ -34,7 +34,7 @@
   </div>
 
   <div fxLayout="column" fxLayoutGap="20px">
-    <mat-card fxLayout="column" fxLayoutGap="10px">
+    <mat-card class="settings-card" fxLayout="column" fxLayoutGap="10px">
       <mat-card-title>
         {{ 'language' | translate }}
       </mat-card-title>
@@ -48,46 +48,51 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
+    <mat-card class="settings-card" fxLayout="column" fxLayoutGap="10px">
       <mat-card-title>
         {{ 'pw_reset' | translate }}
       </mat-card-title>
-      <span></span>
-      <mat-card-content *ngIf="!showConfirmMessage" fxLayoutAlign="center center">
-        <button *ngIf="!(isLoading$ | async)" type="submit" mat-raised-button color="primary"
+      <mat-card-content *ngIf="!(isLoading$ | async) && !showConfirmMessage" fxLayoutAlign="center center" fxLayout="column">
+        <p>{{ 'reset_pw_msg' | translate}}</p>
+        <button type="submit" mat-raised-button color="accent"
           (click)="sendPasswordResetRequest()">{{ "password_reset" | translate }}</button>
         <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
       </mat-card-content>
-      <mat-card-content>
-        <p *ngIf="showConfirmMessage">{{ 'reset_pw_msg_sent' | translate }}</p>
+      <mat-card-content *ngIf="showConfirmMessage">
+        <p>{{ 'reset_pw_msg_sent' | translate }}</p>
       </mat-card-content>
     </mat-card>
   </div>
 
-  <div fxLayout="column" fxLayoutGap="20px">
-    <mat-card fxLayout="column" fxLayoutGap="10px">
+  <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center">
+    <mat-card class="settings-card" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center">
       <mat-card-title>
         {{ 'share_title' | translate }}
       </mat-card-title>
-      <mat-card-content>
-        <mat-list role="list">
-          <mat-list-item role="listitem"><mat-checkbox>Item 1</mat-checkbox></mat-list-item>
+      <mat-card-content fxLayoutAlign="center">
+        <mat-list role="list" *ngFor="let shareNotValid of currentUserShareNotValid$ | async">
+          <mat-list-item role="listitem">
+            <mat-checkbox>{{ shareNotValid.username }}</mat-checkbox>
+          </mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item role="listitem"><mat-checkbox>Item 1</mat-checkbox></mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item role="listitem"><mat-checkbox>Item 1</mat-checkbox></mat-list-item>
+        </mat-list>
+        <mat-list role="list" *ngFor="let shareValid of currentUserShareValid$ | async" fxLayoutAlign="center">
+          <mat-list-item role="listitem" fxLayout="row" fxLayoutAlign="start center">
+            <mat-checkbox fxFlex="50%" fxLayoutAlign="start">{{ shareValid.username }}</mat-checkbox>
+            <mat-icon fxFlex="50%" fxLayoutAlign="end" class="accent">share</mat-icon>
+          </mat-list-item>
           <mat-divider></mat-divider>
         </mat-list>
       </mat-card-content>
       <mat-card-actions fxLayout="row" fxLayoutAlign="center">
         <div fxFlex="50%" fxLayoutAlign="start">
-          <button mat-mini-fab color="primary">
-            <mat-icon>add</mat-icon>
+          <button class="add-remove-btn" mat-mini-fab color="accent" (click)="addShareUser()">
+            <mat-icon class="add-remove-icon">add</mat-icon>
           </button>
         </div>
         <div fxFlex="50%" fxLayoutAlign="end">
-          <button mat-mini-fab color="primary">
-            <mat-icon>remove</mat-icon>
+          <button class="add-remove-btn" mat-mini-fab color="warn" (click)="removeShareUser()">
+            <mat-icon class="add-remove-icon">remove</mat-icon>
           </button>
         </div>
       </mat-card-actions>

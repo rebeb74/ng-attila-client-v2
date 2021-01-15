@@ -19,6 +19,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 
@@ -41,7 +42,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatButtonToggleModule,
     MatDialogModule,
     MatBadgeModule,
-    MatMenuModule
+    MatMenuModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatSidenavModule,
@@ -61,7 +63,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatButtonToggleModule,
     MatDialogModule,
     MatBadgeModule,
-    MatMenuModule
+    MatMenuModule,
+    MatAutocompleteModule
   ],
   providers: [
     {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: false}},

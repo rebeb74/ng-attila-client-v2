@@ -1,4 +1,5 @@
 export interface User {
+    find(arg0: (user: any) => boolean);
     filter(arg0: (user: any) => boolean): any;
     _id: string;
     email: string;
@@ -7,16 +8,13 @@ export interface User {
     birthdate: string;
     createdOn: string;
     updatedOn: string;
-    share?: [{
-        userId: string,
-        email: string,
-        username: string
-    }];
-    isShared?: [{
-        userId: string,
-        email: string,
-        username: string
-    }];
+    share?: Share[];
     isAdmin?: false;
+}
+
+export interface Share {
+    userId: string,
+    email: string,
+    username: string
 }
 

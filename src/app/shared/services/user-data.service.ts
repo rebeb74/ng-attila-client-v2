@@ -18,10 +18,6 @@ export class UserDataService extends DefaultDataService<User>{
     }
 
     getAll(): Observable<User[]> {
-        const userId: string = JSON.parse(localStorage.getItem('user'))
         return super.getAll()
-            .pipe(
-                map(users => users.filter(user => user._id === userId)),
-            );
     }
 }
