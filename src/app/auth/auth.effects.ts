@@ -20,8 +20,8 @@ export class AuthEffects {
                 ofType(AuthActions.login),
                 tap(action => {
                     this.storeTokensAndUser(action.tokens, action.user);
-                    this.userDataService.getAll().subscribe();
-                    this.notificationDataService.getAll().subscribe();
+                    this.userDataService.getAll();
+                    this.notificationDataService.getAll();
                 })
             )
         ,
@@ -32,10 +32,11 @@ export class AuthEffects {
             .pipe(
                 ofType(AuthActions.logout),
                 tap(action => {
-                    this.removeTokens();
-                    this.router.navigateByUrl('/login');
-                    this.userDataService.clearCache();
-                    this.notificationDataService.clearCache();
+                    this.router.navigateByUrl('/login').then(() =>{
+                        this.userDataService.clearCache();
+                        this.notificationDataService.clearCache();
+                        this.removeTokens();
+                    });
                 })
             )
         , { dispatch: false });

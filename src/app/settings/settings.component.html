@@ -1,5 +1,7 @@
-<section class="menu-margin" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px" fxLayoutAlign.gt-sm="center top" fxLayoutAlign="center center">
+<section class="menu-margin" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px" fxLayoutAlign.gt-sm="center top"
+  fxLayoutAlign="center center">
 
+  <!-- ACCOUNT CARD -->
   <div fxLayout="column" fxLayoutGap="10px">
     <mat-card class="settings-card" fxLayout="column" fxLayoutGap="10px">
       <mat-card-title>
@@ -33,6 +35,7 @@
     </mat-card>
   </div>
 
+  <!-- LANGUAGE CARD -->
   <div fxLayout="column" fxLayoutGap="20px">
     <mat-card class="settings-card" fxLayout="column" fxLayoutGap="10px">
       <mat-card-title>
@@ -48,11 +51,13 @@
       </mat-card-actions>
     </mat-card>
 
+    <!-- RESET PASSWORD CARD -->
     <mat-card class="settings-card" fxLayout="column" fxLayoutGap="10px">
       <mat-card-title>
         {{ 'pw_reset' | translate }}
       </mat-card-title>
-      <mat-card-content *ngIf="!(isLoading$ | async) && !showConfirmMessage" fxLayoutAlign="center center" fxLayout="column">
+      <mat-card-content *ngIf="!(isLoading$ | async) && !showConfirmMessage" fxLayoutAlign="center center"
+        fxLayout="column">
         <p>{{ 'reset_pw_msg' | translate}}</p>
         <button type="submit" mat-raised-button color="accent"
           (click)="sendPasswordResetRequest()">{{ "password_reset" | translate }}</button>
@@ -64,40 +69,90 @@
     </mat-card>
   </div>
 
+  <!-- FRIEND CARD -->
   <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center">
     <mat-card class="settings-card" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center">
+
       <mat-card-title>
-        {{ 'share_title' | translate }}
+        {{ 'friend_title' | translate }}
       </mat-card-title>
-      <mat-card-content fxLayoutAlign="center">
-        <mat-list role="list" *ngFor="let shareNotValid of currentUserShareNotValid$ | async">
-          <mat-list-item role="listitem">
-            <mat-checkbox>{{ shareNotValid.username }}</mat-checkbox>
+      <mat-card-subtitle *ngIf="(currentUserFriends$ | async).length === 0">
+        <p>{{ 'empty_friend' | translate }}</p>
+      </mat-card-subtitle>
+      
+      <div *ngIf="(currentUserFriends$ | async).length > 0">
+        <mat-card-content fxLayoutAlign="center" class="content-no-padding">
+          <mat-list #friend>
+            <mat-list-item *ngFor="let friend of currentUserFriends$ | async" fxLayout="row"
+              fxLayoutAlign="center center">
+              <span fxFlex="85%" fxLayoutAlign="start">{{ friend.username }}</span>
+              <div fxFlex="15%" fxLayout="row">
+                <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
+                  (click)="removeFriend(friend.userId)" color="warn" fxLayoutAlign="center center">
+                  <mat-icon class="accept-decline-icon">close</mat-icon>
+                </button>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </div>
+
+      <mat-card-title>
+        {{ 'friend_request_sent_title' | translate }}
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="(friendRequestsSent$ | async).length === 0">
+        <p>{{ 'empty_request_sent_friend' | translate }}</p>
+      </mat-card-subtitle>
+
+      <div *ngIf="(friendRequestsSent$ | async).length > 0">
+        <mat-card-content fxLayoutAlign="center" class="content-no-padding">
+          <mat-list #friend>
+            <mat-list-item *ngFor="let friendRequest of friendRequestsSent$ | async" fxLayout="row"
+              fxLayoutAlign="center center">
+              <span fxFlex="85%" fxLayoutAlign="start">{{ friendRequest.notificationUsername }}</span>
+              <div fxFlex="15%" fxLayout="row">
+                <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
+                  (click)="deleteNotification(friendRequest)" color="warn" fxLayoutAlign="center center">
+                  <mat-icon class="accept-decline-icon">close</mat-icon>
+                </button>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </div>
+
+      <mat-card-title>
+        {{ 'friend_request_received_title' | translate }}
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="(friendRequestsReceived$ | async).length === 0">
+        <p>{{ 'empty_request_received_friend' | translate }}</p>
+      </mat-card-subtitle>
+      <mat-card-content fxLayoutAlign="center" class="content-no-padding" *ngIf="(friendRequestsReceived$ | async).length > 0">
+        <mat-list #friendReceived fxLayout="column">
+          <mat-list-item *ngFor="let friendRequest of friendRequestsReceived$ | async" fxLayout="row"
+            fxLayoutAlign="center center">
+            <span fxFlex="70%" fxLayoutAlign="start">{{ friendRequest.senderUsername }}</span>
+            <div fxFlex="15%" fxLayout="row">
+              <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
+                (click)="onAcceptFriendRequest(friendRequest)" fxLayoutAlign="center center">
+                <mat-icon class="accept-decline-icon">done</mat-icon>
+              </button>
+            </div>
+            <div fxFlex="15%" fxLayout="row">
+              <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
+                (click)="onDeclineFriendRequest(friendRequest)" color="warn" fxLayoutAlign="center center">
+                <mat-icon class="accept-decline-icon">close</mat-icon>
+              </button>
+            </div>
           </mat-list-item>
-          <mat-divider></mat-divider>
-        </mat-list>
-        <mat-list role="list" *ngFor="let shareValid of currentUserShareValid$ | async" fxLayoutAlign="center">
-          <mat-list-item role="listitem" fxLayout="row" fxLayoutAlign="start center">
-            <mat-checkbox fxFlex="50%" fxLayoutAlign="start">{{ shareValid.username }}</mat-checkbox>
-            <mat-icon fxFlex="50%" fxLayoutAlign="end" class="accent">share</mat-icon>
-          </mat-list-item>
-          <mat-divider></mat-divider>
         </mat-list>
       </mat-card-content>
-      <mat-card-actions fxLayout="row" fxLayoutAlign="center">
-        <div fxFlex="50%" fxLayoutAlign="start">
-          <button class="add-remove-btn" mat-mini-fab color="accent" (click)="addShareUser()">
-            <mat-icon class="add-remove-icon">add</mat-icon>
-          </button>
-        </div>
-        <div fxFlex="50%" fxLayoutAlign="end">
-          <button class="add-remove-btn" mat-mini-fab color="warn" (click)="removeShareUser()">
-            <mat-icon class="add-remove-icon">remove</mat-icon>
-          </button>
-        </div>
-      </mat-card-actions>
-    </mat-card>
+
+      <div fxLayoutAlign="center" class="margin-bottom-add-friend-btn">
+        <button type="submit" mat-raised-button color="accent"
+        (click)="addFriend()">{{ "add_friend_button" | translate }}</button>
+      </div>
+      </mat-card>
   </div>
 
-  <button (click)="addnotif()">ADD</button>
 </section>

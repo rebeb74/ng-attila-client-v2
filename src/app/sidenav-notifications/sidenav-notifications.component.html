@@ -11,30 +11,105 @@
     </mat-toolbar>
     <ng-template ngFor [ngForOf]="currentUserNotifications$ | async" let-notification>
       <ng-container [ngSwitch]="notification.code">
-        <mat-card @leave class="notif-card">
+
+        <mat-card @leave class="notif-card" *ngSwitchCase="'friend_request'">
           <mat-card-title fxLayout>
-                  {{ 'notif_friend_request' | translate }}
+            {{ 'notif_friend_request' | translate }}
           </mat-card-title>
           <mat-card-subtitle>
-              {{ getFormat(notification.createdOn) }}
+            {{ getFormat(notification.createdOn) }}
           </mat-card-subtitle>
           <mat-divider></mat-divider>
           <mat-card-content>
-              <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span> (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_friend_request' | translate }}</p>
+            <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
+              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_friend_request' | translate }}
+            </p>
           </mat-card-content>
-          <mat-card-actions fxLayout="row" fxLayoutAlign="center center" >
-              <div fxFlex="50%" fxLayoutAlign="start">
-                  <button class="accept-decline-btn" mat-mini-fab (click)="onAccept(notification)" fxLayoutAlign="center center">
-                      <mat-icon class="accept-decline-icon">done</mat-icon>
-                  </button>
-              </div>
-              <div fxFlex="50%" fxLayoutAlign="end">
-                  <button class="accept-decline-btn" mat-mini-fab (click)="onDecline(notification)" color="warn" fxLayoutAlign="center center">
-                      <mat-icon class="accept-decline-icon">close</mat-icon>
-                  </button>
-              </div>
+          <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="50%" fxLayoutAlign="start">
+              <button class="accept-decline-btn" mat-mini-fab (click)="onAcceptFriendRequest(notification)"
+                fxLayoutAlign="center center">
+                <mat-icon class="accept-decline-icon">done</mat-icon>
+              </button>
+            </div>
+            <div fxFlex="50%" fxLayoutAlign="end">
+              <button class="accept-decline-btn" mat-mini-fab (click)="onDeclineFriendRequest(notification)"
+                color="warn" fxLayoutAlign="center center">
+                <mat-icon class="accept-decline-icon">close</mat-icon>
+              </button>
+            </div>
           </mat-card-actions>
-      </mat-card>
+        </mat-card>
+
+        <mat-card @leave class="notif-card" *ngSwitchCase="'friend_request_accepted'">
+          <mat-card-title fxLayout>
+            {{ 'notif_friend_request_accepted' | translate }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ getFormat(notification.createdOn) }}
+          </mat-card-subtitle>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
+              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_friend_request_accepted' | translate }}
+            </p>
+          </mat-card-content>
+          <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex fxLayoutAlign="center">
+              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+                fxLayoutAlign="center center">
+                <mat-icon class="accept-decline-icon">done</mat-icon>
+              </button>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card @leave class="notif-card" *ngSwitchCase="'friend_request_declined'">
+          <mat-card-title fxLayout>
+            {{ 'notif_friend_request_declined' | translate }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ getFormat(notification.createdOn) }}
+          </mat-card-subtitle>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
+              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_friend_request_declined' | translate }}
+            </p>
+          </mat-card-content>
+          <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex fxLayoutAlign="center">
+              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+                fxLayoutAlign="center center">
+                <mat-icon class="accept-decline-icon">done</mat-icon>
+              </button>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card @leave class="notif-card" *ngSwitchCase="'removed_from_friends'">
+          <mat-card-title fxLayout>
+            {{ 'removed_from_friends_title' | translate }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ getFormat(notification.createdOn) }}
+          </mat-card-subtitle>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
+              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_removed_from_friends' | translate }}
+            </p>
+          </mat-card-content>
+          <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex fxLayoutAlign="center">
+              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+                fxLayoutAlign="center center">
+                <mat-icon class="accept-decline-icon">done</mat-icon>
+              </button>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+
       </ng-container>
     </ng-template>
   </div>

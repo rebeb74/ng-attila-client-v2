@@ -101,6 +101,27 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>add_friend_button</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>agree</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -143,7 +164,7 @@
                 </translations>
             </concept_node>
             <concept_node>
-                <name>ask_new_share_title</name>
+                <name>ask_new_friend_title</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -164,7 +185,7 @@
                 </translations>
             </concept_node>
             <concept_node>
-                <name>ask_new_share_user</name>
+                <name>ask_new_friend_user</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -353,6 +374,69 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>content_friend_request_accepted</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>content_friend_request_declined</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>content_removed_from_friends</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>different_passwords</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -375,6 +459,69 @@
             </concept_node>
             <concept_node>
                 <name>email_username_already_used</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>empty_friend</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>empty_request_received_friend</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>empty_request_sent_friend</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -459,6 +606,69 @@
             </concept_node>
             <concept_node>
                 <name>four_char_long</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>friend_request_received_title</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>friend_request_sent_title</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>friend_title</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -689,6 +899,48 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>notif_friend_request_accepted</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>notif_friend_request_declined</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>notification_not_found</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -795,6 +1047,27 @@
             </concept_node>
             <concept_node>
                 <name>pw_reset</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>removed_from_friends_title</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -983,27 +1256,6 @@
                 </translations>
             </concept_node>
             <concept_node>
-                <name>share_title</name>
-                <definition_loaded>false</definition_loaded>
-                <description/>
-                <comment/>
-                <default_text/>
-                <translations>
-                    <translation>
-                        <language>de-DE</language>
-                        <approved>false</approved>
-                    </translation>
-                    <translation>
-                        <language>en-GB</language>
-                        <approved>false</approved>
-                    </translation>
-                    <translation>
-                        <language>fr-FR</language>
-                        <approved>false</approved>
-                    </translation>
-                </translations>
-            </concept_node>
-            <concept_node>
                 <name>signup</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -1089,6 +1341,27 @@
             </concept_node>
             <concept_node>
                 <name>update</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>user_already_friend</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>

@@ -46,7 +46,7 @@ export class AuthService {
         catchError(error => {
           this.store.dispatch(UiActions.stopLoading());
           console.log('error', error.error);
-          this.uiService.showSnackbar(error.error.message, null, 3000, 'error');
+          this.uiService.showSnackbar(error.error.message, null, 5000, 'error');
           return of(null);
         })
       );
@@ -65,7 +65,7 @@ export class AuthService {
         catchError(error => {
           this.store.dispatch(UiActions.stopLoading());
           console.log('error', error.error);
-          this.uiService.showSnackbar(error.error.code, null, 3000, 'error');
+          this.uiService.showSnackbar(error.error.code, null, 5000, 'error');
           return of(null);
         })
       );

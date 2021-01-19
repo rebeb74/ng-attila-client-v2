@@ -42,12 +42,15 @@ import { BaseComponent } from './base/base.component';
 import { UserDataService } from './shared/services/user-data.service';
 import { NotificationEntityService } from './shared/services/notification-entity.service';
 import { NotificationDataService } from './shared/services/notification-data.service';
-import { AskNewShareUserComponent } from './settings/ask-new-share-user.component';
+import { AskNewFriendComponent } from './settings/ask-new-friend.component';
+import { NotificationSocketService } from './shared/services/notification-socket.service';
+import { UserSocketService } from './shared/services/user-socket.service';
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.apiUrl,
   timeout: 3000, // request timeout
 }
+
 
 @NgModule({
   declarations: [
@@ -66,7 +69,7 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     ConfirmPasswordResetComponent,
     SidenavNotificationsComponent,
     BaseComponent,
-    AskNewShareUserComponent
+    AskNewFriendComponent
   ],
   imports: [
     BrowserModule,
@@ -99,17 +102,19 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
       stateKey: 'router',
       routerState: RouterState.Minimal
     }),
-    EntityDataModule.forRoot(entityConfig)
+    EntityDataModule.forRoot(entityConfig),
   ],
-  entryComponents: [AskPasswordComponent, AskNewShareUserComponent],
+  entryComponents: [AskPasswordComponent, AskNewFriendComponent],
   providers: [
     AuthService,
     UIService,
     UserEntityService,
     UserResolver,
     UserDataService,
+    UserSocketService,
     NotificationEntityService,
     NotificationDataService,
+    NotificationSocketService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

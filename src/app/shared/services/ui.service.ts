@@ -8,6 +8,9 @@ import { UiActions } from "../store/action-types";
 import { selectCurrentLanguage, selectLanguages } from "../store/ui.reducer";
 import { AppState } from "../../app.reducer";
 import { NotificationEntityService } from "./notification-entity.service";
+import { NotificationSocketService } from "./notification-socket.service";
+import { UserSocketService } from "./user-socket.service";
+import { pipe } from "rxjs";
 
 
 @Injectable()
@@ -18,7 +21,9 @@ export class UIService {
         private snackbar: MatSnackBar,
         private store: Store<AppState>,
         private userDataService: UserEntityService,
-        private notificationDataService: NotificationEntityService
+        private notificationDataService: NotificationEntityService,
+        private notificationSocketService: NotificationSocketService,
+        private userSocketService: UserSocketService
     ) {
 
     }
@@ -69,19 +74,44 @@ export class UIService {
                     } else {
                         sender = { username: 'Attila' }
                     }
-                    console.log('target ID', target.username)
-                    console.log('sender ID', sender.username)
                     this.notificationDataService.add({
                         notificationUserId: target._id,
+                        notificationUsername: target.username,
+                        notificationUserEmail: target.email,
                         code: code,
                         read: false,
                         senderUserId: sender._id,
                         senderUsername: sender.username,
                         senderEmail: sender.email,
                         createdOn: (new Date()).toISOString()
-                    })
+                    }).subscribe(
+                        result => {
+                            if (result.notificationUserId === this.userId) {
+                                this.notificationDataService.removeOneFromCache(result._id)
+                            }
+                        }
+                    )
                 }
             );
+    }
+
+    webSocketListener() {
+        this.notificationSocketService.listen('notification').subscribe(
+            (data) => {
+                if (data.notificationUserId === this.userId || data.senderUserId === this.userId) {
+                        this.notificationDataService.clearCache();
+                        this.notificationDataService.getAll();
+                        console.log(data)
+                }
+            },
+            (error) => console.log(error)
+        );
+        this.userSocketService.listen('user').subscribe(
+            () => {
+                this.userDataService.getAll();
+            },
+            (error) => console.log(error)
+        );
     }
 
 }

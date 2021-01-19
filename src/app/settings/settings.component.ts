@@ -4,7 +4,8 @@ import { UIService } from '../shared/services/ui.service';
 import { Store } from '@ngrx/store';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import { Share, User } from '../shared/model/user.model';
+import { Friend, User } from '../shared/model/user.model';
+import { Notification } from '../shared/model/notification.model';
 import { AuthService } from '../auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AskPasswordComponent } from './ask-password.component'
@@ -13,7 +14,8 @@ import { UserEntityService } from '../shared/services/user-entity.service';
 import { selectCurrentLanguage, selectIsLoading, selectLanguages } from '../shared/store/ui.reducer';
 import { AppState } from '../app.reducer';
 import { NotificationEntityService } from '../shared/services/notification-entity.service';
-import { AskNewShareUserComponent } from './ask-new-share-user.component';
+import { AskNewFriendComponent } from './ask-new-friend.component';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-settings',
@@ -31,8 +33,10 @@ export class SettingsComponent implements OnInit {
   currentUser$: Observable<User>;
   currentUser: User;
   userId: string = JSON.parse(localStorage.getItem('user'))
-  currentUserShareNotValid$: Observable<Share[]>
-  currentUserShareValid$: Observable<Share[]>
+  currentUserFriends$: Observable<Friend[]>;
+  friendRequestsReceived$: Observable<Notification[]>;
+  friendRequestsSent$: Observable<Notification[]>;
+  availableNewFriends$: Observable<User[]>;
 
 
   constructor(
@@ -46,47 +50,52 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const userId: string = JSON.parse(localStorage.getItem('user'))
+    this.isLoading$ = this.store.select(selectIsLoading);
+    this.setAccountForm();
+    this.setLanguages();
+    this.setCurrentUserFriends();
+    this.setFriendRequestsSent();
+    this.setFriendRequestsReceived();
+    this.setAvailableNewFriends();
+  }
+
+  setLanguages() {
     this.languages$ = this.store.select(selectLanguages);
     this.currentLang$ = this.store.select(selectCurrentLanguage);
     this.currentLang$.subscribe(lang => this.datePickerLocale(lang));
-    this.isLoading$ = this.store.select(selectIsLoading);
-    this.maxDate.setFullYear(this.maxDate.getFullYear() - 10);
-    this.minDate.setFullYear(this.minDate.getFullYear() - 99);
-    this.currentUser$ = this.userDataService.entities$.pipe(map((users: User[]) => users.find((user: User) => user._id === userId)), take(1));
-    this.currentUser$.subscribe((user: User) => this.currentUser = user);
+  }
 
-
-    this.currentUserShareValid$ = this.userDataService.entities$
+  setCurrentUserFriends() {
+    this.currentUserFriends$ = this.userDataService.entities$
       .pipe(
         map(users => {
           const currentUser = users.find(user => user._id === this.userId);
-          var shareValid: Share[] = []
-          currentUser.share.forEach(share => {
-            const shareUser = users.find(user => user._id === share.userId);
-            shareUser.share.forEach(shareUserShare => {
-              if (shareUserShare.userId === currentUser._id) {
-                shareValid.push({
-                  userId: shareUser._id,
-                  email: shareUser.email,
-                  username: shareUser.username
-                });
-              }
-            });
-          });
-          return shareValid;
-        })
-      );
-    this.currentUserShareNotValid$ = this.userDataService.entities$
-      .pipe(
-        withLatestFrom(this.currentUserShareValid$),
-        map(([users, allShareValid]) => {
-          const currentUser = users.find(user => user._id === this.userId);
-          const shareNotValid: Share[] = currentUser.share.filter(share => !allShareValid.find(shareValid => shareValid.userId === share.userId));
-          return shareNotValid;
-        })
-      );
+          var friends: Friend[] = currentUser.friend
 
+          return friends;
+        })
+      );
+  }
+
+  setFriendRequestsReceived() {
+    this.friendRequestsReceived$ = this.notificationDataService.entities$
+      .pipe(
+        map((notifications: Notification[]) => notifications.filter((notification: Notification) => notification.code === 'friend_request' && notification.notificationUserId === this.userId))
+      )
+  }
+
+  setFriendRequestsSent() {
+    this.friendRequestsSent$ = this.notificationDataService.entities$
+      .pipe(
+        map((notifications: Notification[]) => notifications.filter((notification: Notification) => notification.code === 'friend_request' && notification.senderUserId === this.userId))
+      )
+  }
+
+  setAccountForm() {
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 10);
+    this.minDate.setFullYear(this.minDate.getFullYear() - 99);
+    this.currentUser$ = this.userDataService.entities$.pipe(map((users: User[]) => users.find((user: User) => user._id === this.userId)));
+    this.currentUser$.pipe(take(1)).subscribe((user: User) => this.currentUser = user);
     this.accountForm = new FormGroup({
       email: new FormControl(this.currentUser.email, {
         validators: [Validators.required, Validators.email]
@@ -98,6 +107,20 @@ export class SettingsComponent implements OnInit {
         validators: [Validators.required]
       }),
     });
+  }
+
+  setAvailableNewFriends() {
+    this.availableNewFriends$ = this.userDataService.entities$
+      .pipe(
+        withLatestFrom(this.friendRequestsSent$),
+        map(([users, friendRequestSent]: [User[], Notification[]]) => {
+          const currentUser = users.find(user => user._id === this.userId);
+          users = users.filter(users => users._id !== this.userId),
+            users = users.filter(users => !currentUser.friend.find(friend => friend.username === users.username))
+          users = users.filter(user => !friendRequestSent.find(friendRequestSent => friendRequestSent.notificationUserId === user._id));
+          return users;
+        })
+      );
   }
 
   switchLang(newLang) {
@@ -125,27 +148,25 @@ export class SettingsComponent implements OnInit {
                     ...this.accountForm.value
                   }
                   this.userDataService.update(user).subscribe(
-                    (success) => {
-                      this.uiService.showSnackbar('account_update_success', null, 3000, 'success');
+                    (user) => {
+                      this.uiService.showSnackbar('account_update_success', null, 5000, 'success');
+                      this.currentUser = user;
+                      this.accountForm.patchValue(this.currentUser);
                     },
                     (error) => {
                       this.accountForm.patchValue(this.currentUser);
-                      this.uiService.showSnackbar(error.error.error.code, null, 3000, 'error');
+                      this.uiService.showSnackbar(error.error.error.code, null, 5000, 'error');
                     }
                   );
                 }
               },
               (error) => {
-                this.uiService.showSnackbar(error, null, 3000, 'error');
+                this.uiService.showSnackbar(error, null, 5000, 'error');
               }
             );
         });
       }
     });
-  }
-
-  addnotif() {
-    this.uiService.addNotification(this.userId, '5ffde8802fddc7503cf3def0', 'friend_request');
   }
 
   sendPasswordResetRequest() {
@@ -160,44 +181,75 @@ export class SettingsComponent implements OnInit {
     )
   };
 
-  addShareUser() {
-    const askNewShareUser = this.dialog.open(AskNewShareUserComponent, {
+  addFriend() {
+    const askNewFriendUser = this.dialog.open(AskNewFriendComponent, {
       data: {
+        availableNewFriends$: this.availableNewFriends$
       }
     });
-    askNewShareUser.afterClosed().subscribe(newShareUsername => {
-
-      if (newShareUsername) {
+    askNewFriendUser.afterClosed().subscribe(newFriendUsername => {
+      if (newFriendUsername) {
         this.userDataService.entities$.pipe(take(1)).subscribe(
-          allUsers => {
-            if (allUsers.find(user => user.username === newShareUsername) === undefined) {
-              this.uiService.showSnackbar('user_not_found', null, 3000, 'error');
-            } else {
-              const currentUser: User = allUsers.find(user => user._id === this.userId);
-              if (newShareUsername === currentUser.username) {
-                return;
+          users => {
+            this.availableNewFriends$.pipe(take(1)).subscribe(availableNewFriends => {
+              if (!users.find(user => user.username === newFriendUsername)) {
+                this.uiService.showSnackbar('user_not_found', null, 5000, 'error');
+              } else if (!availableNewFriends.find(user => user.username === newFriendUsername)) {
+                this.uiService.showSnackbar('user_already_friend', null, 5000, 'error');
+              } else {
+                const currentUser: User = users.find(user => user._id === this.userId);
+                if (newFriendUsername === currentUser.username) {
+                  return;
+                }
+                const newFriendUser: User = users.find(user => user.username === newFriendUsername);
+                this.uiService.addNotification(newFriendUser._id, currentUser._id, 'friend_request');
               }
-              const newShareUser: User = allUsers.find(user => user.username === newShareUsername);
-              var newShare = JSON.parse(JSON.stringify(currentUser.share));
-              newShare.push({
-                userId: newShareUser._id,
-                email: newShareUser.email,
-                username: newShareUser.username
-              });
-              const user: User = {
-                ...currentUser,
-                share: newShare
-              }
-              this.userDataService.update(user);
-              this.uiService.addNotification(newShareUser._id, currentUser._id, 'friend_request');
-            }
+            });
           }
-        )
+        );
       }
     });
   }
 
-  removeShareUser() {
-
+  removeFriend(id) {
+    this.currentUser$.pipe(take(1)).subscribe(
+      (user: User) => {
+        let updatedUser: User = JSON.parse(JSON.stringify(user));
+        const friend: Friend = user.friend.find(friend => friend.userId === id);
+        this.uiService.addNotification(friend.userId, user._id, 'removed_from_friends');
+        updatedUser.friend = updatedUser.friend.filter((friend: Friend) => friend.userId !== id)
+        this.userDataService.update(updatedUser);
+      }
+    )
   }
+
+  onAcceptFriendRequest(notification) {
+    this.userDataService.entities$.pipe(take(1)).subscribe(users => {
+      const currentUser: User = users.find(user => user._id === notification.notificationUserId)
+      const newFriend: Friend[] = _.cloneDeep(currentUser.friend);
+      newFriend.push({
+        userId: notification.senderUserId,
+        email: notification.senderEmail,
+        username: notification.senderUsername
+      });
+      const newUser = {
+        ...currentUser,
+        friend: newFriend
+      }
+      this.userDataService.update(newUser);
+    });
+    this.uiService.addNotification(notification.senderUserId, notification.notificationUserId, 'friend_request_accepted');
+    this.notificationDataService.delete(notification);
+  }
+
+  onDeclineFriendRequest(notification) {
+    this.uiService.addNotification(notification.senderUserId, notification.notificationUserId, 'friend_request_declined');
+    this.deleteNotification(notification)
+  }
+
+
+  deleteNotification(notification) {
+    this.notificationDataService.delete(notification);
+  }
+
 }

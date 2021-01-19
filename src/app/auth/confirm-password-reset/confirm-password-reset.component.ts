@@ -42,7 +42,7 @@ export class ConfirmPasswordResetComponent implements OnInit {
       noop,
       error => {
         this.showInvalidLinkMessage = true;
-        this.uiService.showSnackbar(error.error.code, null, 3000, 'error');
+        this.uiService.showSnackbar(error.error.code, null, 5000, 'error');
       });
   }
 
@@ -51,17 +51,17 @@ export class ConfirmPasswordResetComponent implements OnInit {
     const confirmPassword = this.frmSetNewPassword.controls['confirmPassword'].value;
 
     if (password !== confirmPassword) {
-      this.uiService.showSnackbar('different_passwords', null, 3000, 'error');
+      this.uiService.showSnackbar('different_passwords', null, 5000, 'error');
       return;
     }
 
     this.authService.resetPassword(this.token, password).subscribe(
       (success) => {
-        this.uiService.showSnackbar('reset_password_success', null, 3000, 'success');
+        this.uiService.showSnackbar('reset_password_success', null, 5000, 'success');
         this.router.navigateByUrl('/login');
       },
       (error) => {
-        this.uiService.showSnackbar(error.code, null, 3000, 'error');
+        this.uiService.showSnackbar(error.code, null, 5000, 'error');
       }
     );
   }

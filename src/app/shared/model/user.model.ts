@@ -8,11 +8,11 @@ export interface User {
     birthdate: string;
     createdOn: string;
     updatedOn: string;
-    share?: Share[];
-    isAdmin?: false;
+    friend?: Friend[];
+    isAdmin?: boolean;
 }
 
-export interface Share {
+export interface Friend {
     userId: string,
     email: string,
     username: string
