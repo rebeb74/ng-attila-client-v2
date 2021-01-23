@@ -23,9 +23,9 @@ const routes: Routes = [
     { path: 'signup', component: SignupComponent },
     { path: 'password-reset', component: PasswordResetComponent },
     { path: 'reset-confirm/:token', component: ConfirmPasswordResetComponent },
-    { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard] },
-    { path: 'checklist', component: ChecklistComponent, canActivate: [AuthGuard] },
     { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+    { path: 'calendar', canActivate: [AuthGuard], loadChildren: () => import('./calendar/calendar.module').then(m => m.CalendarModule) },
+    { path: 'checklist', canActivate: [AuthGuard], loadChildren: () => import('./checklist/checklist.module').then(m => m.ChecklistModule) },
     { path: '**', component: PageNotFoundComponent }
   ]},
 ];

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { UIService } from '../shared/services/ui.service';
 import { Store } from '@ngrx/store';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -22,7 +22,7 @@ import * as _ from 'lodash';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
   languages$: Observable<string[]>;
   currentLang$: Observable<string>;
   isLoading$: Observable<boolean>;
@@ -31,11 +31,12 @@ export class SettingsComponent implements OnInit {
   minDate = new Date();
   showConfirmMessage = false;
   currentUser$: Observable<User>;
-  userId: string = JSON.parse(localStorage.getItem('user'))
+  userId: string = JSON.parse(localStorage.getItem('user'));
   currentUserFriends$: Observable<Friend[]>;
   friendRequestsReceived$: Observable<Notification[]>;
   friendRequestsSent$: Observable<Notification[]>;
   availableNewFriends$: Observable<User[]>;
+  currentUserSub: Subscription;
 
 
   constructor(
@@ -95,7 +96,7 @@ export class SettingsComponent implements OnInit {
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 10);
     this.minDate.setFullYear(this.minDate.getFullYear() - 99);
 
-    this.currentUser$.subscribe((user: User) => {
+    this.currentUserSub = this.currentUser$.subscribe((user: User) => {
       this.accountForm = new FormGroup({
         email: new FormControl(user.email, {
           validators: [Validators.required, Validators.email]
@@ -248,6 +249,10 @@ export class SettingsComponent implements OnInit {
 
   deleteNotification(notification) {
     this.notificationDataService.delete(notification);
+  }
+
+  ngOnDestroy() {
+    this.currentUserSub.unsubscribe();
   }
 
 }
