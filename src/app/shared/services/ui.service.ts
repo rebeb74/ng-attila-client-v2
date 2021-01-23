@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Store } from "@ngrx/store";
 import { TranslateService } from '@ngx-translate/core';
-import { map, take, tap } from "rxjs/operators";
+import { map, take } from "rxjs/operators";
 import { UserEntityService } from "./user-entity.service";
 import { UiActions } from "../store/action-types";
 import { selectCurrentLanguage, selectLanguages } from "../store/ui.reducer";
@@ -10,7 +10,6 @@ import { AppState } from "../../app.reducer";
 import { NotificationEntityService } from "./notification-entity.service";
 import { NotificationSocketService } from "./notification-socket.service";
 import { UserSocketService } from "./user-socket.service";
-import { pipe } from "rxjs";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { environment as env } from '../../../environments/environment';
@@ -101,7 +100,7 @@ export class UIService {
 
     webSocketListener() {
         this.notificationSocketService.listen('notification').subscribe(
-            (data) => {
+            () => {
                 this.notificationDataService.clearCache();
                 this.notificationDataService.getAll();
             },

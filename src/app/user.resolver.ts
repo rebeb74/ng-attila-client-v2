@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
+import { Resolve } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable, of } from "rxjs";
-import { filter, first, map, tap, withLatestFrom } from "rxjs/operators";
+import { filter, first, map, withLatestFrom } from "rxjs/operators";
 import { AppState } from "./app.reducer";
 import { AuthActions } from "./auth/action-types";
 import { Tokens } from "./auth/model/tokens.model";
@@ -20,7 +20,7 @@ export class UserResolver implements Resolve<boolean> {
         private store: Store<AppState>
     ) { }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    resolve(): Observable<boolean> {
         const tokens: Tokens = {
             accessToken: localStorage.getItem('ACCESS_TOKEN'),
             refreshToken: localStorage.getItem('REFRESH_TOKEN')
@@ -42,7 +42,7 @@ export class UserResolver implements Resolve<boolean> {
                     first()
                 );
         } else {
-            return of(null);
+            return of(false);
         }
     }
 

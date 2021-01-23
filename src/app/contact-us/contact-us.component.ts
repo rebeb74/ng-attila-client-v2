@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DateAdapter } from '@angular/material/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from '../app.reducer';
-import { AuthService } from '../auth/services/auth.service';
 import { UIService } from '../shared/services/ui.service';
-import { selectCurrentLanguage, selectIsLoading } from '../shared/store/ui.reducer';
+import { selectIsLoading } from '../shared/store/ui.reducer';
 
 @Component({
   selector: 'app-contact-us',

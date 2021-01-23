@@ -56,7 +56,7 @@ export class ConfirmPasswordResetComponent implements OnInit {
     }
 
     this.authService.resetPassword(this.token, password).subscribe(
-      (success) => {
+      () => {
         this.uiService.showSnackbar('reset_password_success', null, 5000, 'success');
         this.router.navigateByUrl('/login');
       },

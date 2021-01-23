@@ -44,14 +44,14 @@ export const uiReducer = createReducer(
         }
     }),
 
-    on(UiActions.startLoading, (state, action) => {
+    on(UiActions.startLoading, (state, _action) => {
         return {
             ...state,
             isLoading: true
         }
     }),
 
-    on(UiActions.stopLoading, (state, action) => {
+    on(UiActions.stopLoading, (state, _action) => {
         return {
             ...state,
             isLoading: false

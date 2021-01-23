@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { UIService } from '../../shared/services/ui.service';
 
 import { AuthData } from "../auth-data.model";
-import { catchError, first, map, mapTo, take, tap } from 'rxjs/operators';
+import { catchError, map, mapTo, take, tap } from 'rxjs/operators';
 import { AuthActions } from '../action-types';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../shared/model/user.model';
@@ -15,7 +15,6 @@ import { UiActions } from 'src/app/shared/store/action-types';
 import { selectCurrentLanguage } from 'src/app/shared/store/ui.reducer';
 import { AppState } from '../../app.reducer';
 import { Router } from '@angular/router';
-import { UserEntityService } from 'src/app/shared/services/user-entity.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +29,6 @@ export class AuthService {
     private store: Store<AppState>,
     private http: HttpClient,
     private router: Router,
-    private userDataService: UserEntityService
   ) { }
 
 
@@ -59,7 +57,7 @@ export class AuthService {
     return this.http.post<User>(`${env.apiUrl}/user`, signupData)
       .pipe(
         take(1),
-        tap(res => {
+        tap(() => {
           this.login({ username: signupData.username, password: signupData.password } as AuthData).subscribe();
           this.store.dispatch(UiActions.stopLoading());
           this.router.navigateByUrl('/');
@@ -77,7 +75,7 @@ export class AuthService {
     return this.http.post<any>(`${env.apiUrl}/logout`, {'token': this.getRefreshToken()})
       .pipe(
         take(1),
-        tap(res => {
+        tap(() => {
           this.store.dispatch(AuthActions.logout());
         }),
         mapTo(true),
@@ -93,7 +91,7 @@ export class AuthService {
     return this.http.post<any>(`${env.apiUrl}/reset-confirm/${token}`, { password })
       .pipe(
         take(1),
-        tap(res => {
+        tap(() => {
           this.store.dispatch(UiActions.stopLoading())
         })
       );
@@ -107,7 +105,7 @@ export class AuthService {
     return this.http.post<any>(`${env.apiUrl}/reset`, {lang: this.currentLang, email})
       .pipe(
         take(1),
-        tap(res => this.store.dispatch(UiActions.stopLoading())),
+        tap(() => this.store.dispatch(UiActions.stopLoading())),
         map(emailSent => emailSent.emailSent)
         );
   }

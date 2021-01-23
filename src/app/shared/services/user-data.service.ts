@@ -3,8 +3,7 @@ import { Injectable } from "@angular/core";
 import { DefaultDataService, DefaultDataServiceConfig, HttpUrlGenerator } from "@ngrx/data";
 import { Observable } from "rxjs";
 import { User } from '../model/user.model';
-import { environment } from '../../../environments/environment'
-import { map, tap, withLatestFrom } from "rxjs/operators";
+import { map, withLatestFrom } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/app.reducer";
 import { selectCurrentLanguage } from "../store/ui.reducer";

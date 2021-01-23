@@ -9,7 +9,7 @@ import { Notification } from '../shared/model/notification.model';
 import { AuthService } from '../auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AskPasswordComponent } from './ask-password.component'
-import { filter, first, map, take, withLatestFrom } from 'rxjs/operators';
+import { first, map, take, withLatestFrom } from 'rxjs/operators';
 import { UserEntityService } from '../shared/services/user-entity.service';
 import { selectCurrentLanguage, selectIsLoading, selectLanguages } from '../shared/store/ui.reducer';
 import { AppState } from '../app.reducer';
@@ -150,7 +150,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
                     ...this.accountForm.value
                   }
                   this.userDataService.update(updatedUser).subscribe(
-                    (user) => {
+                    () => {
                       this.uiService.showSnackbar('account_update_success', null, 5000, 'success');
                     },
                     (error) => {

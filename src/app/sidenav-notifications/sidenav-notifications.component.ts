@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Friend, User } from 'src/app/shared/model/user.model';
 import { Observable } from 'rxjs';
 import { Notification } from '../shared/model/notification.model';
-import { first, map, take, tap } from 'rxjs/operators';
+import { first, map, take } from 'rxjs/operators';
 import { selectCurrentLanguage } from '../shared/store/ui.reducer';
 import { NotificationEntityService } from '../shared/services/notification-entity.service';
 import * as moment from 'moment';

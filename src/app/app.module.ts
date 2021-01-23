@@ -126,9 +126,9 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
 })
 export class AppModule {
   constructor(
-    private entityDataService: EntityDataService,
-    private userDataService: UserDataService,
-    private notificationDataService: NotificationDataService
+    entityDataService: EntityDataService,
+    userDataService: UserDataService,
+    notificationDataService: NotificationDataService
     ) {
     entityDataService.registerService('User', userDataService);
     entityDataService.registerService('Notification', notificationDataService);

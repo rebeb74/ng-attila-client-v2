@@ -6,8 +6,6 @@ import { LoginComponent } from './auth/login/login.component';
 import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { BaseComponent } from './base/base.component';
-import { CalendarComponent } from './calendar/calendar.component';
-import { ChecklistComponent } from './checklist/checklist.component';
 import { UserResolver } from './user.resolver';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SettingsComponent } from './settings/settings.component';

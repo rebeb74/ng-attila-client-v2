@@ -1,4 +1,24 @@
 /* To learn more about this file see: https://angular.io/config/tsconfig. */
+// {
+//   "compileOnSave": false,
+//   "compilerOptions": {
+//     "baseUrl": "./",
+//     "outDir": "./dist/out-tsc",
+//     "sourceMap": true,
+//     "declaration": false,
+//     "downlevelIteration": true,
+//     "experimentalDecorators": true,
+//     "moduleResolution": "node",
+//     "importHelpers": true,
+//     "target": "es2015",
+//     "module": "es2020",
+//     "lib": [
+//       "es2018",
+//       "dom"
+//     ]
+//   }
+// }
+
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -15,6 +35,28 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    // custom options
+    // "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "paths": {
+      "date-utils": [
+        "projects/date-utils/index.ts"
+      ],
+      "calendar": [
+        "projects/calendar/src/public-api.ts"
+      ],
+      "modal": [
+        "projects/modal/src/public-api.ts"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictTemplates": true,
+    "strictInjectionParameters": true
   }
 }
