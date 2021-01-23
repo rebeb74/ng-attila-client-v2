@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { UIService } from '../../shared/services/ui.service';
 
 import { AuthData } from "../auth-data.model";
-import { catchError, map, mapTo, take, tap } from 'rxjs/operators';
+import { catchError, first, map, mapTo, take, tap } from 'rxjs/operators';
 import { AuthActions } from '../action-types';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../shared/model/user.model';
@@ -15,6 +15,7 @@ import { UiActions } from 'src/app/shared/store/action-types';
 import { selectCurrentLanguage } from 'src/app/shared/store/ui.reducer';
 import { AppState } from '../../app.reducer';
 import { Router } from '@angular/router';
+import { UserEntityService } from 'src/app/shared/services/user-entity.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,8 @@ export class AuthService {
     private uiService: UIService,
     private store: Store<AppState>,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private userDataService: UserEntityService
   ) { }
 
 
@@ -38,9 +40,9 @@ export class AuthService {
       .pipe(
         take(1),
         tap(res => {
-          const user: string = res.user;
+          const userId: string = res.user;
           const tokens: Tokens = res.tokens;
-          this.store.dispatch(AuthActions.login({ user, tokens }))
+          this.store.dispatch(AuthActions.login({ user: userId, tokens }));
           this.store.dispatch(UiActions.stopLoading());
         }),
         catchError(error => {

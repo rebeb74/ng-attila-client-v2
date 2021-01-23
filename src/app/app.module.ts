@@ -45,6 +45,7 @@ import { NotificationDataService } from './shared/services/notification-data.ser
 import { AskNewFriendComponent } from './settings/ask-new-friend.component';
 import { NotificationSocketService } from './shared/services/notification-socket.service';
 import { UserSocketService } from './shared/services/user-socket.service';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.apiUrl,
@@ -69,7 +70,8 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     ConfirmPasswordResetComponent,
     SidenavNotificationsComponent,
     BaseComponent,
-    AskNewFriendComponent
+    AskNewFriendComponent,
+    ContactUsComponent
   ],
   imports: [
     BrowserModule,

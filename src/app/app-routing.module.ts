@@ -12,11 +12,13 @@ import { UserResolver } from './user.resolver';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
   { path: '', component: BaseComponent, resolve: { user: UserResolver }, children: [
     { path: 'welcome', component: WelcomeComponent },
+    { path: 'contact-us', component: ContactUsComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'password-reset', component: PasswordResetComponent },
@@ -24,8 +26,8 @@ const routes: Routes = [
     { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard] },
     { path: 'checklist', component: ChecklistComponent, canActivate: [AuthGuard] },
     { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+    { path: '**', component: PageNotFoundComponent }
   ]},
-  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

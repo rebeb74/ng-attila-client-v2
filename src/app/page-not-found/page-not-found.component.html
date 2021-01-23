@@ -1,1 +1,15 @@
-<p>page-not-found works!</p>
+<section class="menu-margin" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px" fxLayoutAlign.gt-sm="center top"
+  fxLayoutAlign="center center">
+
+  <!-- ACCOUNT CARD -->
+  <div fxLayout="column" fxLayoutGap="10px">
+    <mat-card class="page-not-found-card" fxLayout="column" fxLayoutGap="10px">
+      <mat-card-title>
+        {{ '404_title' | translate }}
+    </mat-card-title>
+    <mat-card-content>
+          {{ '404_content' | translate }}
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

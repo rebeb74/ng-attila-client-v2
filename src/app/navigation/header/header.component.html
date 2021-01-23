@@ -56,9 +56,15 @@
           <mat-icon>input</mat-icon>
           {{ 'login' | translate }}
         </button>
+        <button mat-icon-button class="nav-button" routerLink="/contact-us" routerLinkActive="active">
+          <mat-icon>info</mat-icon>
+        </button>
       </div>
 
       <div *ngIf="isLoggedIn$ | async">
+        <button mat-icon-button class="nav-button" routerLink="/contact-us" routerLinkActive="active">
+          <mat-icon>info</mat-icon>
+        </button>
         <button mat-icon-button class="nav-button" routerLink="/settings" routerLinkActive="active">
           <mat-icon>settings</mat-icon>
         </button>
@@ -83,9 +89,6 @@
     <mat-icon fxLayoutAlign="center center" class="bot-cal-list-icon">event</mat-icon>
     <span fxLayoutAlign="center center" class="bot-text-icon">{{ 'calendar' | translate}}</span>
   </div>
-
-  <!-- <div *ngIf="!((pageName$ | async) === 'calendar' || (pageName$ | async) === 'checklist')" fxFlex="34%" fxLayoutAlign="center center" class="bot-home-button" routerLink="/">
-  </div> -->
 
   <div mat-fab *ngIf="(pageName$ | async) === '/calendar' || (pageName$ | async) === '/checklist'" fxFlex="20%" fxLayoutAlign="center center" class="bot-add-button" routerLink="/" [routerLinkActive]="['welcome']">
     <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>

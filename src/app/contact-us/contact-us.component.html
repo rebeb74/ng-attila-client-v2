@@ -1,0 +1,91 @@
+  <section class="menu-margin" fxLayout.gt-md="row" fxLayoutGap="20px" fxLayoutAlign="center center">
+    <mat-card fxLayout="column" class="contact-card" fxLayoutAlign="center center">
+      <mat-card-title fxLayoutAlign="center center">{{ 'contact_us' | translate }}</mat-card-title>
+      <mat-card-content *ngIf="!mailSent">
+        <p>{{ 'contact_us_content' | translate }}</p>
+        <br>
+        <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="contactForm"
+          (ngSubmit)="onSubmit()">
+          <div fxHide.lt-md fxLayoutAlign="start" fxLayout="column">
+            <div fxLayoutGap="50px">
+              <mat-form-field class="input">
+                <input type="text" matInput [placeholder]=" 'your_firstname' | translate" formControlName="firstname"
+                name="firstname">
+                <mat-error>{{ "required" | translate }}</mat-error>
+              </mat-form-field>
+              <mat-form-field class="input">
+                <input type="text" matInput [placeholder]=" 'your_lastname' | translate" formControlName="lastname"
+                name="lastname">
+                <mat-error>{{ "required" | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+            <div fxLayoutGap="50px">
+              <mat-form-field class="input">
+                <input type="email" matInput [placeholder]=" 'your_email' | translate" formControlName="email"
+                name="email">
+                <mat-hint>{{ "valid_email" | translate }}</mat-hint>
+                <mat-error>{{ "required" | translate }}</mat-error>
+              </mat-form-field>
+              <mat-form-field class="input">
+                <input type="tel" matInput [placeholder]=" 'your_phone' | translate" formControlName="phone" name="phone">
+                <mat-error>{{ "required" | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+            <br>
+            <br>
+              <mat-form-field class="input-subject">
+              <input type="text" matInput [placeholder]=" 'subject' | translate" formControlName="subject"
+                name="subject">
+              <mat-error>{{ "required" | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxHide.gt-sm fxLayoutAlign="start" fxLayout="column" fxLayoutGap="20px">
+            <mat-form-field class="input">
+              <input type="text" matInput [placeholder]=" 'your_firstname' | translate" formControlName="firstname"
+                name="firstname">
+              <mat-error>{{ "required" | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="input">
+              <input type="text" matInput [placeholder]=" 'your_lastname' | translate" formControlName="lastname"
+                name="lastname">
+              <mat-error>{{ "required" | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="input">
+              <input type="email" matInput [placeholder]=" 'your_email' | translate" formControlName="email"
+                name="email">
+              <mat-hint>{{ "valid_email" | translate }}</mat-hint>
+              <mat-error>{{ "required" | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="input">
+              <input type="tel" matInput [placeholder]=" 'your_phone' | translate" formControlName="phone" name="phone">
+              <mat-error>{{ "required" | translate }}</mat-error>
+            </mat-form-field>
+            <br>
+            <br>
+            <mat-form-field class="input">
+              <input type="text" matInput [placeholder]=" 'subject' | translate" formControlName="subject"
+                name="subject">
+              <mat-error>{{ "required" | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field>
+              <textarea type="text" matInput [placeholder]=" 'your_message' | translate" formControlName="message"
+              maxlength="500" rows="10" name="message"></textarea>
+              <mat-hint align="end">{{ contactForm.value?.message.length }} / 500</mat-hint>
+              <mat-error>{{ "required" | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+          <button *ngIf="!(isLoading$ | async)" mat-raised-button color="accent"
+            [disabled]="contactForm.invalid">{{ "send" | translate }}</button>
+          <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
+        </form>
+        <br>
+        <p>{{ 'foot' | translate }} <a href="https://bertrandpetit.ch">Bertrand PETIT</a>.</p>
+      </mat-card-content>
+      <mat-card-content *ngIf="mailSent">
+        <p>{{ 'mail_sent_content' | translate }}</p>
+      </mat-card-content>
+    </mat-card>
+  </section>

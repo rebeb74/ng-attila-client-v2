@@ -7,12 +7,12 @@ import { Notification } from '../model/notification.model'
   providedIn: 'root'
 })
 export class NotificationSocketService {
-
+  userId: string = JSON.parse(localStorage.getItem('user'))
   socket: any;
-  readonly uri: string = "http://localhost:3000/notification"
+  readonly url: string = "http://localhost:3000/notification"
 
   constructor() {
-    this.socket = io(this.uri, {'reconnection': true, 'reconnectionDelay': 500});
+    this.socket = io(this.url, {'reconnection': true, 'reconnectionDelay': 500, query: `userId=${this.userId}`});
   }
 
 

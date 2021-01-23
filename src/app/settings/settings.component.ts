@@ -9,7 +9,7 @@ import { Notification } from '../shared/model/notification.model';
 import { AuthService } from '../auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AskPasswordComponent } from './ask-password.component'
-import { filter, map, take, withLatestFrom } from 'rxjs/operators';
+import { filter, first, map, take, withLatestFrom } from 'rxjs/operators';
 import { UserEntityService } from '../shared/services/user-entity.service';
 import { selectCurrentLanguage, selectIsLoading, selectLanguages } from '../shared/store/ui.reducer';
 import { AppState } from '../app.reducer';
@@ -31,7 +31,6 @@ export class SettingsComponent implements OnInit {
   minDate = new Date();
   showConfirmMessage = false;
   currentUser$: Observable<User>;
-  currentUser: User;
   userId: string = JSON.parse(localStorage.getItem('user'))
   currentUserFriends$: Observable<Friend[]>;
   friendRequestsReceived$: Observable<Notification[]>;
@@ -50,6 +49,7 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentUser$ = this.userDataService.entities$.pipe(map((users: User[]) => users.find((user: User) => user._id === this.userId)));
     this.isLoading$ = this.store.select(selectIsLoading);
     this.setAccountForm();
     this.setLanguages();
@@ -94,18 +94,19 @@ export class SettingsComponent implements OnInit {
   setAccountForm() {
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 10);
     this.minDate.setFullYear(this.minDate.getFullYear() - 99);
-    this.currentUser$ = this.userDataService.entities$.pipe(map((users: User[]) => users.find((user: User) => user._id === this.userId)));
-    this.currentUser$.pipe(take(1)).subscribe((user: User) => this.currentUser = user);
-    this.accountForm = new FormGroup({
-      email: new FormControl(this.currentUser.email, {
-        validators: [Validators.required, Validators.email]
-      }),
-      username: new FormControl(this.currentUser.username, {
-        validators: [Validators.required, Validators.pattern('.{4,}')]
-      }),
-      birthdate: new FormControl(this.currentUser.birthdate, {
-        validators: [Validators.required]
-      }),
+
+    this.currentUser$.subscribe((user: User) => {
+      this.accountForm = new FormGroup({
+        email: new FormControl(user.email, {
+          validators: [Validators.required, Validators.email]
+        }),
+        username: new FormControl(user.username, {
+          validators: [Validators.required, Validators.pattern('.{4,}')]
+        }),
+        birthdate: new FormControl(user.birthdate, {
+          validators: [Validators.required]
+        }),
+      });
     });
   }
 
@@ -136,25 +137,22 @@ export class SettingsComponent implements OnInit {
     });
     askPassword.afterClosed().subscribe(password => {
       if (password) {
-        this.currentUser$.subscribe((user: User) => {
+        this.currentUser$.pipe(first()).subscribe((user: User) => {
           this.authService
             .login({ username: user.username, password })
             .pipe(take(1))
             .subscribe(
               (success) => {
                 if (!!success) {
-                  const user: User = {
-                    ...this.currentUser,
+                  const updatedUser: User = {
+                    ...user,
                     ...this.accountForm.value
                   }
-                  this.userDataService.update(user).subscribe(
+                  this.userDataService.update(updatedUser).subscribe(
                     (user) => {
                       this.uiService.showSnackbar('account_update_success', null, 5000, 'success');
-                      this.currentUser = user;
-                      this.accountForm.patchValue(this.currentUser);
                     },
                     (error) => {
-                      this.accountForm.patchValue(this.currentUser);
                       this.uiService.showSnackbar(error.error.error.code, null, 5000, 'error');
                     }
                   );

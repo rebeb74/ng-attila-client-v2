@@ -5,12 +5,13 @@ import { User } from '../model/user.model';
 
 @Injectable()
 export class UserSocketService {
-
+  userId: string = JSON.parse(localStorage.getItem('user'))
   socket: any;
   readonly url: string = "http://localhost:3000/user"
 
   constructor() {
-    this.socket = io(this.url, {'reconnection': true, 'reconnectionDelay': 500});
+    this.socket = io(this.url, {'reconnection': true, 'reconnectionDelay': 500, query: `userId=${this.userId}`});
+    
   }
 
 

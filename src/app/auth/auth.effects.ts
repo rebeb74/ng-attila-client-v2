@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Tokens } from './model/tokens.model';
 import { UserEntityService } from '../shared/services/user-entity.service';
 import { NotificationEntityService } from '../shared/services/notification-entity.service';
+import { UIService } from '../shared/services/ui.service';
 
 
 @Injectable()
@@ -20,8 +21,13 @@ export class AuthEffects {
                 ofType(AuthActions.login),
                 tap(action => {
                     this.storeTokensAndUser(action.tokens, action.user);
-                    this.userDataService.getAll();
                     this.notificationDataService.getAll();
+                    this.userDataService.getAll().subscribe(
+                        users => {
+                            const currentUser = users.find(user => user._id === action.user)
+                            this.uiService.switchLang(currentUser.lang)
+                        }
+                    )
                 })
             )
         ,
@@ -32,7 +38,7 @@ export class AuthEffects {
             .pipe(
                 ofType(AuthActions.logout),
                 tap(action => {
-                    this.router.navigateByUrl('/login').then(() =>{
+                    this.router.navigateByUrl('/login').then(() => {
                         this.userDataService.clearCache();
                         this.notificationDataService.clearCache();
                         this.removeTokens();
@@ -46,7 +52,8 @@ export class AuthEffects {
         private actions$: Actions,
         private router: Router,
         private userDataService: UserEntityService,
-        private notificationDataService: NotificationEntityService
+        private notificationDataService: NotificationEntityService,
+        private uiService: UIService
     ) {
 
     }

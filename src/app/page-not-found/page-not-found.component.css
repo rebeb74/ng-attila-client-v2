@@ -1,0 +1,21 @@
+mat-card-title {
+  font-size: 15px;
+  color: #12e0da;
+}
+
+mat-card-content {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 0px;
+  font-size: 12px;
+  text-align: justify;
+}
+
+.page-not-found-card {
+  max-width: 300px;
+  min-width: 300px;
+  padding-top: 10px;
+  border-radius: 20px;
+  -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+}

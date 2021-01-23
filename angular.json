@@ -14,7 +14,8 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "socket.io-client"
+              "socket.io-client",
+              "lodash"
            ],
             "outputPath": "dist/ng-attila-client-v2",
             "index": "src/index.html",

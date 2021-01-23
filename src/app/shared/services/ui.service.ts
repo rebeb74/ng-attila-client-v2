@@ -11,6 +11,9 @@ import { NotificationEntityService } from "./notification-entity.service";
 import { NotificationSocketService } from "./notification-socket.service";
 import { UserSocketService } from "./user-socket.service";
 import { pipe } from "rxjs";
+import { Observable } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { environment as env } from '../../../environments/environment';
 
 
 @Injectable()
@@ -23,7 +26,8 @@ export class UIService {
         private userDataService: UserEntityService,
         private notificationDataService: NotificationEntityService,
         private notificationSocketService: NotificationSocketService,
-        private userSocketService: UserSocketService
+        private userSocketService: UserSocketService,
+        private http: HttpClient,
     ) {
 
     }
@@ -98,11 +102,8 @@ export class UIService {
     webSocketListener() {
         this.notificationSocketService.listen('notification').subscribe(
             (data) => {
-                if (data.notificationUserId === this.userId || data.senderUserId === this.userId) {
-                        this.notificationDataService.clearCache();
-                        this.notificationDataService.getAll();
-                        console.log(data)
-                }
+                this.notificationDataService.clearCache();
+                this.notificationDataService.getAll();
             },
             (error) => console.log(error)
         );
@@ -114,5 +115,16 @@ export class UIService {
         );
     }
 
+    sendContactEmail(mailData): Observable<any> {
+        this.store.dispatch(UiActions.startLoading());
+        return this.http.post<any>(`${env.apiUrl}/contact`, mailData)
+            .pipe(
+                take(1),
+                map(res => {
+                    this.store.dispatch(UiActions.stopLoading());
+                    return res
+                })
+            );
+    }
 }
 

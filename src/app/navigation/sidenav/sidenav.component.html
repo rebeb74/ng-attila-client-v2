@@ -11,6 +11,10 @@
     <mat-icon>settings</mat-icon>
     <span class="nav-caption">{{ 'settings' | translate }}</span>
   </a>
+  <a mat-list-item routerLink="/contact-us" [routerLinkActive]="['contact-us']" (click)="onClose()">
+    <mat-icon>info</mat-icon>
+    <span class="nav-caption">{{ 'contact_us' | translate }}</span>
+  </a>
   <mat-list-item *ngIf="isLoggedIn$ | async" (click)="onLogout()">
     <button mat-icon-button>
       <mat-icon>eject</mat-icon>
