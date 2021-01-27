@@ -1,0 +1,77 @@
+mat-card-title {
+  font-size: 15px;
+  color: #12e0da;
+}
+
+mat-card-content {
+  margin-bottom: 0px;
+  font-size: 12px;
+  text-align: justify;
+}
+
+
+.calendar-card {
+  max-width: 300px;
+  min-width: 300px;
+  padding-top: 10px;
+  border-radius: 20px;
+  -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+}
+
+.event {
+  max-width: 270px;
+  min-width: 270px;
+  max-height: 50px;
+  min-height: 50px;
+  border-radius: 20px;
+  border: 1px solid white;
+
+  & _task {
+    background-color: red;
+  }
+}
+
+@media only screen and (min-width: 375px) {
+  .calendar-card {
+    max-width: 350px;
+    min-width: 350px;
+  }
+
+  .event {
+    max-width: 310px;
+    min-width: 310px;
+    max-height: 50px;
+    min-height: 50px;
+    border: 1px solid white;
+
+    & _task {
+      background-color: red;
+    }
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .calendar-card {
+    max-width: 450px;
+    min-width: 450px;
+  }
+
+  .event {
+    max-width: 280px;
+    min-width: 280px;
+    max-height: 50px;
+    min-height: 50px;
+    border: 1px solid white;
+
+    & _task {
+      background-color: red;
+    }
+  }
+}
+
+::ng-deep.mat-tab-label,
+::ng-deep.mat-tab-label-active {
+  min-width: 0 !important;
+  padding: 0 42px !important;
+}

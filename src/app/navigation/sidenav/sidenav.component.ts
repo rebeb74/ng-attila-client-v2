@@ -3,9 +3,10 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { UIService } from 'src/app/shared/services/ui.service';
-import { selectIsLoggedIn, selectIsLoggedOut } from 'src/app/auth/auth.reducer';
-import { selectCurrentLanguage, selectLanguages } from 'src/app/shared/store/ui.reducer';
+import { getIsLoggedIn, getIsLoggedOut } from 'src/app/auth/auth.reducer';
+import { getCurrentLanguage, getLanguages } from 'src/app/shared/store/ui.reducer';
 import { AppState } from '../../app.reducer';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
@@ -22,16 +23,16 @@ export class SidenavComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private authService: AuthService,
-    private uiService: UIService
+    private uiService: UIService,
+    private router: Router
   ) {
-    this.uiService.initLang();
   }
 
   ngOnInit(): void {
-    this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
-    this.isLoggedOut$ = this.store.select(selectIsLoggedOut);
-    this.currentLang$ = this.store.select(selectCurrentLanguage);
-    this.languages$ = this.store.select(selectLanguages);
+    this.isLoggedIn$ = this.store.select(getIsLoggedIn);
+    this.isLoggedOut$ = this.store.select(getIsLoggedOut);
+    this.currentLang$ = this.store.select(getCurrentLanguage);
+    this.languages$ = this.store.select(getLanguages);
   }
 
   switchLang(newLang) {
@@ -44,6 +45,7 @@ export class SidenavComponent implements OnInit {
   }
 
   onLogout() {
+    this.router.navigateByUrl('/login');
     this.onClose();
     this.authService.logout().subscribe();
   }

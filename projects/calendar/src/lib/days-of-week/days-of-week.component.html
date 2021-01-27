@@ -1,0 +1,7 @@
+<div class="days-of-week">
+  <abbr class="days-of-week__day"
+        *ngFor="let dayOfWeek of daysOfWeek; index as index"
+        [title]="dayOfWeek"
+        [attr.aria-label]="dayOfWeek"
+  >{{narrowDaysOfWeek[index]}}</abbr>
+</div>

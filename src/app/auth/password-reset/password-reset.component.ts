@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AuthService } from '../services/auth.service';
-import { selectIsLoading } from 'src/app/shared/store/ui.reducer';
+import { getIsLoading } from 'src/app/shared/store/ui.reducer';
 import { AppState } from '../../app.reducer';
 
 @Component({
@@ -23,7 +23,7 @@ export class PasswordResetComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.isLoading$ = this.store.select(selectIsLoading);
+    this.isLoading$ = this.store.select(getIsLoading);
     this.frmPasswordReset = new FormGroup({
       email: new FormControl('', {
         validators: [Validators.required, Validators.email]

@@ -2,22 +2,26 @@ import { Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Store } from "@ngrx/store";
 import { TranslateService } from '@ngx-translate/core';
-import { map, take } from "rxjs/operators";
-import { UserEntityService } from "./user-entity.service";
+import { first, map, mergeMap, take, withLatestFrom } from "rxjs/operators";
+import { UserEntityService } from "../store/user-entity.service";
 import { UiActions } from "../store/action-types";
-import { selectCurrentLanguage, selectLanguages } from "../store/ui.reducer";
+import { getCurrentLanguage, getLanguages } from "../store/ui.reducer";
 import { AppState } from "../../app.reducer";
-import { NotificationEntityService } from "./notification-entity.service";
+import { NotificationEntityService } from "../store/notification-entity.service";
 import { NotificationSocketService } from "./notification-socket.service";
 import { UserSocketService } from "./user-socket.service";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { environment as env } from '../../../environments/environment';
+import { getCurrentUser } from "src/app/auth/auth.reducer";
 
 
 @Injectable()
 export class UIService {
-    userId: string = JSON.parse(localStorage.getItem('user'))
+    addEventSubject = new Subject<any>();
+    currentUserId: string;
+
+
     constructor(
         public translate: TranslateService,
         private snackbar: MatSnackBar,
@@ -31,10 +35,23 @@ export class UIService {
 
     }
 
-    initLang() {
-        this.store.select(selectLanguages).subscribe(languages => this.translate.addLangs(languages));
-        this.store.select(selectCurrentLanguage).subscribe(currentLanguage => {
-            this.translate.setDefaultLang(currentLanguage)
+    getCurrentUserId(){
+        return this.currentUserId;
+    }
+    
+    setCurrentUserId(userId){
+        this.currentUserId = userId;
+    }
+
+    initLang(lang?: string) {
+        this.store.select(getLanguages).subscribe(languages => this.translate.addLangs(languages));
+        this.store.select(getCurrentLanguage).pipe(first()).subscribe(currentLanguage => {
+            if(!!lang){
+                this.translate.setDefaultLang(lang)
+                this.store.dispatch(UiActions.setCurrentLanguage({ currentLanguage: lang }));
+            } else {
+                this.translate.setDefaultLang(currentLanguage)
+            }
         }
         );
     }
@@ -56,7 +73,7 @@ export class UIService {
     switchLang(newLang: string) {
         this.store.dispatch(UiActions.setCurrentLanguage({ currentLanguage: newLang }));
         this.translate.use(newLang);
-        this.userDataService.entities$.pipe(take(1), map(users => users.find(user => user._id === this.userId))).subscribe(user => {
+        this.store.select(getCurrentUser).pipe(first()).subscribe(user => {
             if (user) {
                 this.userDataService.update({ ...user, lang: newLang })
             }
@@ -66,10 +83,7 @@ export class UIService {
     addNotification(targetUserId: string, senderUserId: string, code: string) {
         this.userDataService.entities$
             .pipe(
-                take(1),
-            )
-            .subscribe(
-                (users) => {
+                map(users => {
                     const target = users.find(filteredUser => filteredUser._id === targetUserId);
                     var sender: any;
                     if (senderUserId !== 'attila') {
@@ -77,26 +91,33 @@ export class UIService {
                     } else {
                         sender = { username: 'Attila' }
                     }
+                    return { target, sender };
+                }),
+                mergeMap(data =>
                     this.notificationDataService.add({
-                        notificationUserId: target._id,
-                        notificationUsername: target.username,
-                        notificationUserEmail: target.email,
+                        notificationUserId: data.target._id,
+                        notificationUsername: data.target.username,
+                        notificationUserEmail: data.target.email,
                         code: code,
                         read: false,
-                        senderUserId: sender._id,
-                        senderUsername: sender.username,
-                        senderEmail: sender.email,
+                        senderUserId: data.sender._id,
+                        senderUsername: data.sender.username,
+                        senderEmail: data.sender.email,
                         createdOn: (new Date()).toISOString()
-                    }).subscribe(
-                        result => {
-                            if (result.notificationUserId === this.userId) {
-                                this.notificationDataService.removeOneFromCache(result._id)
-                            }
-                        }
-                    )
+                    })
+                ),
+                withLatestFrom(this.store.select(getCurrentUser)),
+                map(([result, currentUser]) => {
+                    if (result.notificationUserId === currentUser._id) {
+                        this.notificationDataService.removeOneFromCache(result._id)
+                    }
                 }
-            );
+                ),
+                take(1),
+            )
+            .subscribe();
     }
+
 
     webSocketListener() {
         this.notificationSocketService.listen('notification').subscribe(
@@ -107,8 +128,9 @@ export class UIService {
             (error) => console.log(error)
         );
         this.userSocketService.listen('user').subscribe(
-            () => {
-                this.userDataService.getAll();
+            (userId) => {
+                console.log(userId)
+                this.userDataService.getAll()
             },
             (error) => console.log(error)
         );
@@ -124,6 +146,10 @@ export class UIService {
                     return res
                 })
             );
+    }
+
+    addEvent($event) {
+        this.addEventSubject.next($event);
     }
 }
 

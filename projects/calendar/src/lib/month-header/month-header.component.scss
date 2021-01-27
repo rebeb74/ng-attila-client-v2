@@ -1,0 +1,25 @@
+@import "../calendar-mixins";
+
+.month-header {
+  @include calendarGrid();
+  // background-color: snow;
+  font-weight: bold;
+
+  &__caption {
+    @include calendarGridCell();
+    // flex item fallback
+    flex-grow: 1;
+    // grid item
+    grid-column: 2 / span 5;
+  }
+
+  &__stepper {
+    @include calendarGridCell();
+    outline: none;
+    color: white;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+  }
+}

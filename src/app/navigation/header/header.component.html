@@ -87,15 +87,17 @@
 <mat-toolbar class="bot-toolbar" fxHide.gt-sm fxFlex fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoggedIn$ | async">
   <div fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/calendar"  [routerLinkActive]="['calendar']" class="bot-cal-list-button">
     <mat-icon fxLayoutAlign="center center" class="bot-cal-list-icon">event</mat-icon>
-    <span fxLayoutAlign="center center" class="bot-text-icon">{{ 'calendar' | translate}}</span>
+    <!-- <span fxFlex="90%" fxLayoutAlign="center top" class="bot-text-icon">{{ 'calendar' | translate}}</span> -->
   </div>
 
-  <div mat-fab *ngIf="(pageName$ | async) === '/calendar' || (pageName$ | async) === '/checklist'" fxFlex="20%" fxLayoutAlign="center center" class="bot-add-button" routerLink="/" [routerLinkActive]="['welcome']">
-    <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
+  <div mat-fab *ngIf="(pageName$ | async) === '/calendar' || (pageName$ | async) === '/checklist'" fxFlex="20%" fxLayoutAlign="center center">
+    <button mat-icon-button (click)="addEvent($event)" class="bot-add-button">
+      <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
+    </button>
   </div>
 
   <div fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/checklist"  [routerLinkActive]="['checklist']" class="bot-cal-list-button">
     <mat-icon fxLayoutAlign="center center" class="bot-cal-list-icon">list_alt</mat-icon>
-    <span fxLayoutAlign="center center" class="bot-text-icon">{{ 'checklist' | translate}}</span>
+    <!-- <span fxLayoutAlign="center center" class="bot-text-icon">{{ 'checklist' | translate}}</span> -->
   </div>
 </mat-toolbar>

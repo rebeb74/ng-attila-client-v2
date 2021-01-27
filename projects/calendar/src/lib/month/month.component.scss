@@ -1,0 +1,93 @@
+@import "../calendar-constants";
+@import "../calendar-mixins";
+
+:host-context(.calendar--disabled)>* {
+  opacity: .38;
+  cursor: initial;
+}
+
+.month {
+  @include calendarGrid();
+  outline: none;
+
+  @each $first-day-of-week,
+  $days-of-week in $first-day-of-week-to-days-of-week {
+    @each $day-of-week in $days-of-week {
+      :host-context(.calendar--first-day-of-week-#{$first-day-of-week}) &--first-day-#{$day-of-week} {
+        time:first-child {
+          // flex item fallback
+          margin-left: (index($days-of-week, $day-of-week) - 1) * $calendar-cell-size--950;
+          // grid item
+          grid-column: index($days-of-week, $day-of-week);
+
+          @supports (display: grid) {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  &__time {
+    height: $calendar-cell-size;
+    
+    @media (min-width: 375px) {
+      height: $calendar-cell-size--375;
+    }
+
+    @media (min-width: 960px) {
+      height: $calendar-cell-size--950;
+    }
+
+  }
+
+  &__date {
+    @include calendarGridCell();
+    outline: none;
+    min-width: 35px;
+    max-width: 35px;
+    min-height: 35px;
+    max-height: 35px;
+
+    @media (min-width: 375px) {
+      min-width: 40px;
+      max-width: 40px;
+      min-height: 40px;
+      max-height: 40px;
+    }
+
+    @media (min-width: 960px) {
+      min-width: 45px;
+      max-width: 45px;
+      min-height: 45px;
+      max-height: 45px;
+    }
+
+    cursor: pointer;
+
+    &--nbEvents {
+      font-size: 10px;
+      min-height: 10px;
+      max-height: 10px;
+      color:#12e0da;
+    }
+    &--active {
+      background-color: rgba(chocolate, .4);
+      border-radius: 50%;
+    }
+
+    &--selected {
+      background-color: chocolate;
+      border-radius: 50%;
+      color: white;
+    }
+
+    &--disabled {
+      opacity: .38;
+    }
+
+    :host-context(.calendar--disabled) & {
+      cursor: initial;
+    }
+  }
+}

@@ -6,12 +6,14 @@ import { CanActivate, Router } from '@angular/router';
 export class AuthGuard implements CanActivate {
 
 
-    constructor(private router: Router) {
+    constructor(
+        private router: Router,
+        ) {
     }
 
     canActivate() {
-        const user: string = JSON.parse(localStorage.getItem('user'))
-        if(!!user){
+        const isUser = localStorage.getItem('user');
+        if(!!isUser){
             return true;
         } else {
             this.router.navigateByUrl('/');

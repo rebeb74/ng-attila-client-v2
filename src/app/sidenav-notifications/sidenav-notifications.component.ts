@@ -4,14 +4,15 @@ import { Store } from '@ngrx/store';
 import { Friend, User } from 'src/app/shared/model/user.model';
 import { Observable } from 'rxjs';
 import { Notification } from '../shared/model/notification.model';
-import { first, map, take } from 'rxjs/operators';
-import { selectCurrentLanguage } from '../shared/store/ui.reducer';
-import { NotificationEntityService } from '../shared/services/notification-entity.service';
+import { first, map, take, withLatestFrom } from 'rxjs/operators';
+import { getCurrentLanguage } from '../shared/store/ui.reducer';
+import { NotificationEntityService } from '../shared/store/notification-entity.service';
 import * as moment from 'moment';
 import { AppState } from '../app.reducer';
-import { UserEntityService } from '../shared/services/user-entity.service';
+import { UserEntityService } from '../shared/store/user-entity.service';
 import { UIService } from '../shared/services/ui.service';
 import * as _ from 'lodash';
+import { getCurrentUser } from '../auth/auth.reducer';
 
 
 @Component({
@@ -26,7 +27,6 @@ import * as _ from 'lodash';
 export class SidenavNotificationsComponent implements OnInit {
   @Output() sidenavNotificationsClose = new EventEmitter<void>()
   currentUserNotifications$: Observable<Notification[]>;
-  userId: string = JSON.parse(localStorage.getItem('user'))
 
   constructor(
     private store: Store<AppState>,
@@ -38,7 +38,8 @@ export class SidenavNotificationsComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserNotifications$ = this.notificationDataService.entities$
       .pipe(
-        map(notifications => notifications.filter(notification => notification.notificationUserId === this.userId))
+        withLatestFrom(this.store.select(getCurrentUser)),
+        map(([notifications, currentUser]) => notifications.filter(notification => notification.notificationUserId === currentUser._id))
       );
 
   }
@@ -77,7 +78,7 @@ export class SidenavNotificationsComponent implements OnInit {
   }
 
   getFormat(date) {
-    this.store.select(selectCurrentLanguage).pipe(first()).subscribe(lang => {
+    this.store.select(getCurrentLanguage).pipe(first()).subscribe(lang => {
       moment.locale(lang)
     })
     return moment(date).format('LL')

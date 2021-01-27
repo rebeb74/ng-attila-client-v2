@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api',
-  languages: ['fr', 'en', 'de']
+  languages: ['fr', 'en', 'de'],
+  secretKey: 'dbnqw89897zbn98qzdb88.,m2552ff.3ä1¨$§lkncxnoqö76ç&JHVUV%&ç43v5453edcv'
 };
 
 /*

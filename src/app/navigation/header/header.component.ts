@@ -4,11 +4,13 @@ import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { Notification } from 'src/app/shared/model/notification.model';
-import { selectIsLoggedIn, selectIsLoggedOut } from 'src/app/auth/auth.reducer';
-import { selectCurrentLanguage, selectLanguages } from 'src/app/shared/store/ui.reducer';
-import { NotificationEntityService } from 'src/app/shared/services/notification-entity.service';
+import { getCurrentUser, getIsLoggedIn, getIsLoggedOut } from 'src/app/auth/auth.reducer';
+import { getCurrentLanguage, getLanguages } from 'src/app/shared/store/ui.reducer';
+import { NotificationEntityService } from 'src/app/shared/store/notification-entity.service';
 import { AppState , selectUrl } from '../../app.reducer';
-import { map } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
+import { User } from 'src/app/shared/model/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -30,19 +32,20 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private uiService: UIService,
     private notificationDataService: NotificationEntityService,
+    private router: Router
   ) {
   }
 
   ngOnInit(): void {
-    const userId: string = JSON.parse(localStorage.getItem('user'))
-    this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
-    this.isLoggedOut$ = this.store.select(selectIsLoggedOut);
+    this.isLoggedIn$ = this.store.select(getIsLoggedIn);
+    this.isLoggedOut$ = this.store.select(getIsLoggedOut);
     this.pageName$ = this.store.select(selectUrl);
-    this.currentLang$ = this.store.select(selectCurrentLanguage);
-    this.languages$ = this.store.select(selectLanguages);
+    this.currentLang$ = this.store.select(getCurrentLanguage);
+    this.languages$ = this.store.select(getLanguages);
     this.currentUserNotifications$ = this.notificationDataService.entities$
       .pipe(
-        map((allNotifications: Notification[]) => allNotifications.filter((userNotifications) => userNotifications.notificationUserId === userId))
+        withLatestFrom(this.store.select(getCurrentUser)),
+        map(([allNotifications, currentUser]: [Notification[], User]) => allNotifications.filter((userNotifications) => userNotifications.notificationUserId === currentUser._id))
         );
   }
 
@@ -59,8 +62,12 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
+    this.router.navigateByUrl('/login');
     this.authService.logout().subscribe();
   }
 
+  addEvent($event){
+    this.uiService.addEvent($event);
+  }
 
 }

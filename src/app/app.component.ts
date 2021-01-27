@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { UIService } from './shared/services/ui.service';
 import { Observable } from 'rxjs';
 import { User } from './shared/model/user.model';
+import { Store } from '@ngrx/store';
+import { AppState } from './app.reducer';
+import { getIsLoggedIn } from './auth/auth.reducer';
 
 @Component({
   selector: 'app-root',
@@ -10,18 +13,19 @@ import { User } from './shared/model/user.model';
 })
 export class AppComponent implements OnInit {
   currentUser$: Observable<User>
-  loading = true;
 
   constructor(
     private uiService: UIService,
+    private store: Store<AppState>,
     ) {
   }
 
   ngOnInit() {
-    this.uiService.webSocketListener();
-
-    this.uiService.initLang();
-
+    this.store.select(getIsLoggedIn).subscribe(isLoggedIn => {
+      if(isLoggedIn){
+        this.uiService.webSocketListener();
+      } 
+    })
   }
 
 

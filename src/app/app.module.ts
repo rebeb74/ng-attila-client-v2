@@ -4,6 +4,10 @@ import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
+import BritishLocale from '@angular/common/locales/en-GB';
+import GermanLocale from '@angular/common/locales/de';
+import FrenchLocale from '@angular/common/locales/fr';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -17,16 +21,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './material/material.module';
 
 import { UIService } from './shared/services/ui.service';
-import { UserEntityService } from './shared/services/user-entity.service';
+import { UserEntityService } from './shared/store/user-entity.service';
 import { metaReducers, reducers } from './app.reducer';
 import { entityConfig } from './entity-metadata';
 import { AuthEffects } from './auth/auth.effects';
 import { environment } from '../environments/environment';
 import { TokenInterceptor } from './token.interceptor';
 import { UserResolver } from './user.resolver';
-import { UserDataService } from './shared/services/user-data.service';
-import { NotificationEntityService } from './shared/services/notification-entity.service';
-import { NotificationDataService } from './shared/services/notification-data.service';
+import { UserDataService } from './shared/store/user-data.service';
+import { NotificationEntityService } from './shared/store/notification-entity.service';
+import { NotificationDataService } from './shared/store/notification-data.service';
 import { NotificationSocketService } from './shared/services/notification-socket.service';
 import { UserSocketService } from './shared/services/user-socket.service';
 
@@ -46,12 +50,16 @@ import { SidenavNotificationsComponent } from './sidenav-notifications/sidenav-n
 import { BaseComponent } from './base/base.component';
 import { AskNewFriendComponent } from './settings/ask-new-friend.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { StorageService } from './shared/services/storage.service';
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.apiUrl,
   timeout: 3000, // request timeout
 }
 
+registerLocaleData(FrenchLocale);
+registerLocaleData(BritishLocale);
+registerLocaleData(GermanLocale);
 
 @NgModule({
   declarations: [
@@ -108,13 +116,14 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
   providers: [
     AuthService,
     UIService,
-    UserEntityService,
     UserResolver,
+    UserEntityService,
     UserDataService,
     UserSocketService,
     NotificationEntityService,
     NotificationDataService,
     NotificationSocketService,
+    StorageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
@@ -129,13 +138,15 @@ export class AppModule {
     entityDataService: EntityDataService,
     userDataService: UserDataService,
     notificationDataService: NotificationDataService
-    ) {
+  ) {
     entityDataService.registerService('User', userDataService);
     entityDataService.registerService('Notification', notificationDataService);
   }
- }
+}
 
 // AOT compilation support
 export function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
+
+

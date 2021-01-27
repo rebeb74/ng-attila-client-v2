@@ -9,14 +9,14 @@ export interface UiState {
     isLoading: boolean;
     languages: string[];
     currentLanguage: string;
-    notifications: Notification[]
+    notifications: Notification[];
 }
 
 export const initialAuthState: UiState = {
     isLoading: false,
     languages: environment.languages,
     currentLanguage: 'fr',
-    notifications: []
+    notifications: [],
 };
 
 export const uiReducer = createReducer(
@@ -60,8 +60,8 @@ export const uiReducer = createReducer(
 
 );
 
-export const selectUiState = createFeatureSelector<UiState>('ui');
-export const selectIsLoading = createSelector(selectUiState, (state: UiState) => state.isLoading);
-export const selectLanguages = createSelector(selectUiState, (state: UiState) => state.languages);
-export const selectCurrentLanguage = createSelector(selectUiState, (state: UiState) => state.currentLanguage);
-export const selectNotifications = createSelector(selectUiState, (state: UiState) => state.notifications);
+export const getUiState = createFeatureSelector<UiState>('ui');
+export const getIsLoading = createSelector(getUiState, (state: UiState) => state.isLoading);
+export const getLanguages = createSelector(getUiState, (state: UiState) => state.languages);
+export const getCurrentLanguage = createSelector(getUiState, (state: UiState) => state.currentLanguage);
+export const getNotifications = createSelector(getUiState, (state: UiState) => state.notifications);

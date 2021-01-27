@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { selectCurrentLanguage, selectIsLoading } from 'src/app/shared/store/ui.reducer';
+import { getCurrentLanguage, getIsLoading } from 'src/app/shared/store/ui.reducer';
 import { AppState } from '../../app.reducer';
 
 @Component({
@@ -27,8 +27,8 @@ export class SignupComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.select(selectCurrentLanguage).subscribe(lang => this.datePickerLocale(lang));
-    this.isLoading$ = this.store.select(selectIsLoading);
+    this.store.select(getCurrentLanguage).subscribe(lang => this.datePickerLocale(lang));
+    this.isLoading$ = this.store.select(getIsLoading);
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 10);
     this.minDate.setFullYear(this.minDate.getFullYear() - 99);
     this.signupForm = new FormGroup({
@@ -48,7 +48,7 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
-    this.store.select(selectCurrentLanguage).subscribe(currentLang => {
+    this.store.select(getCurrentLanguage).subscribe(currentLang => {
       this.authService.registerUser({
         email: this.signupForm.value.email,
         password: this.signupForm.value.password,

@@ -9,13 +9,14 @@ import { Notification } from '../shared/model/notification.model';
 import { AuthService } from '../auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AskPasswordComponent } from './ask-password.component'
-import { first, map, take, withLatestFrom } from 'rxjs/operators';
-import { UserEntityService } from '../shared/services/user-entity.service';
-import { selectCurrentLanguage, selectIsLoading, selectLanguages } from '../shared/store/ui.reducer';
+import { first, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
+import { UserEntityService } from '../shared/store/user-entity.service';
+import { getCurrentLanguage, getIsLoading, getLanguages } from '../shared/store/ui.reducer';
 import { AppState } from '../app.reducer';
-import { NotificationEntityService } from '../shared/services/notification-entity.service';
+import { NotificationEntityService } from '../shared/store/notification-entity.service';
 import { AskNewFriendComponent } from './ask-new-friend.component';
 import * as _ from 'lodash';
+import { getCurrentUser } from '../auth/auth.reducer';
 
 @Component({
   selector: 'app-settings',
@@ -31,7 +32,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   minDate = new Date();
   showConfirmMessage = false;
   currentUser$: Observable<User>;
-  userId: string = JSON.parse(localStorage.getItem('user'));
   currentUserFriends$: Observable<Friend[]>;
   friendRequestsReceived$: Observable<Notification[]>;
   friendRequestsSent$: Observable<Notification[]>;
@@ -50,8 +50,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.currentUser$ = this.userDataService.entities$.pipe(map((users: User[]) => users.find((user: User) => user._id === this.userId)));
-    this.isLoading$ = this.store.select(selectIsLoading);
+    this.currentUser$ = this.store.select(getCurrentUser);
+    this.isLoading$ = this.store.select(getIsLoading);
     this.setAccountForm();
     this.setLanguages();
     this.setCurrentUserFriends();
@@ -61,34 +61,31 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   setLanguages() {
-    this.languages$ = this.store.select(selectLanguages);
-    this.currentLang$ = this.store.select(selectCurrentLanguage);
+    this.languages$ = this.store.select(getLanguages);
+    this.currentLang$ = this.store.select(getCurrentLanguage);
     this.currentLang$.subscribe(lang => this.datePickerLocale(lang));
   }
 
   setCurrentUserFriends() {
-    this.currentUserFriends$ = this.userDataService.entities$
+    this.currentUserFriends$ = this.currentUser$
       .pipe(
-        map(users => {
-          const currentUser = users.find(user => user._id === this.userId);
-          var friends: Friend[] = currentUser.friend
-
-          return friends;
-        })
+        map(currentUser => currentUser.friend)
       );
   }
 
   setFriendRequestsReceived() {
     this.friendRequestsReceived$ = this.notificationDataService.entities$
       .pipe(
-        map((notifications: Notification[]) => notifications.filter((notification: Notification) => notification.code === 'friend_request' && notification.notificationUserId === this.userId))
+        withLatestFrom(this.currentUser$),
+        map(([notifications, currentUser]: [Notification[], User]) => notifications.filter((notification: Notification) => notification.code === 'friend_request' && notification.notificationUserId === currentUser._id))
       )
   }
 
   setFriendRequestsSent() {
     this.friendRequestsSent$ = this.notificationDataService.entities$
       .pipe(
-        map((notifications: Notification[]) => notifications.filter((notification: Notification) => notification.code === 'friend_request' && notification.senderUserId === this.userId))
+        withLatestFrom(this.currentUser$),
+        map(([notifications, currentUser]: [Notification[], User]) => notifications.filter((notification: Notification) => notification.code === 'friend_request' && notification.senderUserId === currentUser._id))
       )
   }
 
@@ -114,10 +111,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
   setAvailableNewFriends() {
     this.availableNewFriends$ = this.userDataService.entities$
       .pipe(
-        withLatestFrom(this.friendRequestsSent$),
-        map(([users, friendRequestSent]: [User[], Notification[]]) => {
-          const currentUser = users.find(user => user._id === this.userId);
-          users = users.filter(users => users._id !== this.userId),
+        withLatestFrom(this.friendRequestsSent$, this.currentUser$),
+        map(([users, friendRequestSent, currentUser]: [User[], Notification[], User]) => {
+          users = users.filter(users => users._id !== currentUser._id),
             users = users.filter(users => !currentUser.friend.find(friend => friend.username === users.username))
           users = users.filter(user => !friendRequestSent.find(friendRequestSent => friendRequestSent.notificationUserId === user._id));
           return users;
@@ -169,15 +165,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   sendPasswordResetRequest() {
-    this.userDataService.entities$.pipe(take(1), map(users => users.find(user => user._id === this.userId))).subscribe((user: User) => {
-      this.authService.sendPasswordResetRequest(user.email).subscribe(
-        (result) => {
-          if (result) {
-            this.showConfirmMessage = true;
-          }
-        })
-    }
+    this.currentUser$.pipe(
+      mergeMap(currentUser => this.authService.sendPasswordResetRequest(currentUser.email)),
+      first()
     )
+      .subscribe((result) => {
+        console.log('result', result)
+            if (result) {
+              this.showConfirmMessage = true;
+            }
+      }
+      )
   };
 
   addFriend() {
@@ -188,24 +186,25 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
     askNewFriendUser.afterClosed().subscribe(newFriendUsername => {
       if (newFriendUsername) {
-        this.userDataService.entities$.pipe(take(1)).subscribe(
-          users => {
-            this.availableNewFriends$.pipe(take(1)).subscribe(availableNewFriends => {
-              if (!users.find(user => user.username === newFriendUsername)) {
-                this.uiService.showSnackbar('user_not_found', null, 5000, 'error');
-              } else if (!availableNewFriends.find(user => user.username === newFriendUsername)) {
-                this.uiService.showSnackbar('user_already_friend', null, 5000, 'error');
-              } else {
-                const currentUser: User = users.find(user => user._id === this.userId);
-                if (newFriendUsername === currentUser.username) {
-                  return;
-                }
-                const newFriendUser: User = users.find(user => user.username === newFriendUsername);
-                this.uiService.addNotification(newFriendUser._id, currentUser._id, 'friend_request');
+        this.userDataService.entities$
+        .pipe(
+          withLatestFrom(this.availableNewFriends$, this.currentUser$),
+          map(([users, availableNewFriends, currentUser]) => {
+            if (!users.find(user => user.username === newFriendUsername)) {
+              this.uiService.showSnackbar('user_not_found', null, 5000, 'error');
+            } else if (!availableNewFriends.find(user => user.username === newFriendUsername)) {
+              this.uiService.showSnackbar('user_already_friend', null, 5000, 'error');
+            } else {
+              if (newFriendUsername === currentUser.username) {
+                return;
               }
-            });
-          }
-        );
+              const newFriendUser: User = users.find(user => user.username === newFriendUsername);
+              this.uiService.addNotification(newFriendUser._id, currentUser._id, 'friend_request');
+            }
+          }),
+          first()
+          )
+        .subscribe();
       }
     });
   }

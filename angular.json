@@ -15,7 +15,9 @@
           "options": {
             "allowedCommonJsDependencies": [
               "socket.io-client",
-              "lodash"
+              "lodash",
+              "crypto-js",
+              "secure-web-storage"
            ],
             "outputPath": "dist/ng-attila-client-v2",
             "index": "src/index.html",

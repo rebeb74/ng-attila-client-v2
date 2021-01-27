@@ -10,6 +10,7 @@ export interface User {
     updatedOn: string;
     friend?: Friend[];
     isAdmin?: boolean;
+    secretKey?: string;
 }
 
 export interface Friend {

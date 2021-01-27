@@ -1,9 +1,12 @@
 import { Component, Inject } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, withLatestFrom } from "rxjs/operators";
+import { AppState } from "../app.reducer";
+import { getCurrentUser } from "../auth/auth.reducer";
 import { User } from "../shared/model/user.model";
-import { UserEntityService } from "../shared/services/user-entity.service";
+import { UserEntityService } from "../shared/store/user-entity.service";
 
 @Component({
     selector: 'app-ask-new-friend',
@@ -27,24 +30,21 @@ import { UserEntityService } from "../shared/services/user-entity.service";
 })
 
 export class AskNewFriendComponent {
-    userId: string = JSON.parse(localStorage.getItem('user'))
 
     allUsers$: Observable<User[]> = this.userDataService.entities$
         .pipe(
-            map(users => {
-                console.log('allUsers', users)
-                const currentUser = users.find(user => user._id === this.userId);
-                users = users.filter(users => users._id !== this.userId),
-                console.log('allUsers - userID', users)
+            withLatestFrom(this.store.select(getCurrentUser)),
+            map(([users, currentUser]) => {
+                users = users.filter(users => users._id !== currentUser._id),
                 users = users.filter(users => !currentUser.friend.find(friend => friend.username === users.username))
-                console.log('allUsers - userID', users)
                 return users;
             })
             );
     
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: {availableNewFriends$: Observable<User[]>},
-        private userDataService: UserEntityService
+        private userDataService: UserEntityService,
+        private store: Store<AppState>
         ) {
 
     }

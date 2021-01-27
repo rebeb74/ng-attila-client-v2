@@ -1,0 +1,34 @@
+<div class="month"
+     [ngClass]="[
+       'month--first-day-' + firstDayOfMonth
+     ]"
+     (click)="onMonthClick($event)"
+     (keyup.enter)="onMonthClick($event)"
+     (keydown)="onKeydown($event)"
+     role="listbox"
+     tabindex="-1"
+>
+  <time class="month__time"
+        *ngFor="let dayOfMonth of daysOfMonth" 
+        [dateTime]="dayOfMonth | date:'yyyy-MM-dd'"
+        fxLayoutAlign="center center"
+        fxLayout="column">
+    <span fxFlex="40%" fxLayoutAlign="center center" class="month__date--nbEvents" *ngIf="nbEventsDay(dayOfMonth)"></span>
+    <span fxFlex="20%" fxLayoutAlign="center center">
+      <time class="month__date"
+        role="option"
+        [dateTime]="dayOfMonth | date:'yyyy-MM-dd'"
+        [tabIndex]="isActive(dayOfMonth) ? 0 : -1"
+        [attr.cdkFocusInitial]="isActive(dayOfMonth) ? '' : null"
+        [attr.aria-current]="!isCurrent(dayOfMonth) && 'date'"
+        [class.month__date--disabled]="isDisabled(dayOfMonth)"
+        [attr.aria-disabled]="isDisabled(dayOfMonth)"
+        [attr.aria-selected]="isSelected(dayOfMonth)"
+        [class.month__date--selected]="isSelected(dayOfMonth)"
+        [attr.aria-label]="dayOfMonth | date:'fullDate':undefined:locale">
+        {{dayOfMonth | date:'d'}}
+      </time>
+    </span>
+    <span fxFlex="40%" fxLayoutAlign="center center" class="month__date--nbEvents" *ngIf="nbEventsDay(dayOfMonth)">{{ nbEventsDay(dayOfMonth) }}</span>
+  </time>
+</div>

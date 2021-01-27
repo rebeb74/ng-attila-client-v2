@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from '../app.reducer';
 import { UIService } from '../shared/services/ui.service';
-import { selectIsLoading } from '../shared/store/ui.reducer';
+import { getIsLoading } from '../shared/store/ui.reducer';
 
 @Component({
   selector: 'app-contact-us',
@@ -22,7 +22,7 @@ export class ContactUsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.isLoading$ = this.store.select(selectIsLoading);
+    this.isLoading$ = this.store.select(getIsLoading);
     this.contactForm = new FormGroup({
       firstname: new FormControl('', {
         validators: [Validators.required]

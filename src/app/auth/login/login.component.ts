@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { selectIsLoading } from 'src/app/shared/store/ui.reducer';
+import { getIsLoading } from 'src/app/shared/store/ui.reducer';
 import { Router } from '@angular/router';
 import { AppState } from '../../app.reducer';
 
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.isLoading$ = this.store.select(selectIsLoading);
+    this.isLoading$ = this.store.select(getIsLoading);
     this.loginForm = new FormGroup({
       username: new FormControl('', {
         validators: [Validators.required]

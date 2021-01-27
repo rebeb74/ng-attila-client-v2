@@ -24,4 +24,3 @@ export const setCurrentLanguage = createAction(
     "[UI] Set Current Language",
     props<{ currentLanguage: string }>()
 );
-

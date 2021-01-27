@@ -1,41 +1,46 @@
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
+import { User } from '../shared/model/user.model';
 import { AuthActions } from './action-types';
-import { Tokens } from './model/tokens.model';
 
 
 
 export interface AuthState {
-    user: string;
-    tokens: Tokens;
+    user: User;
 }
 
 export const initialAuthState: AuthState = {
-    user: undefined,
-    tokens: undefined
+    user: undefined
 };
 
 export const authReducer = createReducer(
 
     initialAuthState,
 
-    on(AuthActions.login, (_state, action) => {
+    on(AuthActions.login, (state, action) => {
         return {
-            user: action.user,
-            tokens: action.tokens
+            ...state,
+            user: action.user
         }
     }),
 
-    on(AuthActions.logout, (_state, _action) => {
+    on(AuthActions.logout, (state, _action) => {
         return {
-            user: undefined,
-            tokens: undefined
+            ...state,
+            user: undefined
         }
-    })
+    }),
+
+    on(AuthActions.setCurrentUser, (state, action) => {
+        return {
+            ...state,
+            user: action.user
+        }
+    }),
 
 );
 
-export const selectAuthState = createFeatureSelector<AuthState>('auth');
-export const selectIsLoggedIn = createSelector(selectAuthState, auth => !!auth.user);
-export const selectIsLoggedOut = createSelector(selectIsLoggedIn, loggedIn => !loggedIn);
-export const selectTokens = createSelector(selectAuthState, state => state.tokens);
-export const selectCurrentUserId = createSelector(selectAuthState, state => state.user);
+export const getAuthState = createFeatureSelector<AuthState>('auth');
+export const getIsLoggedIn = createSelector(getAuthState, auth => !!auth.user);
+export const getIsLoggedOut = createSelector(getIsLoggedIn, loggedIn => !loggedIn);
+export const getCurrentUser = createSelector(getAuthState, (state: AuthState) => state.user);
+

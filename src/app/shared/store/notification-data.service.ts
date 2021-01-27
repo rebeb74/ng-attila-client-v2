@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class NotificationDataService extends DefaultDataService<Notification>{
-    userId: string = JSON.parse(localStorage.getItem('user'));
     constructor(
         http: HttpClient,
         httpUrlGenerator: HttpUrlGenerator,
