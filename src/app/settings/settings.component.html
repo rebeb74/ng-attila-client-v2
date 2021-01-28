@@ -79,7 +79,7 @@
       <mat-card-subtitle *ngIf="(currentUserFriends$ | async).length === 0">
         <p>{{ 'empty_friend' | translate }}</p>
       </mat-card-subtitle>
-      
+
       <div *ngIf="(currentUserFriends$ | async).length > 0">
         <mat-card-content fxLayoutAlign="center" class="content-no-padding">
           <mat-list #friend>
@@ -127,7 +127,8 @@
       <mat-card-subtitle *ngIf="(friendRequestsReceived$ | async).length === 0">
         <p>{{ 'empty_request_received_friend' | translate }}</p>
       </mat-card-subtitle>
-      <mat-card-content fxLayoutAlign="center" class="content-no-padding" *ngIf="(friendRequestsReceived$ | async).length > 0">
+      <mat-card-content fxLayoutAlign="center" class="content-no-padding"
+        *ngIf="(friendRequestsReceived$ | async).length > 0">
         <mat-list #friendReceived fxLayout="column">
           <mat-list-item *ngFor="let friendRequest of friendRequestsReceived$ | async" fxLayout="row"
             fxLayoutAlign="center center">
@@ -150,9 +151,9 @@
 
       <div fxLayoutAlign="center" class="margin-bottom-add-friend-btn">
         <button type="submit" mat-raised-button color="accent"
-        (click)="addFriend()">{{ "add_friend_button" | translate }}</button>
+          (click)="addFriend()">{{ "add_friend_button" | translate }}</button>
       </div>
-      </mat-card>
+    </mat-card>
   </div>
 
 </section>

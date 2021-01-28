@@ -5,7 +5,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Inject,
   Input,
   LOCALE_ID,
@@ -13,8 +12,9 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  forwardRef,
 } from '@angular/core';
-import { getLocaleFirstDayOfWeek, WeekDay } from '@angular/common';
+import { WeekDay, getLocaleFirstDayOfWeek } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 

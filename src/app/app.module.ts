@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -55,7 +55,7 @@ import { StorageService } from './shared/services/storage.service';
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.apiUrl,
   timeout: 3000, // request timeout
-}
+};
 
 registerLocaleData(FrenchLocale);
 registerLocaleData(BritishLocale);

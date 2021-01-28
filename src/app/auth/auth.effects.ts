@@ -15,7 +15,7 @@ export class AuthEffects {
                 ofType(AuthActions.login),
                 tap(() => {
                     this.notificationDataService.getAll();
-                    this.userDataService.getAll()
+                    this.userDataService.getAll();
                 })
             )
         ,

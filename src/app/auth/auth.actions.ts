@@ -3,15 +3,15 @@ import { User } from '../shared/model/user.model';
 
 
 export const login = createAction(
-    "[Login Page] User Login",
+    '[Login Page] User Login',
     props<{user: User}>()
 );
 
 export const logout = createAction(
-  "[Top Menu] Logout"
+  '[Top Menu] Logout'
 );
 
 export const setCurrentUser = createAction(
-  "[Auth] Set Current User",
+  '[Auth] Set Current User',
   props<{ user: User }>()
 );

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
-import { Notification } from '../model/notification.model'
+import { Notification } from '../model/notification.model';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { getCurrentUser, getIsLoggedIn } from 'src/app/auth/auth.reducer';
@@ -12,7 +12,7 @@ import { tap, withLatestFrom } from 'rxjs/operators';
 })
 export class NotificationSocketService {
   socket: any;
-  readonly url: string = "http://localhost:3000/notification"
+  readonly url: string = 'http://localhost:3000/notification'
 
   constructor(
     private store: Store<AppState>
@@ -32,14 +32,14 @@ export class NotificationSocketService {
 
   listen(eventName: string) {
     return new Observable<Notification>((subscriber) => {
-      this.store.select(getIsLoggedIn).subscribe(isLoggedIn => {
+      this.store.select(getIsLoggedIn).subscribe((isLoggedIn) => {
         if (isLoggedIn) {
           this.socket.on(eventName, (data) => {
             subscriber.next(data);
-          })
+          });
         } return subscriber.complete();
       });
-    })
+    });
   }
 
   disconnect() {

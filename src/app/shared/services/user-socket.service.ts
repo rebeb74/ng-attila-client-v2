@@ -10,7 +10,7 @@ import { tap, withLatestFrom } from 'rxjs/operators';
 @Injectable()
 export class UserSocketService {
   socket: any;
-  readonly url: string = "http://localhost:3000/user"
+  readonly url: string = 'http://localhost:3000/user'
 
   constructor(
     private store: Store<AppState>
@@ -30,14 +30,14 @@ export class UserSocketService {
 
   listen(eventName: string) {
     return new Observable<User>((subscriber) => {
-      this.store.select(getIsLoggedIn).subscribe(isLoggedIn => {
+      this.store.select(getIsLoggedIn).subscribe((isLoggedIn) => {
         if (isLoggedIn) {
           this.socket.on(eventName, (data) => {
             subscriber.next(data);
-          })
+          });
         } return subscriber.complete();
       });
-    })
+    });
   }
 
   disconnect() {

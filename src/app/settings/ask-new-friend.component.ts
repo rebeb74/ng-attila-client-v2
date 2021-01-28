@@ -1,12 +1,12 @@
-import { Component, Inject } from "@angular/core";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { map, withLatestFrom } from "rxjs/operators";
-import { AppState } from "../app.reducer";
-import { getCurrentUser } from "../auth/auth.reducer";
-import { User } from "../shared/model/user.model";
-import { UserEntityService } from "../shared/store/user-entity.service";
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map, withLatestFrom } from 'rxjs/operators';
+import { AppState } from '../app.reducer';
+import { getCurrentUser } from '../auth/auth.reducer';
+import { User } from '../shared/model/user.model';
+import { UserEntityService } from '../shared/store/user-entity.service';
 
 @Component({
     selector: 'app-ask-new-friend',
@@ -35,8 +35,8 @@ export class AskNewFriendComponent {
         .pipe(
             withLatestFrom(this.store.select(getCurrentUser)),
             map(([users, currentUser]) => {
-                users = users.filter(users => users._id !== currentUser._id),
-                users = users.filter(users => !currentUser.friend.find(friend => friend.username === users.username))
+                users = users.filter((users) => users._id !== currentUser._id),
+                users = users.filter((users) => !currentUser.friend.find((friend) => friend.username === users.username));
                 return users;
             })
             );

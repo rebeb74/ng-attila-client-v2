@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, filter, switchMap, take } from 'rxjs/operators';
 import { AuthService } from './auth/services/auth.service';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, filter, take, switchMap } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
   private isRefreshing = false;
+
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(
@@ -23,7 +24,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next.handle(request)
     .pipe(
-      catchError(error => {
+      catchError((error) => {
       console.error('Error in TokenInterceptor', error.error);
       if (error instanceof HttpErrorResponse && error.status === 401 && error.error.message !== 'username_password_invalid') {
         return this.handle401Error(request, next);
@@ -47,7 +48,7 @@ export class TokenInterceptor implements HttpInterceptor {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
-      console.log('PASS 1')
+      console.log('PASS 1');
       return this.authService.refreshToken().pipe(
         switchMap((token: any) => {
           this.isRefreshing = false;
@@ -57,9 +58,9 @@ export class TokenInterceptor implements HttpInterceptor {
 
     } else {
       return this.refreshTokenSubject.pipe(
-        filter(token => token != null),
+        filter((token) => token != null),
         take(1),
-        switchMap(accessToken => {
+        switchMap((accessToken) => {
           return next.handle(this.addToken(request, accessToken));
         }));
     }

@@ -1,8 +1,7 @@
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 import { Notification } from '../model/notification.model';
 import { UiActions } from './action-types';
-import { environment } from '../../../environments/environment'
-
+import { environment } from '../../../environments/environment';
 
 
 export interface UiState {
@@ -27,35 +26,35 @@ export const uiReducer = createReducer(
         return {
             ...state,
             currentLanguage: action.currentLanguage
-        }
+        };
     }),
 
     on(UiActions.setLanguages, (state, action) => {
         return {
             ...state,
             languages: action.languages
-        }
+        };
     }),
 
     on(UiActions.setNotifications, (state, action) => {
         return {
             ...state,
             notifications: action.notifications
-        }
+        };
     }),
 
     on(UiActions.startLoading, (state, _action) => {
         return {
             ...state,
             isLoading: true
-        }
+        };
     }),
 
     on(UiActions.stopLoading, (state, _action) => {
         return {
             ...state,
             isLoading: false
-        }
+        };
     }),
 
 );

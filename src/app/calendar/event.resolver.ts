@@ -23,7 +23,7 @@ export class EventResolver implements Resolve<boolean> {
               this.eventDataService.getAll();
             }
           }),
-          filter(eventLoaded => !!eventLoaded),
+          filter((eventLoaded) => !!eventLoaded),
           first()
         );
     } else {

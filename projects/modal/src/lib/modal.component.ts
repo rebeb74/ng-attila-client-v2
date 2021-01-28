@@ -31,7 +31,7 @@ export class ModalComponent implements AfterContentInit {
   ngAfterContentInit() {
     this.controlList.changes.pipe(
       startWith(this.controlList),
-      mergeMap(controlList => merge(...controlList.map((control: CustomControl<any>) => control.valueChange))),
+      mergeMap((controlList) => merge(...controlList.map((control: CustomControl<any>) => control.valueChange))),
       filter(() => this.closeOnValueChange)
     ).subscribe(() => {
       this.isOverlayOpen = false;

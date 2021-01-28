@@ -8,7 +8,7 @@ import { Friend, User } from '../shared/model/user.model';
 import { Notification } from '../shared/model/notification.model';
 import { AuthService } from '../auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AskPasswordComponent } from './ask-password.component'
+import { AskPasswordComponent } from './ask-password.component';
 import { first, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
 import { UserEntityService } from '../shared/store/user-entity.service';
 import { getCurrentLanguage, getIsLoading, getLanguages } from '../shared/store/ui.reducer';
@@ -63,13 +63,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
   setLanguages() {
     this.languages$ = this.store.select(getLanguages);
     this.currentLang$ = this.store.select(getCurrentLanguage);
-    this.currentLang$.subscribe(lang => this.datePickerLocale(lang));
+    this.currentLang$.subscribe((lang) => this.datePickerLocale(lang));
   }
 
   setCurrentUserFriends() {
     this.currentUserFriends$ = this.currentUser$
       .pipe(
-        map(currentUser => currentUser.friend)
+        map((currentUser) => currentUser.friend)
       );
   }
 
@@ -78,7 +78,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .pipe(
         withLatestFrom(this.currentUser$),
         map(([notifications, currentUser]: [Notification[], User]) => notifications.filter((notification: Notification) => notification.code === 'friend_request' && notification.notificationUserId === currentUser._id))
-      )
+      );
   }
 
   setFriendRequestsSent() {
@@ -86,7 +86,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .pipe(
         withLatestFrom(this.currentUser$),
         map(([notifications, currentUser]: [Notification[], User]) => notifications.filter((notification: Notification) => notification.code === 'friend_request' && notification.senderUserId === currentUser._id))
-      )
+      );
   }
 
   setAccountForm() {
@@ -113,9 +113,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .pipe(
         withLatestFrom(this.friendRequestsSent$, this.currentUser$),
         map(([users, friendRequestSent, currentUser]: [User[], Notification[], User]) => {
-          users = users.filter(users => users._id !== currentUser._id),
-            users = users.filter(users => !currentUser.friend.find(friend => friend.username === users.username))
-          users = users.filter(user => !friendRequestSent.find(friendRequestSent => friendRequestSent.notificationUserId === user._id));
+          users = users.filter((users) => users._id !== currentUser._id),
+            users = users.filter((users) => !currentUser.friend.find((friend) => friend.username === users.username));
+          users = users.filter((user) => !friendRequestSent.find((friendRequestSent) => friendRequestSent.notificationUserId === user._id));
           return users;
         })
       );
@@ -132,7 +132,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   onUpdateAccount() {
     const askPassword = this.dialog.open(AskPasswordComponent, {
     });
-    askPassword.afterClosed().subscribe(password => {
+    askPassword.afterClosed().subscribe((password) => {
       if (password) {
         this.currentUser$.pipe(first()).subscribe((user: User) => {
           this.authService
@@ -144,7 +144,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
                   const updatedUser: User = {
                     ...user,
                     ...this.accountForm.value
-                  }
+                  };
                   this.userDataService.update(updatedUser).subscribe(
                     () => {
                       this.uiService.showSnackbar('account_update_success', null, 5000, 'success');
@@ -166,17 +166,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   sendPasswordResetRequest() {
     this.currentUser$.pipe(
-      mergeMap(currentUser => this.authService.sendPasswordResetRequest(currentUser.email)),
+      mergeMap((currentUser) => this.authService.sendPasswordResetRequest(currentUser.email)),
       first()
     )
       .subscribe((result) => {
-        console.log('result', result)
+        console.log('result', result);
             if (result) {
               this.showConfirmMessage = true;
             }
       }
-      )
-  };
+      );
+  }
 
   addFriend() {
     const askNewFriendUser = this.dialog.open(AskNewFriendComponent, {
@@ -184,21 +184,21 @@ export class SettingsComponent implements OnInit, OnDestroy {
         availableNewFriends$: this.availableNewFriends$
       }
     });
-    askNewFriendUser.afterClosed().subscribe(newFriendUsername => {
+    askNewFriendUser.afterClosed().subscribe((newFriendUsername) => {
       if (newFriendUsername) {
         this.userDataService.entities$
         .pipe(
           withLatestFrom(this.availableNewFriends$, this.currentUser$),
           map(([users, availableNewFriends, currentUser]) => {
-            if (!users.find(user => user.username === newFriendUsername)) {
+            if (!users.find((user) => user.username === newFriendUsername)) {
               this.uiService.showSnackbar('user_not_found', null, 5000, 'error');
-            } else if (!availableNewFriends.find(user => user.username === newFriendUsername)) {
+            } else if (!availableNewFriends.find((user) => user.username === newFriendUsername)) {
               this.uiService.showSnackbar('user_already_friend', null, 5000, 'error');
             } else {
               if (newFriendUsername === currentUser.username) {
                 return;
               }
-              const newFriendUser: User = users.find(user => user.username === newFriendUsername);
+              const newFriendUser: User = users.find((user) => user.username === newFriendUsername);
               this.uiService.addNotification(newFriendUser._id, currentUser._id, 'friend_request');
             }
           }),
@@ -212,18 +212,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
   removeFriend(id) {
     this.currentUser$.pipe(take(1)).subscribe(
       (user: User) => {
-        let updatedUser: User = JSON.parse(JSON.stringify(user));
-        const friend: Friend = user.friend.find(friend => friend.userId === id);
+        const updatedUser: User = JSON.parse(JSON.stringify(user));
+        const friend: Friend = user.friend.find((friend) => friend.userId === id);
         this.uiService.addNotification(friend.userId, user._id, 'removed_from_friends');
-        updatedUser.friend = updatedUser.friend.filter((friend: Friend) => friend.userId !== id)
+        updatedUser.friend = updatedUser.friend.filter((friend: Friend) => friend.userId !== id);
         this.userDataService.update(updatedUser);
       }
-    )
+    );
   }
 
   onAcceptFriendRequest(notification) {
-    this.userDataService.entities$.pipe(take(1)).subscribe(users => {
-      const currentUser: User = users.find(user => user._id === notification.notificationUserId)
+    this.userDataService.entities$.pipe(take(1)).subscribe((users) => {
+      const currentUser: User = users.find((user) => user._id === notification.notificationUserId);
       const newFriend: Friend[] = _.cloneDeep(currentUser.friend);
       newFriend.push({
         userId: notification.senderUserId,
@@ -233,7 +233,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       const newUser = {
         ...currentUser,
         friend: newFriend
-      }
+      };
       this.userDataService.update(newUser);
     });
     this.uiService.addNotification(notification.senderUserId, notification.notificationUserId, 'friend_request_accepted');
@@ -242,7 +242,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   onDeclineFriendRequest(notification) {
     this.uiService.addNotification(notification.senderUserId, notification.notificationUserId, 'friend_request_declined');
-    this.deleteNotification(notification)
+    this.deleteNotification(notification);
   }
 
 

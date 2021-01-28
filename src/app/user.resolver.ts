@@ -13,7 +13,6 @@ import { NotificationEntityService } from './shared/store/notification-entity.se
 import { UserEntityService } from './shared/store/user-entity.service';
 
 
-
 @Injectable()
 export class UserResolver implements Resolve<boolean> {
 
@@ -28,13 +27,13 @@ export class UserResolver implements Resolve<boolean> {
 
     resolve(): Observable<boolean> {
         const accessTokens: string = this.authService.getAccessToken();
-        const isUser = localStorage.getItem('user')
+        const isUser = localStorage.getItem('user');
         if (!!isUser) {
             return this.authService.getKey()
                 .pipe(
-                    map(key => {
+                    map((key) => {
                         const currentUser: User = JSON.parse(this.storageService.decryptData(localStorage.getItem('user'), key));
-                        return currentUser
+                        return currentUser;
                     }),
                     switchMap((currentUser) => this.userDataService.loaded$.pipe(
                         mergeMap((userLoaded) => this.notificationDataService.loaded$.pipe(
@@ -43,18 +42,18 @@ export class UserResolver implements Resolve<boolean> {
                                     if (!!accessTokens) {
                                         this.store.dispatch(AuthActions.login({ user: currentUser }));
                                     }
-                                    this.uiService.initLang(currentUser.lang)
+                                    this.uiService.initLang(currentUser.lang);
                                 }
                                 return userLoaded;
                             })
                         ))
                     )),
-                    filter(userLoaded => !!userLoaded),
+                    filter((userLoaded) => !!userLoaded),
                     first()
                 );
 
         } else {
-            this.uiService.initLang()
+            this.uiService.initLang();
             return of(false);
         }
     }

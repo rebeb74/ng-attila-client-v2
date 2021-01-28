@@ -1,9 +1,9 @@
 
-import { authReducer, AuthState } from './auth/auth.reducer';
-import { ActionReducer, ActionReducerMap, createFeatureSelector,  MetaReducer } from '@ngrx/store';
+import { AuthState, authReducer } from './auth/auth.reducer';
+import { ActionReducer, ActionReducerMap, MetaReducer,  createFeatureSelector } from '@ngrx/store';
 import { environment } from '../environments/environment';
-import { getSelectors, routerReducer, RouterReducerState } from '@ngrx/router-store';
-import { uiReducer, UiState } from './shared/store/ui.reducer';
+import { RouterReducerState, getSelectors, routerReducer } from '@ngrx/router-store';
+import { UiState, uiReducer } from './shared/store/ui.reducer';
 
 export interface AppState {
     ui: UiState;
@@ -24,7 +24,7 @@ export function logger(reducer: ActionReducer<any>)
         // console.log("action", action);
         
         return reducer(state, action);
-    }
+    };
     
 }
 

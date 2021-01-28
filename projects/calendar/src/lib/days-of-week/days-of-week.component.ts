@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
-import { FormStyle, getLocaleDayNames, TranslationWidth } from '@angular/common';
+import { FormStyle, TranslationWidth, getLocaleDayNames } from '@angular/common';
 
 @Component({
   selector: 'lib-days-of-week',

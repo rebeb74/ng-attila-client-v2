@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core'; 
 
 import { Store } from '@ngrx/store';
@@ -27,7 +27,7 @@ export class SignupComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.select(getCurrentLanguage).subscribe(lang => this.datePickerLocale(lang));
+    this.store.select(getCurrentLanguage).subscribe((lang) => this.datePickerLocale(lang));
     this.isLoading$ = this.store.select(getIsLoading);
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 10);
     this.minDate.setFullYear(this.minDate.getFullYear() - 99);
@@ -48,7 +48,7 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
-    this.store.select(getCurrentLanguage).subscribe(currentLang => {
+    this.store.select(getCurrentLanguage).subscribe((currentLang) => {
       this.authService.registerUser({
         email: this.signupForm.value.email,
         password: this.signupForm.value.password,

@@ -12,7 +12,7 @@ import {
 import { WeekDay } from '@angular/common';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 
-import { addDays, areDatesInSameMonth, getDaysOfMonth, isValidDate, isDateAfter, isSameDate, startOfDay } from 'date-utils';
+import { addDays, areDatesInSameMonth, getDaysOfMonth, isDateAfter, isSameDate, isValidDate, startOfDay } from 'date-utils';
 import { DayStepDelta } from './day-step-delta.model';
 
 export const keyCodesToDaySteps = new Map<number, DayStepDelta>([
@@ -83,7 +83,7 @@ export class MonthComponent implements AfterViewInit, OnChanges {
   }
 
   nbEventsDay(dayOfMonth: Date) {
-    const nbEventsDay = this.events.filter(day => day.getTime() === dayOfMonth.getTime())
+    const nbEventsDay = this.events.filter((day) => day.getTime() === dayOfMonth.getTime());
     if (this.events.length > 0 && !! nbEventsDay) {
       return nbEventsDay.length;
     } else {

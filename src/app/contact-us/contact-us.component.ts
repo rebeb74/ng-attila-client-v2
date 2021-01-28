@@ -47,7 +47,7 @@ export class ContactUsComponent implements OnInit {
 
   onSubmit() {
       this.uiService.sendContactEmail(this.contactForm.value).subscribe(
-        res => {
+        (res) => {
           if (res.emailSent){
             this.mailSent = true;
           } else {

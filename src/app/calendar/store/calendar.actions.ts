@@ -6,9 +6,8 @@ import {
 
 
 export const setSelectedDate = createAction(
-    "[Calendar] Set Selected Date",
+    '[Calendar] Set Selected Date',
     props<{ selectedDate: string }>()
 );
-
 
 

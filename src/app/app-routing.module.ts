@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 import { ConfirmPasswordResetComponent } from './auth/confirm-password-reset/confirm-password-reset.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -22,8 +22,8 @@ const routes: Routes = [
     { path: 'password-reset', component: PasswordResetComponent },
     { path: 'reset-confirm/:token', component: ConfirmPasswordResetComponent },
     { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-    { path: 'calendar', canActivate: [AuthGuard], loadChildren: () => import('./calendar/calendar.module').then(m => m.CalendarModule) },
-    { path: 'checklist', canActivate: [AuthGuard], loadChildren: () => import('./checklist/checklist.module').then(m => m.ChecklistModule) },
+    { path: 'calendar', canActivate: [AuthGuard], loadChildren: () => import('./calendar/calendar.module').then((m) => m.CalendarModule) },
+    { path: 'checklist', canActivate: [AuthGuard], loadChildren: () => import('./checklist/checklist.module').then((m) => m.ChecklistModule) },
     { path: '**', component: PageNotFoundComponent }
   ]},
 ];

@@ -18,14 +18,14 @@ export const calendarReducer = createReducer(
         return {
             ...state,
             selectedDate: action.selectedDate
-        }
+        };
     }),
 
     on(CalendarActions.setSelectedDate, (state, action) => {
         return {
             ...state,
             selectedDate: action.selectedDate
-        }
+        };
     }),
     
     );

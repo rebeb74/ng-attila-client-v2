@@ -4,7 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { DefaultDataServiceConfig, EntityDataService } from '@ngrx/data';
 
-import { CalendarModule as CalModule } from 'calendar'
+import { CalendarModule as CalModule } from 'calendar';
 import { CalendarService } from './services/calendar.service';
 import { EventResolver } from './event.resolver';
 import { EventEntityService } from './store/event-entity.service';
@@ -28,7 +28,7 @@ import { StoreModule } from '@ngrx/store';
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.apiUrl,
   timeout: 3000, // request timeout
-}
+};
 
 // AOT compilation support
 function httpTranslateLoader(http: HttpClient) {

@@ -21,11 +21,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(getIsLoggedIn).subscribe(isLoggedIn => {
+    this.store.select(getIsLoggedIn).subscribe((isLoggedIn) => {
       if(isLoggedIn){
         this.uiService.webSocketListener();
       } 
-    })
+    });
   }
 
 

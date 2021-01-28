@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { noop, Observable } from 'rxjs';
+import { Observable, noop } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { take } from 'rxjs/operators';
 import { UIService } from 'src/app/shared/services/ui.service';
@@ -15,7 +15,7 @@ export class ConfirmPasswordResetComponent implements OnInit {
   isLoading$: Observable<boolean>;
   frmSetNewPassword: FormGroup;
   showInvalidLinkMessage = false;
-  token: string = '';
+  token = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -25,7 +25,7 @@ export class ConfirmPasswordResetComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.token = this.route.snapshot.paramMap.get("token");
+    this.token = this.route.snapshot.paramMap.get('token');
     this.checkToken();
     this.frmSetNewPassword = new FormGroup({
       password: new FormControl('', {
@@ -40,7 +40,7 @@ export class ConfirmPasswordResetComponent implements OnInit {
   checkToken() {
     this.authService.validatePasswordResetLink(this.token).pipe(take(1)).subscribe(
       noop,
-      error => {
+      (error) => {
         this.showInvalidLinkMessage = true;
         this.uiService.showSnackbar(error.error.code, null, 5000, 'error');
       });

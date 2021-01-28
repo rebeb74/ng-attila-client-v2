@@ -1,19 +1,19 @@
-import { Injectable } from "@angular/core";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { Store } from "@ngrx/store";
+import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { first, map, mergeMap, take, withLatestFrom } from "rxjs/operators";
-import { UserEntityService } from "../store/user-entity.service";
-import { UiActions } from "../store/action-types";
-import { getCurrentLanguage, getLanguages } from "../store/ui.reducer";
-import { AppState } from "../../app.reducer";
-import { NotificationEntityService } from "../store/notification-entity.service";
-import { NotificationSocketService } from "./notification-socket.service";
-import { UserSocketService } from "./user-socket.service";
-import { Observable, Subject } from "rxjs";
-import { HttpClient } from "@angular/common/http";
+import { first, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
+import { UserEntityService } from '../store/user-entity.service';
+import { UiActions } from '../store/action-types';
+import { getCurrentLanguage, getLanguages } from '../store/ui.reducer';
+import { AppState } from '../../app.reducer';
+import { NotificationEntityService } from '../store/notification-entity.service';
+import { NotificationSocketService } from './notification-socket.service';
+import { UserSocketService } from './user-socket.service';
+import { Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { environment as env } from '../../../environments/environment';
-import { getCurrentUser } from "src/app/auth/auth.reducer";
+import { getCurrentUser } from 'src/app/auth/auth.reducer';
 
 
 @Injectable()
@@ -44,20 +44,20 @@ export class UIService {
     }
 
     initLang(lang?: string) {
-        this.store.select(getLanguages).subscribe(languages => this.translate.addLangs(languages));
-        this.store.select(getCurrentLanguage).pipe(first()).subscribe(currentLanguage => {
+        this.store.select(getLanguages).subscribe((languages) => this.translate.addLangs(languages));
+        this.store.select(getCurrentLanguage).pipe(first()).subscribe((currentLanguage) => {
             if(!!lang){
-                this.translate.setDefaultLang(lang)
+                this.translate.setDefaultLang(lang);
                 this.store.dispatch(UiActions.setCurrentLanguage({ currentLanguage: lang }));
             } else {
-                this.translate.setDefaultLang(currentLanguage)
+                this.translate.setDefaultLang(currentLanguage);
             }
         }
         );
     }
 
     showSnackbar(message: string, option: string, duration: number, type: string) {
-        var panelType: any;
+        let panelType: any;
         switch (type) {
             case 'error':
                 panelType = ['mat-toolbar', 'mat-warn'];
@@ -66,34 +66,34 @@ export class UIService {
                 panelType = ['mat-toolbar', 'mat-accent'];
                 break;
         }
-        var translatedMessage = this.translate.instant(message);
+        const translatedMessage = this.translate.instant(message);
         this.snackbar.open(translatedMessage, option, { duration: duration, panelClass: panelType });
     }
 
     switchLang(newLang: string) {
         this.store.dispatch(UiActions.setCurrentLanguage({ currentLanguage: newLang }));
         this.translate.use(newLang);
-        this.store.select(getCurrentUser).pipe(first()).subscribe(user => {
+        this.store.select(getCurrentUser).pipe(first()).subscribe((user) => {
             if (user) {
-                this.userDataService.update({ ...user, lang: newLang })
+                this.userDataService.update({ ...user, lang: newLang });
             }
-        })
+        });
     }
 
     addNotification(targetUserId: string, senderUserId: string, code: string) {
         this.userDataService.entities$
             .pipe(
-                map(users => {
-                    const target = users.find(filteredUser => filteredUser._id === targetUserId);
-                    var sender: any;
+                map((users) => {
+                    const target = users.find((filteredUser) => filteredUser._id === targetUserId);
+                    let sender: any;
                     if (senderUserId !== 'attila') {
-                        sender = users.find(filteredUser => filteredUser._id === senderUserId);
+                        sender = users.find((filteredUser) => filteredUser._id === senderUserId);
                     } else {
-                        sender = { username: 'Attila' }
+                        sender = { username: 'Attila' };
                     }
                     return { target, sender };
                 }),
-                mergeMap(data =>
+                mergeMap((data) =>
                     this.notificationDataService.add({
                         notificationUserId: data.target._id,
                         notificationUsername: data.target.username,
@@ -109,7 +109,7 @@ export class UIService {
                 withLatestFrom(this.store.select(getCurrentUser)),
                 map(([result, currentUser]) => {
                     if (result.notificationUserId === currentUser._id) {
-                        this.notificationDataService.removeOneFromCache(result._id)
+                        this.notificationDataService.removeOneFromCache(result._id);
                     }
                 }
                 ),
@@ -129,8 +129,8 @@ export class UIService {
         );
         this.userSocketService.listen('user').subscribe(
             (userId) => {
-                console.log(userId)
-                this.userDataService.getAll()
+                console.log(userId);
+                this.userDataService.getAll();
             },
             (error) => console.log(error)
         );
@@ -141,9 +141,9 @@ export class UIService {
         return this.http.post<any>(`${env.apiUrl}/contact`, mailData)
             .pipe(
                 take(1),
-                map(res => {
+                map((res) => {
                     this.store.dispatch(UiActions.stopLoading());
-                    return res
+                    return res;
                 })
             );
     }

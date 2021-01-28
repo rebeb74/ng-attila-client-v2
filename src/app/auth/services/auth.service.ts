@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UIService } from '../../shared/services/ui.service';
 
-import { AuthData } from "../auth-data.model";
+import { AuthData } from '../auth-data.model';
 import { catchError, concatMap, first, map, mapTo, tap } from 'rxjs/operators';
 import { AuthActions } from '../action-types';
 import { HttpClient } from '@angular/common/http';
@@ -50,7 +50,7 @@ export class AuthService {
           this.store.dispatch(AuthActions.login({ user }));
           this.store.dispatch(UiActions.stopLoading());
         }),
-        catchError(error => {
+        catchError((error) => {
           this.store.dispatch(UiActions.stopLoading());
           console.log('error', error.error);
           this.uiService.showSnackbar(error.error.message, null, 5000, 'error');
@@ -69,7 +69,7 @@ export class AuthService {
           this.store.dispatch(UiActions.stopLoading());
           this.router.navigateByUrl('/');
         }),
-        catchError(error => {
+        catchError((error) => {
           this.store.dispatch(UiActions.stopLoading());
           console.log('error', error.error);
           this.uiService.showSnackbar(error.error.code, null, 5000, 'error');
@@ -89,7 +89,7 @@ export class AuthService {
           this.NotificationSocketService.disconnect();
         }),
         mapTo(true),
-        catchError(error => {
+        catchError((error) => {
           console.log('error', error.error);
           return of(false);
         }));
@@ -106,7 +106,7 @@ export class AuthService {
       .pipe(
         first(),
         tap(() => {
-          this.store.dispatch(UiActions.stopLoading())
+          this.store.dispatch(UiActions.stopLoading());
         })
       );
   }
@@ -114,13 +114,13 @@ export class AuthService {
   sendPasswordResetRequest(email): Observable<boolean> {
     this.store.dispatch(UiActions.startLoading());
     this.store.select(getCurrentLanguage).subscribe((lang: string) => {
-      this.currentLang = lang
+      this.currentLang = lang;
     });
     return this.http.post<any>(`${env.apiUrl}/reset`, { lang: this.currentLang, email })
       .pipe(
         first(),
         tap(() => this.store.dispatch(UiActions.stopLoading())),
-        map(emailSent => emailSent.emailSent)
+        map((emailSent) => emailSent.emailSent)
       );
   }
 
@@ -141,7 +141,7 @@ export class AuthService {
     return this.http.get<any>(`${env.apiUrl}/reset-confirm/${token}`)
       .pipe(
         first(),
-        map(res => res)
+        map((res) => res)
       );
   }
 
@@ -158,9 +158,9 @@ export class AuthService {
   }
 
   private storeCurrentUser(user: User) {
-    this.getKey().subscribe(key => {
+    this.getKey().subscribe((key) => {
       localStorage.setItem('user', this.storageService.encryptData(JSON.stringify(user), key));
-    })
+    });
   }
 
 

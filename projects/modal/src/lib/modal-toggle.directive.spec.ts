@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { A11yModule } from '@angular/cdk/a11y';
 

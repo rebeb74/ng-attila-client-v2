@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { EntityCollectionServiceBase, EntityCollectionServiceElementsFactory } from "@ngrx/data";
-import { User } from "../model/user.model";
+import { Injectable } from '@angular/core';
+import { EntityCollectionServiceBase, EntityCollectionServiceElementsFactory } from '@ngrx/data';
+import { User } from '../model/user.model';
 
 @Injectable()
 export class UserEntityService extends EntityCollectionServiceBase<User> {

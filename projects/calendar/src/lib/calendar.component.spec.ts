@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
@@ -482,7 +482,7 @@ describe('CalendarComponent', () => {
   });
 
   function getMonths() {
-    return getMonthComponentDebugElements().map(monthDebugElement => monthDebugElement.componentInstance.month);
+    return getMonthComponentDebugElements().map((monthDebugElement) => monthDebugElement.componentInstance.month);
   }
 
   function selectDate(date: Date) {

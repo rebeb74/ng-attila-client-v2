@@ -1,7 +1,7 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { DefaultDataService, DefaultDataServiceConfig, HttpUrlGenerator } from "@ngrx/data";
-import { Observable } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { DefaultDataService, DefaultDataServiceConfig, HttpUrlGenerator } from '@ngrx/data';
+import { Observable } from 'rxjs';
 import { Notification } from '../model/notification.model';
 import * as _ from 'lodash';
 
@@ -16,7 +16,7 @@ export class NotificationDataService extends DefaultDataService<Notification>{
     }
 
     getAll(): Observable<Notification[]> {
-        return super.getAll()
+        return super.getAll();
     }
 
 }

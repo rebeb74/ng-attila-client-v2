@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { formatDate } from '@angular/common';
 
-import { getDaysOfMonth, Month } from 'date-utils';
+import { Month, getDaysOfMonth } from 'date-utils';
 
 import { MonthComponent } from './month.component';
 
@@ -262,24 +262,24 @@ describe('MonthComponent', () => {
 
   function getDayDebugElement(dayOfMonth: number) {
     return getDayDebugElements()
-      .find(dayDebugElement => dayDebugElement.nativeElement.textContent === `${dayOfMonth}`);
+      .find((dayDebugElement) => dayDebugElement.nativeElement.textContent === `${dayOfMonth}`);
   }
 
   function getDates() {
     return getDayDebugElements()
-      .map(dayOfWeekDebugElement => dayOfWeekDebugElement.nativeElement.textContent);
+      .map((dayOfWeekDebugElement) => dayOfWeekDebugElement.nativeElement.textContent);
   }
 
   function getDateAriaLabels() {
-    return getDayDebugElements().map(dayDebugElement => dayDebugElement.attributes['aria-label']);
+    return getDayDebugElements().map((dayDebugElement) => dayDebugElement.attributes['aria-label']);
   }
 
   function getDayDateTimeProperties() {
-    return getDayDebugElements().map(dayDebugElement => dayDebugElement.properties.dateTime);
+    return getDayDebugElements().map((dayDebugElement) => dayDebugElement.properties.dateTime);
   }
 
   function getDayTabIndexes() {
-    return getDayDebugElements().map(dayDebugElement => dayDebugElement.properties.tabIndex);
+    return getDayDebugElements().map((dayDebugElement) => dayDebugElement.properties.tabIndex);
   }
 
   function getDayDebugElements() {

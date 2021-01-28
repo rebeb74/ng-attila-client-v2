@@ -30,6 +30,6 @@ export class CalendarService {
   }
 
   addEvent() {
-    this.calendarStore.select(getSelectedDate)
+    this.calendarStore.select(getSelectedDate);
   }
 }

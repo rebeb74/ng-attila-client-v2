@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { fadeOutUpOnLeaveAnimation } from 'angular-animations';
 import { Store } from '@ngrx/store';
 import { Friend, User } from 'src/app/shared/model/user.model';
@@ -39,7 +39,7 @@ export class SidenavNotificationsComponent implements OnInit {
     this.currentUserNotifications$ = this.notificationDataService.entities$
       .pipe(
         withLatestFrom(this.store.select(getCurrentUser)),
-        map(([notifications, currentUser]) => notifications.filter(notification => notification.notificationUserId === currentUser._id))
+        map(([notifications, currentUser]) => notifications.filter((notification) => notification.notificationUserId === currentUser._id))
       );
 
   }
@@ -50,8 +50,8 @@ export class SidenavNotificationsComponent implements OnInit {
 
 
   onAcceptFriendRequest(notification) {
-    this.userDataService.entities$.pipe(take(1)).subscribe(users => {
-      const currentUser: User = users.find(user => user._id === notification.notificationUserId)
+    this.userDataService.entities$.pipe(take(1)).subscribe((users) => {
+      const currentUser: User = users.find((user) => user._id === notification.notificationUserId);
       const newFriend: Friend[] = _.cloneDeep(currentUser.friend);
         newFriend.push({
           userId: notification.senderUserId,
@@ -61,8 +61,8 @@ export class SidenavNotificationsComponent implements OnInit {
       const newUser = {
         ...currentUser,
         friend: newFriend
-      }
-      this.userDataService.update(newUser)
+      };
+      this.userDataService.update(newUser);
     });
     this.uiService.addNotification(notification.senderUserId, notification.notificationUserId, 'friend_request_accepted');
     this.notificationDataService.delete(notification);
@@ -70,7 +70,7 @@ export class SidenavNotificationsComponent implements OnInit {
 
   onDeclineFriendRequest(notification){
     this.uiService.addNotification(notification.senderUserId, notification.notificationUserId, 'friend_request_declined');
-    this.deleteNotification(notification)
+    this.deleteNotification(notification);
   }
   
   deleteNotification(notification) {
@@ -78,9 +78,9 @@ export class SidenavNotificationsComponent implements OnInit {
   }
 
   getFormat(date) {
-    this.store.select(getCurrentLanguage).pipe(first()).subscribe(lang => {
-      moment.locale(lang)
-    })
-    return moment(date).format('LL')
+    this.store.select(getCurrentLanguage).pipe(first()).subscribe((lang) => {
+      moment.locale(lang);
+    });
+    return moment(date).format('LL');
   }
 }

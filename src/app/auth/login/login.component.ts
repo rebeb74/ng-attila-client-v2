@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     this.authService.login({
       username: this.loginForm.value.username,
       password: this.loginForm.value.password
-    }).subscribe(result => {
+    }).subscribe((result) => {
       if(result) {
         this.router.navigateByUrl('/');
       } 

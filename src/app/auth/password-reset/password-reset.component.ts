@@ -38,6 +38,6 @@ export class PasswordResetComponent implements OnInit {
       if (result) {
         this.showConfirmMessage = true;
       }
-    })
+    });
   }
 }

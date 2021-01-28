@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import HungarianLocale from '@angular/common/locales/hu';
@@ -104,17 +104,17 @@ describe('DaysOfWeekComponent', () => {
 
   function getDayOfWeekTitles() {
     return getDayOfWeekDebugElements()
-      .map(dayOfWeekDebugElement => dayOfWeekDebugElement.properties.title);
+      .map((dayOfWeekDebugElement) => dayOfWeekDebugElement.properties.title);
   }
 
   function getDayOfWeekAriaLabels() {
     return getDayOfWeekDebugElements()
-      .map(dayOfWeekDebugElement => dayOfWeekDebugElement.attributes['aria-label']);
+      .map((dayOfWeekDebugElement) => dayOfWeekDebugElement.attributes['aria-label']);
   }
 
   function getDaysOfWeek() {
     return getDayOfWeekDebugElements()
-      .map(dayOfWeekDebugElement => dayOfWeekDebugElement.nativeElement.textContent);
+      .map((dayOfWeekDebugElement) => dayOfWeekDebugElement.nativeElement.textContent);
   }
 
   function getDayOfWeekDebugElements() {

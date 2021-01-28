@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { AppState } from "src/app/app.reducer";
-import { UIService } from "src/app/shared/services/ui.service";
-import { getIsLoading } from "src/app/shared/store/ui.reducer";
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AppState } from 'src/app/app.reducer';
+import { UIService } from 'src/app/shared/services/ui.service';
+import { getIsLoading } from 'src/app/shared/store/ui.reducer';
 
 @Component({
   selector: 'app-add-event',
@@ -58,7 +58,7 @@ export class AddEventComponent implements OnInit {
 
   onSubmit() {
       this.uiService.sendContactEmail(this.eventForm.value).subscribe(
-        res => {
+        (res) => {
           if (res.emailSent){
             this.mailSent = true;
           } else {
