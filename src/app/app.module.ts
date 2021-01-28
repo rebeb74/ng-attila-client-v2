@@ -26,25 +26,9 @@ import { UserDataService } from './shared/services/user-data.service';
 import { NotificationDataService } from './shared/services/notification-data.service';
 
 import { AppComponent } from './app.component';
-<<<<<<< HEAD
-import { HeaderComponent } from './navigation/header/header.component';
-import { SidenavComponent } from './navigation/sidenav/sidenav.component';
-import { WelcomeComponent } from './welcome/welcome.component';
-import { AuthService } from './auth/services/auth.service';
-import { SettingsComponent } from './settings/settings.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AskPasswordComponent } from './settings/ask-password.component';
-import { SidenavNotificationsComponent } from './sidenav-notifications/sidenav-notifications.component';
-import { BaseComponent } from './base/base.component';
-import { AskNewFriendComponent } from './settings/ask-new-friend.component';
-import { ContactUsComponent } from './contact-us/contact-us.component';
-import { StorageService } from './shared/services/storage.service';
-import { AuthModule } from './auth/auth.module';
-=======
 import { ModulesModule } from './modules/modules.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
->>>>>>> newFolderStructure
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.apiUrl,
@@ -57,23 +41,6 @@ registerLocaleData(GermanLocale);
 
 @NgModule({
   declarations: [
-<<<<<<< HEAD
-    AppComponent,
-    HeaderComponent,
-    SidenavComponent,
-    WelcomeComponent,
-    SettingsComponent,
-    PageNotFoundComponent,
-    AskPasswordComponent,
-    SidenavNotificationsComponent,
-    BaseComponent,
-    AskNewFriendComponent,
-    ContactUsComponent
-  ],
-  imports: [
-    BrowserModule,
-    AuthModule,
-=======
     AppComponent
   ],
   imports: [
@@ -81,7 +48,6 @@ registerLocaleData(GermanLocale);
     SharedModule,
     ModulesModule,
     CoreModule,
->>>>>>> newFolderStructure
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
