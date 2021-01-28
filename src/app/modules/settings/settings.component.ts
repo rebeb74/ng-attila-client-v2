@@ -8,15 +8,15 @@ import { Friend, User } from '../../shared/model/user.model';
 import { Notification } from '../../shared/model/notification.model';
 import { AuthService } from '../../core/auth/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AskPasswordComponent } from './ask-password.component';
 import { first, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
 import { UserEntityService } from '../../shared/services/user-entity.service';
 import { getCurrentLanguage, getIsLoading, getLanguages } from '../../shared/store/ui.reducer';
 import { AppState } from '../../core/store/app.reducer';
 import { NotificationEntityService } from '../../shared/services/notification-entity.service';
-import { AskNewFriendComponent } from './ask-new-friend.component';
 import * as _ from 'lodash';
 import { getCurrentUser } from '../../core/auth/store/auth.reducer';
+import { AskPasswordComponent } from './ask-password/ask-password.component';
+import { AskNewFriendComponent } from './ask-new-friend/ask-new-friend.component';
 
 @Component({
   selector: 'app-settings',

@@ -1,29 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { SettingsComponent } from './settings.component';
 import { HttpClient } from '@angular/common/http';
-import { MaterialModule } from '../shared/material/material.module';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MaterialModule } from 'src/app/shared/material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HomeComponent } from './home/home.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { ContactUsComponent } from './contact-us/contact-us.component';
+import { SettingsRoutingModule } from './settings-routing.module';
+import { AskPasswordComponent } from './ask-password/ask-password.component';
+import { AskNewFriendComponent } from './ask-new-friend/ask-new-friend.component';
 
 // AOT compilation support
 function httpTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
 
-
 @NgModule({
   declarations: [
-    HomeComponent,
-    PageNotFoundComponent,
-    ContactUsComponent,
+    SettingsComponent,
+    AskPasswordComponent,
+    AskNewFriendComponent,
   ],
   imports: [
     CommonModule,
+    SettingsRoutingModule,
     MaterialModule,
     FlexLayoutModule,
     ReactiveFormsModule,
@@ -35,6 +36,6 @@ function httpTranslateLoader(http: HttpClient) {
       }
     })
   ],
-
+  entryComponents: [AskPasswordComponent, AskNewFriendComponent],
 })
-export class ModulesModule { }
+export class SettingsModule { }
