@@ -3,8 +3,8 @@ import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { User } from '../model/user.model';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/app.reducer';
-import { getCurrentUser, getIsLoggedIn } from 'src/app/auth/auth.reducer';
+import { AppState } from 'src/app/core/store/app.reducer';
+import { getCurrentUser, getIsLoggedIn } from 'src/app/core/auth/store/auth.reducer';
 import { tap, withLatestFrom } from 'rxjs/operators';
 
 @Injectable()
@@ -16,15 +16,15 @@ export class UserSocketService {
     private store: Store<AppState>
   ) {
     this.store.select(getIsLoggedIn)
-    .pipe(
-      withLatestFrom(this.store.select(getCurrentUser)),
-      tap(([isLoggedIn, currentUser]) => {
-        if (isLoggedIn) {
-          this.socket = io(this.url, { 'reconnection': true, 'reconnectionDelay': 500, query: `userId=${currentUser._id}` });
-        }
-      })
-    )
-    .subscribe();
+      .pipe(
+        withLatestFrom(this.store.select(getCurrentUser)),
+        tap(([isLoggedIn, currentUser]) => {
+          if (isLoggedIn) {
+            this.socket = io(this.url, { 'reconnection': true, 'reconnectionDelay': 500, query: `userId=${currentUser._id}` });
+          }
+        })
+      )
+      .subscribe();
   }
 
 
