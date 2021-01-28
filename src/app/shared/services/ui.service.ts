@@ -3,17 +3,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { first, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
-import { UserEntityService } from '../store/user-entity.service';
+import { UserEntityService } from './user-entity.service';
 import { UiActions } from '../store/action-types';
 import { getCurrentLanguage, getLanguages } from '../store/ui.reducer';
-import { AppState } from '../../app.reducer';
-import { NotificationEntityService } from '../store/notification-entity.service';
+import { AppState } from '../../core/store/app.reducer';
+import { NotificationEntityService } from './notification-entity.service';
 import { NotificationSocketService } from './notification-socket.service';
 import { UserSocketService } from './user-socket.service';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from '../../../environments/environment';
-import { getCurrentUser } from 'src/app/auth/auth.reducer';
+import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 
 
 @Injectable()
@@ -35,18 +35,18 @@ export class UIService {
 
     }
 
-    getCurrentUserId(){
+    getCurrentUserId() {
         return this.currentUserId;
     }
-    
-    setCurrentUserId(userId){
+
+    setCurrentUserId(userId) {
         this.currentUserId = userId;
     }
 
     initLang(lang?: string) {
         this.store.select(getLanguages).subscribe((languages) => this.translate.addLangs(languages));
         this.store.select(getCurrentLanguage).pipe(first()).subscribe((currentLanguage) => {
-            if(!!lang){
+            if (!!lang) {
                 this.translate.setDefaultLang(lang);
                 this.store.dispatch(UiActions.setCurrentLanguage({ currentLanguage: lang }));
             } else {

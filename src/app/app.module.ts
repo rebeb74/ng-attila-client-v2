@@ -1,10 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
+import { AppRoutingModule } from './app-routing.module';
 import BritishLocale from '@angular/common/locales/en-GB';
 import GermanLocale from '@angular/common/locales/de';
 import FrenchLocale from '@angular/common/locales/fr';
@@ -17,40 +16,19 @@ import { EffectsModule } from '@ngrx/effects';
 import { DefaultDataServiceConfig, EntityDataModule, EntityDataService } from '@ngrx/data';
 import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 
-import { AppRoutingModule } from './app-routing.module';
-import { MaterialModule } from './material/material.module';
 
-import { UIService } from './shared/services/ui.service';
-import { UserEntityService } from './shared/store/user-entity.service';
-import { metaReducers, reducers } from './app.reducer';
-import { entityConfig } from './entity-metadata';
-import { AuthEffects } from './auth/auth.effects';
+import { metaReducers, reducers } from './core/store/app.reducer';
+import { entityConfig } from './core/store/entity-metadata';
+import { AuthEffects } from './core/auth/store/auth.effects';
 import { environment } from '../environments/environment';
-import { TokenInterceptor } from './token.interceptor';
-import { UserResolver } from './user.resolver';
-import { UserDataService } from './shared/store/user-data.service';
-import { NotificationEntityService } from './shared/store/notification-entity.service';
-import { NotificationDataService } from './shared/store/notification-data.service';
-import { NotificationSocketService } from './shared/services/notification-socket.service';
-import { UserSocketService } from './shared/services/user-socket.service';
+import { TokenInterceptor } from './core/interceptors/token.interceptor';
+import { UserDataService } from './shared/services/user-data.service';
+import { NotificationDataService } from './shared/services/notification-data.service';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './navigation/header/header.component';
-import { SidenavComponent } from './navigation/sidenav/sidenav.component';
-import { WelcomeComponent } from './welcome/welcome.component';
-import { AuthService } from './auth/services/auth.service';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
-import { SettingsComponent } from './settings/settings.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AskPasswordComponent } from './settings/ask-password.component';
-import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
-import { ConfirmPasswordResetComponent } from './auth/confirm-password-reset/confirm-password-reset.component';
-import { SidenavNotificationsComponent } from './sidenav-notifications/sidenav-notifications.component';
-import { BaseComponent } from './base/base.component';
-import { AskNewFriendComponent } from './settings/ask-new-friend.component';
-import { ContactUsComponent } from './contact-us/contact-us.component';
-import { StorageService } from './shared/services/storage.service';
+import { ModulesModule } from './modules/modules.module';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.apiUrl,
@@ -63,26 +41,16 @@ registerLocaleData(GermanLocale);
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HeaderComponent,
-    SidenavComponent,
-    WelcomeComponent,
-    LoginComponent,
-    SignupComponent,
-    SettingsComponent,
-    PageNotFoundComponent,
-    AskPasswordComponent,
-    PasswordResetComponent,
-    ConfirmPasswordResetComponent,
-    SidenavNotificationsComponent,
-    BaseComponent,
-    AskNewFriendComponent,
-    ContactUsComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
+    SharedModule,
+    ModulesModule,
+    CoreModule,
     HttpClientModule,
-    MaterialModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -90,11 +58,6 @@ registerLocaleData(GermanLocale);
         deps: [HttpClient]
       }
     }),
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FlexLayoutModule,
-    FormsModule,
-    ReactiveFormsModule,
     StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {
@@ -112,18 +75,7 @@ registerLocaleData(GermanLocale);
     }),
     EntityDataModule.forRoot(entityConfig),
   ],
-  entryComponents: [AskPasswordComponent, AskNewFriendComponent],
   providers: [
-    AuthService,
-    UIService,
-    UserResolver,
-    UserEntityService,
-    UserDataService,
-    UserSocketService,
-    NotificationEntityService,
-    NotificationDataService,
-    NotificationSocketService,
-    StorageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

@@ -3,8 +3,8 @@ import { UIService } from './shared/services/ui.service';
 import { Observable } from 'rxjs';
 import { User } from './shared/model/user.model';
 import { Store } from '@ngrx/store';
-import { AppState } from './app.reducer';
-import { getIsLoggedIn } from './auth/auth.reducer';
+import { AppState } from './core/store/app.reducer';
+import { getIsLoggedIn } from './core/auth/store/auth.reducer';
 
 @Component({
   selector: 'app-root',
@@ -17,14 +17,14 @@ export class AppComponent implements OnInit {
   constructor(
     private uiService: UIService,
     private store: Store<AppState>,
-    ) {
+  ) {
   }
 
   ngOnInit() {
     this.store.select(getIsLoggedIn).subscribe((isLoggedIn) => {
-      if(isLoggedIn){
+      if (isLoggedIn) {
         this.uiService.webSocketListener();
-      } 
+      }
     });
   }
 

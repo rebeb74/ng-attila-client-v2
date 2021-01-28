@@ -1,0 +1,105 @@
+mat-select {
+  margin: 3px 0 0 20px;
+  width: 40px;
+  min-width: 40px;
+  font-size: 15px;
+}
+
+.navigation-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.top-toolbar {
+  position: fixed;
+  z-index: 1000;
+  box-shadow: 0px 0px 10px 0px black;
+}
+
+.toolbar-small {
+  height: 50px;
+}
+
+.toolbar-big {
+  height: 80px;
+}
+
+.bot-toolbar {
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  -webkit-box-shadow: 0px 0px 10px 0px black;
+  box-shadow: 0px 0px 10px 0px black;
+  height: 50px;
+}
+
+.nav-button {
+  margin: 0 10px 0 0;
+  font-size: 15px;
+}
+
+.top-home-button {
+  background: url("../../../../assets/images/logo.svg") no-repeat center;
+  margin-top: 50px;
+  height: 120px;
+  outline: none;
+  cursor: pointer;
+}
+
+.top-home-button:hover {
+  background: url("../../../../assets/images/logo2.svg") no-repeat center;
+}
+
+.bot-home-button {
+  background: url("../../../../assets/images/logo.svg") no-repeat center;
+  margin-top: 20px;
+  height: 50px;
+  outline: none;
+  cursor: pointer;
+}
+
+.bot-home-button:hover {
+  background: url("../../../../assets/images/logo2.svg") no-repeat center;
+}
+
+.top-cal-list-icon {
+  font-size: 30px;
+  margin-top: 10px;
+
+}
+
+.top-cal-list-button {
+  outline: none;
+  cursor: pointer;
+}
+
+.bot-cal-list-icon {
+  font-size: 35px;
+
+}
+
+.bot-cal-list-button {
+  outline: none;
+  cursor: pointer;
+}
+
+.top-text-icon {
+  font-size: 15px;
+}
+
+.bot-text-icon {
+  font-size: 10px;
+}
+
+.bot-add-button {
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+  -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+}
+
+.bot-add-icon {
+  font-size: 60px;
+}
