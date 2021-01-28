@@ -1,7 +1,6 @@
-// import { Notification } from "../model/notification.model";
-import { 
-    createAction, 
-    props 
+import {
+    createAction,
+    props
 } from '@ngrx/store';
 
 

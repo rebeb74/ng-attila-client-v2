@@ -39,18 +39,15 @@ import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavComponent } from './navigation/sidenav/sidenav.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AuthService } from './auth/services/auth.service';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
 import { SettingsComponent } from './settings/settings.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AskPasswordComponent } from './settings/ask-password.component';
-import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
-import { ConfirmPasswordResetComponent } from './auth/confirm-password-reset/confirm-password-reset.component';
 import { SidenavNotificationsComponent } from './sidenav-notifications/sidenav-notifications.component';
 import { BaseComponent } from './base/base.component';
 import { AskNewFriendComponent } from './settings/ask-new-friend.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { StorageService } from './shared/services/storage.service';
+import { AuthModule } from './auth/auth.module';
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: environment.apiUrl,
@@ -67,13 +64,9 @@ registerLocaleData(GermanLocale);
     HeaderComponent,
     SidenavComponent,
     WelcomeComponent,
-    LoginComponent,
-    SignupComponent,
     SettingsComponent,
     PageNotFoundComponent,
     AskPasswordComponent,
-    PasswordResetComponent,
-    ConfirmPasswordResetComponent,
     SidenavNotificationsComponent,
     BaseComponent,
     AskNewFriendComponent,
@@ -81,6 +74,7 @@ registerLocaleData(GermanLocale);
   ],
   imports: [
     BrowserModule,
+    AuthModule,
     HttpClientModule,
     MaterialModule,
     TranslateModule.forRoot({
