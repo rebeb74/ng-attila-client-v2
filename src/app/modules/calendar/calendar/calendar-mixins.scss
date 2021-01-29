@@ -1,0 +1,42 @@
+@import "./calendar-constants";
+
+@mixin calendarGrid() {
+  // flex container fallback
+  display: flex;
+  flex-wrap: wrap;
+  width: $number-of-days-in-a-week * $calendar-cell-size--950;
+  margin: 0 auto;
+  line-height: $calendar-cell-size--950;
+  // grid container
+  display: grid;
+  grid-template-columns: repeat($number-of-days-in-a-week, $calendar-cell-size);
+  grid-auto-rows: $calendar-cell-size;
+  font-size: 0.9rem;
+  @media (min-width: 375px) {
+    grid-template-columns: repeat($number-of-days-in-a-week, $calendar-cell-size--375);
+    grid-auto-rows: $calendar-cell-size--375;
+    font-size: 1rem;
+  }
+  @media (min-width: 960px) {
+    grid-template-columns: repeat($number-of-days-in-a-week, $calendar-cell-size--950);
+    grid-auto-rows: $calendar-cell-size--950;
+    font-size: 1.2rem;
+  }
+  // IE does not support the @supports query
+  @supports (display: grid) {
+    width: auto;
+    margin: 0;
+    line-height: initial;
+    // the flex fallback needs justify-content: flex-start (default)
+    justify-content: center;
+  }
+}
+
+@mixin calendarGridCell() {
+  // flex item fallback
+  flex-basis: $calendar-cell-size--950;
+  // grid item
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

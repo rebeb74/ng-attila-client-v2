@@ -1,0 +1,39 @@
+<mat-card class="calendar-card" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="top center">
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span class="task" matBadge="4" matBadgeOverlap="false" matBadgeColor="accent">Tasks</span>
+      </ng-template>
+      <mat-card-content>
+        <!-- <div class="event event_task">
+
+        </div> -->
+        <sw-item-list *ngFor="let item of list" [inside]="item" [item-class]="'list-custom'"
+          [editTemplate]="editTemplate" [trashTemplate]="trashTemplate" (callback)="action($event)"
+          (swipeCb)="swipeCallback($event)" (swClick)="clickOnItem(item)">
+        </sw-item-list>
+      </mat-card-content>
+
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span class="meeting" matBadge="4" matBadgeOverlap="false" matBadgeColor="warn">Meeting</span>
+      </ng-template>
+
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- Defined yout template for icon button (edit)-->
+
+  <ng-template #editTemplate>
+	<i class="fas fa-edit"></i>
+	<!-- <mat-icon>delete</mat-icon> -->
+  </ng-template>
+
+  <!-- Defined yout template for icon button (trash)-->
+
+  <ng-template #trashTemplate>
+    <i class="fas fa-trash"></i>
+  </ng-template>
+
+</mat-card>

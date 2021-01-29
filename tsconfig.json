@@ -24,15 +24,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "date-utils": [
-        "projects/date-utils/index.ts"
-      ],
-      "calendar": [
-        "projects/calendar/src/public-api.ts"
-      ],
-      "modal": [
-        "projects/modal/src/public-api.ts"
-      ]
     }
   },
   "angularCompilerOptions": {

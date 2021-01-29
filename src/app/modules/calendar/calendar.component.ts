@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { AppState } from '../../core/store/app.reducer';
 import { getCurrentLanguage } from '../../shared/store/ui.reducer';
-import { startOfDay } from 'date-utils';
+import { startOfDay } from './calendar/date-utils';
 import { UIService } from '../../shared/services/ui.service';
 import { CalendarActions } from './store/action-types';
 import { CalendarState, getSelectedDate } from './store/calendar.reducer';
