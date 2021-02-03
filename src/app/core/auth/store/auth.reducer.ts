@@ -5,10 +5,12 @@ import { AuthActions } from './action-types';
 
 export interface AuthState {
     user: User;
+    key: string;
 }
 
 export const initialAuthState: AuthState = {
-    user: undefined
+    user: undefined,
+    key: ''
 };
 
 export const authReducer = createReducer(
@@ -36,10 +38,18 @@ export const authReducer = createReducer(
         };
     }),
 
+    on(AuthActions.setSecretKey, (state, action) => {
+        return {
+            ...state,
+            key: action.key
+        };
+    }),
+
 );
 
 export const getAuthState = createFeatureSelector<AuthState>('auth');
 export const getIsLoggedIn = createSelector(getAuthState, (auth) => !!auth.user);
 export const getIsLoggedOut = createSelector(getIsLoggedIn, (loggedIn) => !loggedIn);
 export const getCurrentUser = createSelector(getAuthState, (state: AuthState) => state.user);
+export const getSecretKey = createSelector(getAuthState, (state: AuthState) => state.key);
 

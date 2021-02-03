@@ -8,27 +8,28 @@
      role="listbox"
      tabindex="-1"
 >
-  <time class="month__time"
-        *ngFor="let dayOfMonth of daysOfMonth" 
-        [dateTime]="dayOfMonth | date:'yyyy-MM-dd'"
+  <div class="month__time"
+        *ngFor="let dayOfMonth of daysOfMonth$ | async" 
         fxLayoutAlign="center center"
         fxLayout="column">
-    <span fxFlex="40%" fxLayoutAlign="center center" class="month__date--nbEvents" *ngIf="nbEventsDay(dayOfMonth)"></span>
     <span fxFlex="20%" fxLayoutAlign="center center">
       <time class="month__date"
         role="option"
-        [dateTime]="dayOfMonth | date:'yyyy-MM-dd'"
-        [tabIndex]="isActive(dayOfMonth) ? 0 : -1"
-        [attr.cdkFocusInitial]="isActive(dayOfMonth) ? '' : null"
-        [attr.aria-current]="!isCurrent(dayOfMonth) && 'date'"
-        [class.month__date--disabled]="isDisabled(dayOfMonth)"
-        [attr.aria-disabled]="isDisabled(dayOfMonth)"
-        [attr.aria-selected]="isSelected(dayOfMonth)"
-        [class.month__date--selected]="isSelected(dayOfMonth)"
-        [attr.aria-label]="dayOfMonth | date:'fullDate':undefined:locale">
-        {{dayOfMonth | date:'d'}}
+        [dateTime]="dayOfMonth.dayOfMonth | date:'yyyy-MM-dd'"
+        [tabIndex]="isActive(dayOfMonth.dayOfMonth) ? 0 : -1"
+        [attr.cdkFocusInitial]="isActive(dayOfMonth.dayOfMonth) ? '' : null"
+        [attr.aria-current]="!isCurrent(dayOfMonth.dayOfMonth) && 'date'"
+        [class.month__date--disabled]="isDisabled(dayOfMonth.dayOfMonth)"
+        [attr.aria-disabled]="isDisabled(dayOfMonth.dayOfMonth)"
+        [attr.aria-selected]="isSelected(dayOfMonth.dayOfMonth)"
+        [class.month__date--selected]="isSelected(dayOfMonth.dayOfMonth)"
+        [attr.aria-label]="dayOfMonth.dayOfMonth | date:'fullDate':undefined:locale">
+        {{dayOfMonth.dayOfMonth | date:'d'}}
       </time>
     </span>
-    <span fxFlex="40%" fxLayoutAlign="center center" class="month__date--nbEvents" *ngIf="nbEventsDay(dayOfMonth)">{{ nbEventsDay(dayOfMonth) }}</span>
-  </time>
+    <div fxFlex="30%" fxLayoutAlign="center center" >
+      <span class="month__date--nbTasks" *ngIf="dayOfMonth.tasks.length !== 0">{{ dayOfMonth.tasks.length }}</span>
+      <span class="month__date--nbMeetings" *ngIf="dayOfMonth.meetings.length !== 0">{{ dayOfMonth.meetings.length }}</span>
+    </div>
+  </div>
 </div>

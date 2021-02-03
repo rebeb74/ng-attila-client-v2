@@ -1,0 +1,184 @@
+<div fxLayout="column" class="add-event" fxLayoutAlign="center center">
+  <div *ngIf="passedData.event.type === 'task'">
+    <h3 class="accent" fxLayoutAlign="center center">{{ 'edit_task' | translate }}</h3>
+    <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="addTaskForm">
+      <!-- LARGE SCREEN -->
+      <mat-dialog-content fxHide.lt-md fxLayoutAlign="start" fxLayout="column">
+        <div fxLayoutGap="50px" fxLayout>
+          <mat-form-field>
+            <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title" name="title">
+            <mat-error>{{ "required" | translate }}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [placeholder]=" 'event_start_time' | translate" [matDatepicker]="taskPicker" [min]="minDate"
+              formControlName="startTime" name="date">
+            <mat-datepicker-toggle matSuffix [for]="taskPicker"></mat-datepicker-toggle>
+            <mat-datepicker #taskPicker></mat-datepicker>
+            <mat-error>{{ "required" | translate }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayoutGap="50px" fxLayout>
+          <mat-form-field>
+            <mat-select formControlName="altern" [placeholder]=" 'event_altern' | translate"
+              [compareWith]="friendComparisonFunction">
+              <mat-option value="">{{ 'dont_altern' | translate }}</mat-option>
+              <mat-option *ngFor="let friend of (currentUserFriends$ | async)" [value]="friend">
+                {{ friend.username }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput [matAutocomplete]="auto" formControlName="repeat"
+              [placeholder]=" 'event_repeat' | translate" name="repeat">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option [value]="'0'">
+                {{ 'no_repeat' | translate }}
+              </mat-option>
+              <mat-option [value]="'1'">
+                {{ '1_day' | translate }}
+              </mat-option>
+              <mat-option [value]="'7'">
+                {{ '1_week' | translate }}
+              </mat-option>
+              <mat-option [value]="'14'">
+                {{ '2_weeks' | translate }}
+              </mat-option>
+              <mat-option [value]="'21'">
+                {{ '3_weeks' | translate }}
+              </mat-option>
+              <mat-option [value]="'28'">
+                {{ '1_month' | translate }}
+              </mat-option>
+              <mat-option [value]="'56'">
+                {{ '2_months' | translate }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-hint>{{ "event_repeat_hint_1" | translate }}</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-dialog-content>
+
+      <!-- SMALL SCREEN -->
+      <mat-dialog-content fxHide.gt-sm fxLayoutAlign="start center" fxLayout="column" fxLayoutGap="5px">
+        <mat-form-field>
+          <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title" name="title">
+          <mat-error>{{ "required" | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [placeholder]=" 'event_start_time' | translate" [matDatepicker]="taskSmallPicker"
+            [min]="minDate" formControlName="startTime" name="date">
+          <mat-datepicker-toggle matSuffix [for]="taskSmallPicker"></mat-datepicker-toggle>
+          <mat-datepicker #taskSmallPicker></mat-datepicker>
+          <mat-error>{{ "required" | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" matInput [placeholder]=" 'event_repeat' | translate" formControlName="repeat"
+            name="repeat">
+        </mat-form-field>
+        <mat-form-field>
+          <input type="altern" matInput [placeholder]=" 'event_altern' | translate" formControlName="altern"
+            name="altern">
+        </mat-form-field>
+      </mat-dialog-content>
+
+      <div fxLayoutGap="50px">
+        <button mat-raised-button color="accent" [disabled]="addTaskForm.invalid"
+          [mat-dialog-close]="addTaskForm.value">{{ "change" | translate }}</button>
+        <button mat-raised-button mat-dialog-close>{{ 'cancel' | translate }}</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="passedData.event.type === 'meeting'">
+    <h3 class="accent" fxLayoutAlign="center center">{{ 'edit_meeting' | translate }}</h3>
+
+    <!-- MEETING TAB -->
+    <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="addMeetingForm">
+
+      <!-- LARGE SCREEN -->
+      <mat-dialog-content fxHide.lt-md fxLayoutAlign="start" fxLayout="column">
+        <div fxLayoutGap="50px" fxLayout="row">
+          <mat-form-field>
+            <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title" name="title">
+            <mat-error>{{ "required" | translate }}</mat-error>
+          </mat-form-field>
+          <mat-form-field class="input">
+            <input type="text" matInput [placeholder]=" 'event_description' | translate" formControlName="description"
+              name="description">
+          </mat-form-field>
+        </div>
+        <div fxLayoutGap="50px" fxLayout="row">
+          <mat-form-field>
+            <input matInput [placeholder]=" 'event_start_time' | translate" [matDatepicker]="meetingPicker"
+              [min]="minDate" formControlName="startTime" name="date">
+            <mat-datepicker-toggle matSuffix [for]="meetingPicker"></mat-datepicker-toggle>
+            <mat-datepicker #meetingPicker></mat-datepicker>
+            <mat-error>{{ "required" | translate }}</mat-error>
+          </mat-form-field>
+          <div>
+            <ngx-timepicker-field [format]="24" [defaultTime]="'08:00'" formControlName="startHour" name="startHour"
+              [cancelBtnTmpl]="cancelBtn" [confirmBtnTmpl]="confirmBtn">
+            </ngx-timepicker-field>
+            <ng-template #cancelBtn>
+              <button mat-raised-button color="accent">{{ 'cancel' | translate }}</button>
+            </ng-template>
+            <ng-template #confirmBtn>
+              <button mat-raised-button color="accent">{{ 'submit' | translate }}</button>
+            </ng-template>
+          </div>
+        </div>
+        <div fxLayoutGap="50px" fxLayout="row">
+          <mat-form-field>
+            <input type="text" matInput [placeholder]=" 'event_place' | translate" formControlName="place" name="place">
+          </mat-form-field>
+          <!-- <mat-form-field>
+                <input type="text" matInput [placeholder]=" 'event_alert' | translate" formControlName="alert"
+                  name="alert">
+              </mat-form-field> -->
+        </div>
+
+      </mat-dialog-content>
+      <!-- SMALL SCREEN -->
+      <mat-dialog-content fxHide.gt-sm fxLayoutAlign="start center" fxLayout="column">
+        <mat-form-field>
+          <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title" name="title">
+          <mat-error>{{ "required" | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" matInput [placeholder]=" 'event_description' | translate" formControlName="description"
+            name="description">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [placeholder]=" 'event_start_time' | translate" [matDatepicker]="meetingSmallPicker"
+            [min]="minDate" formControlName="startTime" name="date">
+          <mat-datepicker-toggle matSuffix [for]="meetingSmallPicker"></mat-datepicker-toggle>
+          <mat-datepicker #meetingSmallPicker></mat-datepicker>
+          <mat-error>{{ "required" | translate }}</mat-error>
+        </mat-form-field>
+        <ngx-timepicker-field [format]="24" [defaultTime]="'08:00'" formControlName="startHour" name="startHour"
+          [cancelBtnTmpl]="cancelBtn" [confirmBtnTmpl]="confirmBtn">
+        </ngx-timepicker-field>
+        <ng-template #cancelBtn>
+          <button mat-raised-button color="accent">{{ 'cancel' | translate }}</button>
+        </ng-template>
+        <ng-template #confirmBtn>
+          <button mat-raised-button color="accent">{{ 'submit' | translate }}</button>
+        </ng-template>
+        <mat-form-field>
+          <input type="text" matInput [placeholder]=" 'event_place' | translate" formControlName="place" name="place">
+        </mat-form-field>
+        <!-- <mat-form-field>
+              <input type="text" matInput [placeholder]=" 'event_alert' | translate" formControlName="alert" name="alert">
+            </mat-form-field> -->
+
+      </mat-dialog-content>
+
+      <div fxLayoutGap="50px">
+        <button mat-raised-button color="accent" [disabled]="addMeetingForm.invalid"
+          [mat-dialog-close]="addMeetingForm.value">{{ "change" | translate }}</button>
+        <button mat-raised-button mat-dialog-close>{{ 'cancel' | translate }}</button>
+      </div>
+
+    </form>
+  </div>
+</div>

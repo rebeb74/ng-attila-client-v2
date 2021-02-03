@@ -6,7 +6,7 @@ export interface CalendarState {
 }
 
 export const initialAuthState: CalendarState = {
-    selectedDate: (new Date).toString(),
+    selectedDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).toString(),
 };
 
 export const calendarReducer = createReducer(

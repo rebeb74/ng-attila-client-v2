@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { Event } from '../../../shared/model/event.model';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.reducer';
-import { first } from 'rxjs/operators';
-import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
+import { tap, withLatestFrom } from 'rxjs/operators';
+import { getCurrentUser, getIsLoggedIn } from 'src/app/core/auth/store/auth.reducer';
+import { EventEntityService } from '../store/event-entity.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,24 +16,41 @@ export class EventSocketService {
   readonly url: string = 'http://localhost:3000/event'
 
   constructor(
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private eventDataService: EventEntityService
   ) {
-    this.store.select(getCurrentUser).pipe(first()).subscribe((currentUser) => {
-      this.socket = io(this.url, { 'reconnection': true, 'reconnectionDelay': 500, query: `userId=${currentUser._id}` });
-    });
+    this.store.select(getIsLoggedIn)
+      .pipe(
+        withLatestFrom(this.store.select(getCurrentUser)),
+        tap(([isLoggedIn, currentUser]) => {
+          if (isLoggedIn) {
+            this.socket = io(this.url, { 'reconnection': true, 'reconnectionDelay': 500, query: `userId=${currentUser._id}` });
+          }
+        })
+      )
+      .subscribe();
   }
 
+  disconnect() {
+    this.socket.disconnect();
+  }
 
-  listen(eventName: string) {
+  webSocketListener() {
+    this.listen('event').subscribe(
+      () => {
+        this.eventDataService.clearCache();
+        this.eventDataService.getAll();
+      },
+      (error) => console.log(error)
+    );
+  }
+
+  private listen(eventName: string) {
     return new Observable<Event>((subscriber) => {
       this.socket.on(eventName, (data) => {
         subscriber.next(data);
       });
     });
-  }
-
-  disconnect() {
-    this.socket.disconnect();
   }
 
 }

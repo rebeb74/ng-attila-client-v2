@@ -1,27 +1,113 @@
-<!-- <h3 fxLayoutAlign="center" mat-dialog-title>{{ 'pw_needed'| translate }}</h3>
-<form>
-  <mat-dialog-content fxLayoutAlign="center">
-    <mat-form-field fxLayoutAlign="center">
-      <input type="password" matInput #pwInput [placeholder]="'your_pw' | translate">
-    </mat-form-field>
-  </mat-dialog-content>
-  <mat-dialog-actions fxLayoutAlign="center">
-    <button mat-raised-button [mat-dialog-close]="pwInput.value" type="submit">{{ 'submit' | translate }}</button>
-    <button mat-raised-button [mat-dialog-close]="null">{{ 'cancel' | translate }}</button>
-  </mat-dialog-actions>
-</form> -->
+<div fxLayout="column" class="add-event" fxLayoutAlign="center center">
+  <h3 class="accent" fxLayoutAlign="center center">{{ 'add_event' | translate }}</h3>
+  <mat-tab-group mat-align-tabs="center" fxLayoutAlign="center center" fxLayout="column">
 
-<section class="menu-margin" fxLayout.gt-md="row" fxLayoutGap="20px" fxLayoutAlign="center center">
-  <mat-card fxLayout="column" class="contact-card" fxLayoutAlign="center center">
-    <mat-card-title fxLayoutAlign="center center">{{ 'contact_us' | translate }}</mat-card-title>
-    <mat-card-content *ngIf="!mailSent">
-      <p>{{ 'contact_us_content' | translate }}</p>
-      <br>
-      <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="eventForm"
-        (ngSubmit)="onSubmit()">
-        <div fxHide.lt-md fxLayoutAlign="start" fxLayout="column">
-          <div fxLayoutGap="50px">
-            <mat-form-field class="input">
+    <!-- TASK TAB -->
+    <mat-tab fxLayout="column" fxLayoutAlign="center center">
+      <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="addTaskForm">
+
+        <ng-template mat-tab-label>
+          <span class="task" matBadgeOverlap="false">{{ 'tasks' | translate}}</span>
+        </ng-template>
+
+        <!-- LARGE SCREEN -->
+        <mat-dialog-content fxHide.lt-md fxLayoutAlign="start" fxLayout="column">
+          <div fxLayoutGap="50px" fxLayout>
+            <mat-form-field>
+              <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title"
+                name="title">
+              <mat-error>{{ "required" | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [placeholder]=" 'event_start_time' | translate" [matDatepicker]="taskPicker"
+                [min]="minDate" formControlName="startTime" name="date">
+              <mat-datepicker-toggle matSuffix [for]="taskPicker"></mat-datepicker-toggle>
+              <mat-datepicker #taskPicker></mat-datepicker>
+              <mat-error>{{ "required" | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayoutGap="50px" fxLayout>
+            <mat-form-field>
+              <mat-select formControlName="altern" [placeholder]=" 'event_altern' | translate">
+                <mat-option value="">{{ 'dont_altern' | translate }}</mat-option>
+                <mat-option *ngFor="let friend of (currentUserFriends$ | async)" [value]="friend">
+                  {{ friend.username }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <input type="text" matInput [matAutocomplete]="auto" formControlName="repeat"
+                [placeholder]=" 'event_repeat' | translate" name="repeat">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option [value]="">
+                  {{ 'no_repeat' | translate }}
+                </mat-option>
+                <mat-option [value]="'1'">
+                  {{ '1_day' | translate }}
+                </mat-option>
+                <mat-option [value]="'7'">
+                  {{ '1_week' | translate }}
+                </mat-option>
+                <mat-option [value]="'14'">
+                  {{ '2_weeks' | translate }}
+                </mat-option>
+                <mat-option [value]="'21'">
+                  {{ '3_weeks' | translate }}
+                </mat-option>
+                <mat-option [value]="'28'">
+                  {{ '1_month' | translate }}
+                </mat-option>
+                <mat-option [value]="'56'">
+                  {{ '2_months' | translate }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-hint>{{ "event_repeat_hint_1" | translate }}</mat-hint>
+            </mat-form-field>
+          </div>
+        </mat-dialog-content>
+
+        <!-- SMALL SCREEN -->
+        <mat-dialog-content fxHide.gt-sm fxLayoutAlign="start center" fxLayout="column" fxLayoutGap="5px">
+          <mat-form-field>
+            <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title" name="title">
+            <mat-error>{{ "required" | translate }}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [placeholder]=" 'event_start_time' | translate" [matDatepicker]="taskSmallPicker"
+              [min]="minDate" formControlName="startTime" name="date">
+            <mat-datepicker-toggle matSuffix [for]="taskSmallPicker"></mat-datepicker-toggle>
+            <mat-datepicker #taskSmallPicker></mat-datepicker>
+            <mat-error>{{ "required" | translate }}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput [placeholder]=" 'event_repeat' | translate" formControlName="repeat"
+              name="repeat">
+          </mat-form-field>
+          <mat-form-field>
+            <input type="altern" matInput [placeholder]=" 'event_altern' | translate" formControlName="altern"
+              name="altern">
+          </mat-form-field>
+        </mat-dialog-content>
+
+        <div fxLayoutGap="50px">
+          <button mat-raised-button color="accent" [disabled]="addTaskForm.invalid"
+            [mat-dialog-close]="addTaskForm.value">{{ "add" | translate }}</button>
+          <button mat-raised-button mat-dialog-close>{{ 'cancel' | translate }}</button>
+        </div>
+      </form>
+    </mat-tab>
+
+    <!-- MEETING TAB -->
+    <mat-tab>
+      <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="addMeetingForm">
+        <ng-template mat-tab-label>
+          <span class="meeting" matBadgeOverlap="false">{{ 'meetings' | translate}}</span>
+        </ng-template>
+
+        <!-- LARGE SCREEN -->
+        <mat-dialog-content fxHide.lt-md fxLayoutAlign="start" fxLayout="column">
+          <div fxLayoutGap="50px" fxLayout="row">
+            <mat-form-field>
               <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title"
                 name="title">
               <mat-error>{{ "required" | translate }}</mat-error>
@@ -31,43 +117,80 @@
                 name="description">
             </mat-form-field>
           </div>
-          <div fxLayoutGap="50px">
-            <mat-form-field class="input">
-              <input type="date" matInput [placeholder]=" 'event_start_time' | translate" formControlName="startTime"
-                name="date">
+          <div fxLayoutGap="50px" fxLayout="row">
+            <mat-form-field>
+              <input matInput [placeholder]=" 'event_start_time' | translate" [matDatepicker]="meetingPicker"
+                [min]="minDate" formControlName="startTime" name="date">
+              <mat-datepicker-toggle matSuffix [for]="meetingPicker"></mat-datepicker-toggle>
+              <mat-datepicker #meetingPicker></mat-datepicker>
               <mat-error>{{ "required" | translate }}</mat-error>
             </mat-form-field>
-            <mat-form-field class="input">
-              <input type="date" matInput [placeholder]=" 'event_start_hour' | translate" formControlName="startHour"
-                name="startHour">
-            </mat-form-field>
-            <mat-form-field class="input">
+            <div>
+              <ngx-timepicker-field [format]="24" [defaultTime]="'08:00'" formControlName="startHour" name="startHour"
+                [cancelBtnTmpl]="cancelBtn" [confirmBtnTmpl]="confirmBtn">
+              </ngx-timepicker-field>
+              <ng-template #cancelBtn>
+                <button mat-raised-button color="accent">{{ 'cancel' | translate }}</button>
+              </ng-template>
+              <ng-template #confirmBtn>
+                <button mat-raised-button color="accent">{{ 'submit' | translate }}</button>
+              </ng-template>
+            </div>
+          </div>
+          <div fxLayoutGap="50px" fxLayout="row">
+            <mat-form-field>
               <input type="text" matInput [placeholder]=" 'event_place' | translate" formControlName="place"
                 name="place">
             </mat-form-field>
-            <mat-form-field class="input">
+            <!-- <mat-form-field>
               <input type="text" matInput [placeholder]=" 'event_alert' | translate" formControlName="alert"
                 name="alert">
-            </mat-form-field>
-            <mat-form-field class="input">
-              <input type="text" matInput [placeholder]=" 'event_repeat' | translate" formControlName="repeat"
-                name="repeat">
-            </mat-form-field>
-            <mat-form-field class="input">
-              <input type="altern" matInput [placeholder]=" 'event_altern' | translate" formControlName="altern"
-                name="altern">
-            </mat-form-field>
+            </mat-form-field> -->
           </div>
+
+        </mat-dialog-content>
+        <!-- SMALL SCREEN -->
+        <mat-dialog-content fxHide.gt-sm fxLayoutAlign="start center" fxLayout="column">
+          <mat-form-field>
+            <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title" name="title">
+            <mat-error>{{ "required" | translate }}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput [placeholder]=" 'event_description' | translate" formControlName="description"
+              name="description">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [placeholder]=" 'event_start_time' | translate" [matDatepicker]="meetingSmallPicker"
+              [min]="minDate" formControlName="startTime" name="date">
+            <mat-datepicker-toggle matSuffix [for]="meetingSmallPicker"></mat-datepicker-toggle>
+            <mat-datepicker #meetingSmallPicker></mat-datepicker>
+            <mat-error>{{ "required" | translate }}</mat-error>
+          </mat-form-field>
+          <ngx-timepicker-field [format]="24" [defaultTime]="'08:00'" formControlName="startHour" name="startHour"
+            [cancelBtnTmpl]="cancelBtn" [confirmBtnTmpl]="confirmBtn">
+          </ngx-timepicker-field>
+          <ng-template #cancelBtn>
+            <button mat-raised-button color="accent">{{ 'cancel' | translate }}</button>
+          </ng-template>
+          <ng-template #confirmBtn>
+            <button mat-raised-button color="accent">{{ 'submit' | translate }}</button>
+          </ng-template>
+          <mat-form-field>
+            <input type="text" matInput [placeholder]=" 'event_place' | translate" formControlName="place" name="place">
+          </mat-form-field>
+          <!-- <mat-form-field>
+            <input type="text" matInput [placeholder]=" 'event_alert' | translate" formControlName="alert" name="alert">
+          </mat-form-field> -->
+
+        </mat-dialog-content>
+
+        <div fxLayoutGap="50px">
+          <button mat-raised-button color="accent" [disabled]="addMeetingForm.invalid"
+            [mat-dialog-close]="addMeetingForm.value">{{ "add" | translate }}</button>
+          <button mat-raised-button mat-dialog-close>{{ 'cancel' | translate }}</button>
         </div>
-        <button *ngIf="!(isLoading$ | async)" mat-raised-button color="accent"
-          [disabled]="eventForm.invalid">{{ "send" | translate }}</button>
-        <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
+
       </form>
-      <br>
-      <p>{{ 'foot' | translate }} <a href="https://bertrandpetit.ch">Bertrand PETIT</a>.</p>
-    </mat-card-content>
-    <mat-card-content *ngIf="mailSent">
-      <p>{{ 'mail_sent_content' | translate }}</p>
-    </mat-card-content>
-  </mat-card>
-</section>
+    </mat-tab>
+  </mat-tab-group>
+</div>

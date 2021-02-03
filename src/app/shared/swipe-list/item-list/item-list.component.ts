@@ -10,6 +10,7 @@ import {
   ViewChild, ViewContainerRef
 } from '@angular/core';
 import { SwipeServiceService } from '../swipe-service.service';
+import { Event } from '../../model/event.model';
 
 @Component({
   selector: 'sw-item-list',
@@ -19,14 +20,10 @@ import { SwipeServiceService } from '../swipe-service.service';
 export class ItemListComponent implements AfterViewInit {
   alive = true;
   result: boolean;
+  opened: boolean;
   selfElement = null;
   idElement = null;
-  @Input() inside: {
-    id: number,
-    title: string,
-    subTitle: string,
-    mark?: boolean,
-  };
+  @Input() inside: Event;
 
   @Input('disable-mark') disabledMark = false;
 
@@ -70,6 +67,7 @@ export class ItemListComponent implements AfterViewInit {
   clickOut(event) {
     if (!this.selfElement.contains(event.target)) {
       this.result = false;
+      this.opened = false;
     }
   }
 
@@ -81,6 +79,7 @@ export class ItemListComponent implements AfterViewInit {
     this.swService.swipeObserver.subscribe((a) => {
       if (a !== this.selfElement.id) {
         this.result = false;
+        this.opened = false;
       }
     });
   }
@@ -93,6 +92,9 @@ export class ItemListComponent implements AfterViewInit {
     this.swService.closeAll(this.selfElement.id);
     if (!this.disabledMark) {
       this.result = (res.deltaX < 0);
+      setTimeout(() => {
+        this.opened = (res.deltaX < 0);
+      }, 200);
     }
   }
 
@@ -101,11 +103,11 @@ export class ItemListComponent implements AfterViewInit {
   action = (opt = '') => {
     try {
       this.result = false;
-      const { id } = this.inside;
-      if (opt === 'edit') {
-        this.callback.emit({ action: 'edit', value: id });
+      this.opened = false;
+      if (opt === 'repeat') {
+        this.callback.emit({ action: 'repeat', value: this.inside });
       } else if (opt === 'trash') {
-        this.callback.emit({ action: 'trash', value: id });
+        this.callback.emit({ action: 'trash', value: this.inside });
       }
     } catch (e) {
       console.log('Debes definir ID de edit, y trash');
@@ -114,22 +116,32 @@ export class ItemListComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
 
-    if (this.showMark) {
-      if (this.inside.mark && !this.markTemplate) {
-        const viewMark = this.defaultMark.createEmbeddedView(null);
-        this.viewContainerMark.insert(viewMark);
-      } else if (this.inside.mark && this.markTemplate) {
-        const viewMark = this.markTemplate.createEmbeddedView(null);
-        this.viewContainerMark.insert(viewMark);
-      }
+    // if (this.showMark) {
+    //   if (this.inside.mark && !this.markTemplate) {
+    //     const viewMark = this.defaultMark.createEmbeddedView(null);
+    //     this.viewContainerMark.insert(viewMark);
+    //   } else if (this.inside.mark && this.markTemplate) {
+    //     const viewMark = this.markTemplate.createEmbeddedView(null);
+    //     this.viewContainerMark.insert(viewMark);
+    //   }
 
-      if (!this.inside.mark && !this.notMarkTemplate) {
-        const viewMark = this.defaultNotMark.createEmbeddedView(null);
-        this.viewContainerMark.insert(viewMark);
-      } else if (!this.inside.mark && this.notMarkTemplate) {
-        const viewMark = this.notMarkTemplate.createEmbeddedView(null);
-        this.viewContainerMark.insert(viewMark);
+    //   if (!this.inside.mark && !this.notMarkTemplate) {
+    //     const viewMark = this.defaultNotMark.createEmbeddedView(null);
+    //     this.viewContainerMark.insert(viewMark);
+    //   } else if (!this.inside.mark && this.notMarkTemplate) {
+    //     const viewMark = this.notMarkTemplate.createEmbeddedView(null);
+    //     this.viewContainerMark.insert(viewMark);
+    //   }
+    // }
+
+    if (this.trashTemplate) {
+      const viewTrash = this.trashTemplate.createEmbeddedView(null);
+      if (this.viewContainerTrash) {
+        this.viewContainerTrash.insert(viewTrash);
       }
+    } else if (this.trashTemplate !== null) {
+      const viewTrash = this.defaultTrash.createEmbeddedView(null);
+      this.viewContainerTrash.insert(viewTrash);
     }
 
     if (this.editTemplate) {
@@ -140,16 +152,6 @@ export class ItemListComponent implements AfterViewInit {
     } else if (this.editTemplate !== null) {
       const viewEdit = this.defaultEdit.createEmbeddedView(null);
       this.viewContainerEdit.insert(viewEdit);
-    }
-
-    if (this.trashTemplate) {
-      const viewTrash = this.trashTemplate.createEmbeddedView(null);
-      if (this.viewContainerTrash) {
-        this.viewContainerTrash.insert(viewTrash);
-      }
-    } else if (this.trashTemplate !== null) {
-      const viewTrash = this.defaultTrash.createEmbeddedView(null);
-      this.viewContainerTrash.insert(viewTrash);
     }
 
     setTimeout(() => {

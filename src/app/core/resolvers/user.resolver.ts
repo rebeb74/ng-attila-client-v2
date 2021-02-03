@@ -26,12 +26,13 @@ export class UserResolver implements Resolve<boolean> {
     ) { }
 
     resolve(): Observable<boolean> {
-        const accessTokens: string = this.authService.getAccessToken();
+        const accessToken: string = this.authService.getAccessToken();
         const isUser = localStorage.getItem('user');
         if (!!isUser) {
             return this.authService.getKey()
                 .pipe(
                     map((key) => {
+                        this.store.dispatch(AuthActions.setSecretKey({ key }));
                         const currentUser: User = JSON.parse(this.storageService.decryptData(localStorage.getItem('user'), key));
                         return currentUser;
                     }),
@@ -39,7 +40,7 @@ export class UserResolver implements Resolve<boolean> {
                         mergeMap((userLoaded) => this.notificationDataService.loaded$.pipe(
                             map((notificationsLoaded) => {
                                 if (!userLoaded && !notificationsLoaded) {
-                                    if (!!accessTokens) {
+                                    if (!!accessToken) {
                                         this.store.dispatch(AuthActions.login({ user: currentUser }));
                                     }
                                     this.uiService.initLang(currentUser.lang);

@@ -12,7 +12,7 @@
     <ng-template ngFor [ngForOf]="currentUserNotifications$ | async" let-notification>
       <ng-container [ngSwitch]="notification.code">
 
-        <mat-card @leave class="notif-card" *ngSwitchCase="'friend_request'">
+        <mat-card class="notif-card" *ngSwitchCase="'friend_request'">
           <mat-card-title fxLayout>
             {{ 'notif_friend_request' | translate }}
           </mat-card-title>
@@ -41,7 +41,7 @@
           </mat-card-actions>
         </mat-card>
 
-        <mat-card @leave class="notif-card" *ngSwitchCase="'friend_request_accepted'">
+        <mat-card class="notif-card" *ngSwitchCase="'friend_request_accepted'">
           <mat-card-title fxLayout>
             {{ 'notif_friend_request_accepted' | translate }}
           </mat-card-title>
@@ -64,7 +64,7 @@
           </mat-card-actions>
         </mat-card>
 
-        <mat-card @leave class="notif-card" *ngSwitchCase="'friend_request_declined'">
+        <mat-card class="notif-card" *ngSwitchCase="'friend_request_declined'">
           <mat-card-title fxLayout>
             {{ 'notif_friend_request_declined' | translate }}
           </mat-card-title>
@@ -87,7 +87,7 @@
           </mat-card-actions>
         </mat-card>
 
-        <mat-card @leave class="notif-card" *ngSwitchCase="'removed_from_friends'">
+        <mat-card class="notif-card" *ngSwitchCase="'removed_from_friends'">
           <mat-card-title fxLayout>
             {{ 'removed_from_friends_title' | translate }}
           </mat-card-title>

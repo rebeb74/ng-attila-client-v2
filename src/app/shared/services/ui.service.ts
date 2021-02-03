@@ -10,7 +10,7 @@ import { AppState } from '../../core/store/app.reducer';
 import { NotificationEntityService } from './notification-entity.service';
 import { NotificationSocketService } from './notification-socket.service';
 import { UserSocketService } from './user-socket.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from '../../../environments/environment';
 import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
@@ -18,9 +18,7 @@ import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 
 @Injectable()
 export class UIService {
-    addEventSubject = new Subject<any>();
     currentUserId: string;
-
 
     constructor(
         public translate: TranslateService,
@@ -128,8 +126,7 @@ export class UIService {
             (error) => console.log(error)
         );
         this.userSocketService.listen('user').subscribe(
-            (userId) => {
-                console.log(userId);
+            () => {
                 this.userDataService.getAll();
             },
             (error) => console.log(error)
@@ -148,8 +145,5 @@ export class UIService {
             );
     }
 
-    addEvent($event) {
-        this.addEventSubject.next($event);
-    }
 }
 

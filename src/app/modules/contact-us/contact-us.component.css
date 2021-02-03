@@ -11,7 +11,7 @@ mat-card-content {
   /* text-align: justify; */
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (max-width: 375px) {
   .contact-card {
     max-width: 300px;
     min-width: 300px;

@@ -11,6 +11,8 @@ import { SidenavNotificationsComponent } from './sidenav-notifications/sidenav-n
 import { CoreComponent } from './core.component';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CalendarService } from '../modules/calendar/services/calendar.service';
+import { EventEntityService } from '../modules/calendar/store/event-entity.service';
 
 // AOT compilation support
 function httpTranslateLoader(http: HttpClient) {
@@ -39,6 +41,10 @@ function httpTranslateLoader(http: HttpClient) {
     })
   ],
   exports: [
+  ],
+  providers: [
+    CalendarService,
+    EventEntityService
   ]
 })
 export class CoreModule { }

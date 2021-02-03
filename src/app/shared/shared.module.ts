@@ -9,10 +9,11 @@ import { NotificationEntityService } from './services/notification-entity.servic
 import { NotificationSocketService } from './services/notification-socket.service';
 import { StorageService } from './services/storage.service';
 import { NotificationDataService } from './services/notification-data.service';
+import { SubscriptionManagerComponent } from './subscription-manager/subscription-manager.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [SubscriptionManagerComponent],
   imports: [
     CommonModule
   ],

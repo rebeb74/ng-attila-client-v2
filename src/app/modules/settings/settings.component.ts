@@ -69,7 +69,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   setCurrentUserFriends() {
     this.currentUserFriends$ = this.currentUser$
       .pipe(
-        map((currentUser) => currentUser.friend)
+        map((currentUser) => currentUser.friend),
       );
   }
 
@@ -170,7 +170,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
       first()
     )
       .subscribe((result) => {
-        console.log('result', result);
         if (result) {
           this.showConfirmMessage = true;
         }

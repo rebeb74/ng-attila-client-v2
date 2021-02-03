@@ -1,34 +1,28 @@
-<div class="{{itemClass}}" (swipeleft)="swipeleft($event)" (swipe)="swipeleft($event)" >
-  <ng-template #defaultEdit>
-    edit
-  </ng-template>
-  <ng-template #defaultTrash>
-    trash
-  </ng-template>
-  <ng-template #defaultMark>
-    <div class="yes-marker"></div>
-  </ng-template>
-  <ng-template #defaultNotMark>
-    <div class="not-marker"></div>
-  </ng-template>
+<div class="{{itemClass}}" (swipeleft)="swipeleft($event)" (swipe)="swipeleft($event)">
 
-  <ng-template #defaultCustom>
-    <div data-id="{{idElement}}" class="text truncate">{{inside?.title}}</div>
-    <div data-id="{{idElement}}" class="small truncate">{{inside?.subTitle}}</div>
-  </ng-template>
-
-
-  <div [ngClass]="{'active':(result)}" data-id="{{idElement}}"
-       class=" options-btn swipe-d-flex justify-content-between">
-    <div (click)="action('edit')" class="option-list" *ngIf="editTemplate !== null">
+  <div [ngClass]="{'active':(opened)}" data-id="{{idElement}}"
+    class=" options-btn swipe-d-flex justify-content-between">
+    <div (click)="action('repeat')" class="option-list option-list-task"
+      *ngIf="editTemplate !== null && inside?.type === 'task' && !!inside?.repeat && inside?.repeat !== ''"
+      fxLayout="column" fxLayoutAlign="center center">
       <ng-template let-show="show" #viewContainerEdit></ng-template>
     </div>
-    <div (click)="action('trash')" class="option-list" *ngIf="trashTemplate !== null">
+    <div (click)="action('repeat')" class="option-list option-list-meeting"
+      *ngIf="editTemplate !== null && inside?.type === 'meeting' && !!inside?.repeat" fxLayout="column"
+      fxLayoutAlign="center center">
+      <ng-template let-show="show" #viewContainerEdit></ng-template>
+    </div>
+    <div (click)="action('trash')" class="option-list option-list-task"
+      *ngIf="trashTemplate !== null && inside?.type === 'task'" fxLayout="column" fxLayoutAlign="center center">
+      <ng-template let-show="show" #viewContainerTrash></ng-template>
+    </div>
+    <div (click)="action('trash')" class="option-list option-list-meeting"
+      *ngIf="trashTemplate !== null && inside?.type === 'meeting'" fxLayout="column" fxLayoutAlign="center center">
       <ng-template let-show="show" #viewContainerTrash></ng-template>
     </div>
   </div>
-  <div [ngClass]="{'left-swipe':(result)}" data-id="{{idElement}}" class="list-swipe swipe-d-flex">
 
+  <div [ngClass]="{'left-swipe':(result)}" data-id="{{idElement}}" class="list-swipe swipe-d-flex">
     <div *ngIf="showMark" class="swipe-w-10">
       <ng-container #viewContainerMark></ng-container>
     </div>
@@ -38,12 +32,6 @@
         <ng-template #viewContainerCustom>
         </ng-template>
       </div>
-
-      <div *ngIf="!customTemplate">
-        <ng-template #viewContainerCustom></ng-template>
-      </div>
-
     </div>
-    <div class="mark"></div>
   </div>
 </div>

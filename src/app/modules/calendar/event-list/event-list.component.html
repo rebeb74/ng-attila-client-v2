@@ -1,39 +1,61 @@
-<mat-card class="calendar-card" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="top center">
+<mat-card class="event-list-card" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="top center">
+  <button mat-raised-button color="accent" (click)="addEvent()">{{ 'add_event' | translate }}</button>
   <mat-tab-group mat-align-tabs="center">
     <mat-tab>
-      <ng-template mat-tab-label>
-        <span class="task" matBadge="4" matBadgeOverlap="false" matBadgeColor="accent">Tasks</span>
-      </ng-template>
-      <mat-card-content>
-        <!-- <div class="event event_task">
 
-        </div> -->
-        <sw-item-list *ngFor="let item of list" [inside]="item" [item-class]="'list-custom'"
-          [editTemplate]="editTemplate" [trashTemplate]="trashTemplate" (callback)="action($event)"
-          (swipeCb)="swipeCallback($event)" (swClick)="clickOnItem(item)">
+      <ng-template mat-tab-label>
+        <span class="task" [matBadge]="(taskList$ | async).length" matBadgeOverlap="false"
+          matBadgeColor="accent">{{ 'tasks' | translate}}</span>
+      </ng-template>
+
+      <mat-card-content>
+        <sw-item-list *ngFor="let item of taskList$ | async" [inside]="item" [trashTemplate]="trashTemplate"
+          [editTemplate]="editTemplate" (callback)="action($event)" (swipeCb)="swipeCallback($event)"
+          (swClick)="editEvent(item)" [customTemplate]="customTemplateSrc">
         </sw-item-list>
       </mat-card-content>
 
     </mat-tab>
+
     <mat-tab>
+
       <ng-template mat-tab-label>
-        <span class="meeting" matBadge="4" matBadgeOverlap="false" matBadgeColor="warn">Meeting</span>
+        <span class="meeting" [matBadge]="(meetingList$ | async).length" matBadgeOverlap="false"
+          matBadgeColor="warn">{{ 'meetings' | translate}}</span>
       </ng-template>
+
+      <mat-card-content>
+        <sw-item-list *ngFor="let item of meetingList$ | async" [inside]="item" [editTemplate]="editTemplate"
+          [trashTemplate]="trashTemplate" (callback)="action($event)" (swipeCb)="swipeCallback($event)"
+          (swClick)="editEvent(item)" [customTemplate]="customTemplateSrc">
+        </sw-item-list>
+      </mat-card-content>
 
     </mat-tab>
   </mat-tab-group>
 
-  <!-- Defined yout template for icon button (edit)-->
-
   <ng-template #editTemplate>
-	<i class="fas fa-edit"></i>
-	<!-- <mat-icon>delete</mat-icon> -->
+    <i class="fas fa-redo icons"></i>
   </ng-template>
 
-  <!-- Defined yout template for icon button (trash)-->
-
   <ng-template #trashTemplate>
-    <i class="fas fa-trash"></i>
+    <i class="fas fa-trash icons"></i>
   </ng-template>
 
 </mat-card>
+
+<ng-template #customTemplateSrc let-item="item" let-id="id">
+  <div>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <div fxFlex="99%" class="list-swipe">
+        <div>
+          {{ item.title }}
+        </div>
+        <div class="small" *ngIf="item.type === 'meeting'">
+          {{ item?.startHour }}
+        </div>
+      </div>
+      <div fxFlex="1%" class="mark"></div>
+    </div>
+  </div>
+</ng-template>

@@ -1,19 +1,16 @@
 <h3 fxLayoutAlign="center" mat-dialog-title>{{ 'ask_new_friend_title'| translate }}</h3>
-<form>
-  <mat-dialog-content fxLayoutAlign="center">
-    <mat-form-field fxLayoutAlign="center">
-      <input type="text" matInput #newFriendInput [placeholder]="'ask_new_friend_user' | translate"
-        [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let user of data.availableNewFriends$ | async" [value]="user.username">
-          {{ user.username }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-  </mat-dialog-content>
-  <mat-dialog-actions fxLayoutAlign="center">
-    <button mat-raised-button [mat-dialog-close]="newFriendInput.value"
-      type="submit">{{ 'submit' | translate }}</button>
-    <button mat-raised-button [mat-dialog-close]="null">{{ 'cancel' | translate }}</button>
-  </mat-dialog-actions>
-</form>
+<mat-dialog-content fxLayoutAlign="center">
+  <mat-form-field fxLayoutAlign="center">
+    <input type="text" matInput #newFriendInput [placeholder]="'ask_new_friend_user' | translate"
+      [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let user of data.availableNewFriends$ | async" [value]="user.username">
+        {{ user.username }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center">
+  <button mat-raised-button [mat-dialog-close]="newFriendInput.value">{{ 'submit' | translate }}</button>
+  <button mat-raised-button [mat-dialog-close]="null">{{ 'cancel' | translate }}</button>
+</mat-dialog-actions>

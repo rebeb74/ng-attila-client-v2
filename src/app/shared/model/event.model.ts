@@ -1,3 +1,5 @@
+import { Friend } from './user.model';
+
 export interface Event {
     _id?: string;
     userId: string;
@@ -8,7 +10,7 @@ export interface Event {
     place?: string;
     alert?: Date;
     repeat?: string;
-    altern?: string;
+    altern?: Friend;
     type: 'meeting' | 'task';
     createdOn: string;
     updatedOn: string;

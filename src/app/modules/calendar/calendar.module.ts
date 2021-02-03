@@ -25,6 +25,8 @@ import { AddEventComponent } from './add-event/add-event.component';
 import { StoreModule } from '@ngrx/store';
 import { EventListComponent } from './event-list/event-list.component';
 import { SwipeAngularListModule } from 'src/app/shared/swipe-list/swipe-angular-list.module';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { EditEventComponent } from './edit-event/edit-event.component';
 
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
@@ -41,7 +43,8 @@ function httpTranslateLoader(http: HttpClient) {
   declarations: [
     CalendarComponent,
     AddEventComponent,
-    EventListComponent
+    EventListComponent,
+    EditEventComponent
   ],
   imports: [
     CommonModule,
@@ -51,6 +54,7 @@ function httpTranslateLoader(http: HttpClient) {
     MaterialModule,
     FlexLayoutModule,
     ReactiveFormsModule,
+    NgxMaterialTimepickerModule,
     StoreModule.forFeature('calendar', calendarReducer),
     TranslateModule.forChild({
       loader: {

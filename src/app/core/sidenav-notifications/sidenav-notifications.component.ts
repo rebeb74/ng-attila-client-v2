@@ -20,7 +20,6 @@ import { getCurrentUser } from '../auth/store/auth.reducer';
   templateUrl: './sidenav-notifications.component.html',
   styleUrls: ['./sidenav-notifications.component.css'],
   animations: [
-    // fadeOutUpOnLeaveAnimation({ anchor: 'leave', duration: 500, delay: 100, translate: '100%' })
   ]
 })
 

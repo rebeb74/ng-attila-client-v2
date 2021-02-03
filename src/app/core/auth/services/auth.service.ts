@@ -145,6 +145,17 @@ export class AuthService {
       );
   }
 
+  storeCurrentUser(user: User, secretKey?) {
+    if (!!secretKey) {
+      localStorage.setItem('user', this.storageService.encryptData(JSON.stringify(user), secretKey));
+    } else {
+      this.getKey().subscribe((key) => {
+        this.store.dispatch(AuthActions.setSecretKey({ key }));
+        localStorage.setItem('user', this.storageService.encryptData(JSON.stringify(user), key));
+      });
+    }
+  }
+
   private getRefreshToken() {
     return localStorage.getItem(this.REFRESH_TOKEN);
   }
@@ -156,13 +167,6 @@ export class AuthService {
   private storeRefreshToken(refreshToken: string) {
     localStorage.setItem(this.REFRESH_TOKEN, refreshToken);
   }
-
-  private storeCurrentUser(user: User) {
-    this.getKey().subscribe((key) => {
-      localStorage.setItem('user', this.storageService.encryptData(JSON.stringify(user), key));
-    });
-  }
-
 
   private storeTokensAndUser(tokens: Tokens, user: User) {
     this.storeAccessToken(tokens.accessToken);

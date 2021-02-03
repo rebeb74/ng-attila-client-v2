@@ -15,3 +15,8 @@ export const setCurrentUser = createAction(
   '[Auth] Set Current User',
   props<{ user: User }>()
 );
+
+export const setSecretKey = createAction(
+  '[Auth] Set Secret Key',
+  props<{ key: string }>()
+);

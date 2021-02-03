@@ -6,6 +6,8 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -14,6 +16,9 @@ import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keyc
 
 import { addDays, areDatesInSameMonth, getDaysOfMonth, isDateAfter, isSameDate, isValidDate, startOfDay } from '../date-utils';
 import { DayStepDelta } from './day-step-delta.model';
+import { EventEntityService } from '../../store/event-entity.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export const keyCodesToDaySteps = new Map<number, DayStepDelta>([
   [RIGHT_ARROW, 1],
@@ -28,8 +33,9 @@ export const keyCodesToDaySteps = new Map<number, DayStepDelta>([
   styleUrls: ['./month.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MonthComponent implements AfterViewInit, OnChanges {
+export class MonthComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   daysOfMonth!: readonly Date[];
+  daysOfMonth$: Observable<any[]>;
   firstDayOfMonth!: string;
   currentDate = startOfDay(new Date());
 
@@ -39,7 +45,6 @@ export class MonthComponent implements AfterViewInit, OnChanges {
   @Input() min?: Date | null;
   @Input() locale?: string;
   @Input() activeDate!: Date;
-  @Input() events!: Date[];
 
   private _month!: Date;
 
@@ -51,6 +56,23 @@ export class MonthComponent implements AfterViewInit, OnChanges {
     if (!this._month || !areDatesInSameMonth(this._month, month)) {
       this._month = month;
       this.daysOfMonth = getDaysOfMonth(this._month);
+      this.daysOfMonth$ = this.eventDataService.entities$
+        .pipe(
+          map((events) => {
+            const daysOfMonth = getDaysOfMonth(this._month);
+            let newDaysOfMonth = [];
+            daysOfMonth.forEach((dayOfMonth) => {
+              const tasksOfDay = events.filter((event) => new Date(event.startTime).getTime() === dayOfMonth.getTime() && event.type === 'task');
+              const meetingsOfDay = events.filter((event) => new Date(event.startTime).getTime() === dayOfMonth.getTime() && event.type === 'meeting');
+              newDaysOfMonth = [...newDaysOfMonth, {
+                dayOfMonth: dayOfMonth,
+                tasks: tasksOfDay,
+                meetings: meetingsOfDay
+              }];
+            });
+            return newDaysOfMonth;
+          })
+        );
       this.firstDayOfMonth = WeekDay[this.daysOfMonth[0].getDay()].toLowerCase();
     }
   }
@@ -58,10 +80,16 @@ export class MonthComponent implements AfterViewInit, OnChanges {
   @Output() selectedDateChange = new EventEmitter<Date>();
   @Output() activeDateChange = new EventEmitter<Date>();
 
-  constructor(public changeDetectorRef: ChangeDetectorRef) { }
+  constructor(
+    public changeDetectorRef: ChangeDetectorRef,
+    private eventDataService: EventEntityService,
+  ) { }
+
+  ngOnInit() {
+  }
+
 
   ngAfterViewInit() {
-    this.changeDetectorRef.detach();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -80,15 +108,6 @@ export class MonthComponent implements AfterViewInit, OnChanges {
 
   isActive(dayOfMonth: Date) {
     return !!this.activeDate && isSameDate(dayOfMonth, this.activeDate);
-  }
-
-  nbEventsDay(dayOfMonth: Date) {
-    const nbEventsDay = this.events.filter((day) => day.getTime() === dayOfMonth.getTime());
-    if (this.events.length > 0 && !!nbEventsDay) {
-      return nbEventsDay.length;
-    } else {
-      return null;
-    }
   }
 
   isCurrent(dayOfMonth: Date) {
@@ -112,6 +131,9 @@ export class MonthComponent implements AfterViewInit, OnChanges {
     if (this.isTimeElement(target)) {
       this.onDateClick(target);
     }
+  }
+
+  ngOnDestroy(): void {
   }
 
   private onDateClick(timeElement: HTMLTimeElement) {

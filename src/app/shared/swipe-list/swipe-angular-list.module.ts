@@ -3,6 +3,8 @@ import { SwipeAngularListComponent } from './swipe-angular-list.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { CommonModule } from '@angular/common';
 import { HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -15,7 +17,9 @@ export class HammerConfig extends HammerGestureConfig {
 @NgModule({
   declarations: [SwipeAngularListComponent, ItemListComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    FlexLayoutModule
   ],
   providers: [
     {

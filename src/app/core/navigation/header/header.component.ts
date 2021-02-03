@@ -11,6 +11,7 @@ import { AppState, selectUrl } from '../../store/app.reducer';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { User } from 'src/app/shared/model/user.model';
 import { Router } from '@angular/router';
+import { CalendarService } from 'src/app/modules/calendar/services/calendar.service';
 
 @Component({
   selector: 'app-header',
@@ -32,7 +33,8 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private uiService: UIService,
     private notificationDataService: NotificationEntityService,
-    private router: Router
+    private router: Router,
+    private calendarService: CalendarService
   ) {
   }
 
@@ -66,8 +68,8 @@ export class HeaderComponent implements OnInit {
     this.authService.logout().subscribe();
   }
 
-  addEvent($event) {
-    this.uiService.addEvent($event);
+  addEvent() {
+    this.calendarService.addEvent();
   }
 
 }

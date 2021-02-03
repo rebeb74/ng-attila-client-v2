@@ -30,12 +30,8 @@ export class UserSocketService {
 
   listen(eventName: string) {
     return new Observable<User>((subscriber) => {
-      this.store.select(getIsLoggedIn).subscribe((isLoggedIn) => {
-        if (isLoggedIn) {
-          this.socket.on(eventName, (data) => {
-            subscriber.next(data);
-          });
-        } return subscriber.complete();
+      this.socket.on(eventName, (data) => {
+        subscriber.next(data);
       });
     });
   }

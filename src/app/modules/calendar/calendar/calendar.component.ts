@@ -43,7 +43,6 @@ export class CalendarComponent extends CustomControl<Date> implements AfterConte
   disabled = false;
   showMonthStepper = true;
   activeDate = startOfDay(new Date());
-  events = [new Date(2021, 0, 1, 0, 0, 0, 0), new Date(2021, 0, 2, 0, 0, 0, 0)];
   activeMonth?: Date;
 
   private onChange?: (updatedValue: Date) => void;

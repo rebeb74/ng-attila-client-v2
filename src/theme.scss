@@ -161,7 +161,6 @@ $mat-theming-warn: mat-palette($md-attila-warn, A100);
 $mat-dark-theme: mat-dark-theme($mat-theming-primary, $mat-theming-accent, $mat-theming-warn);
 
 
-
 html,
 body {
   height: 100%;
@@ -227,3 +226,12 @@ a {
 * {
   touch-action: pan-y !important;
 }
+
+.timepicker-backdrop-overlay{
+  z-index: 1000 !important;
+}
+
+.timepicker-overlay{
+  z-index: 1000 !important;
+}
+

@@ -91,7 +91,7 @@
   </div>
 
   <div mat-fab *ngIf="(pageName$ | async) === '/calendar' || (pageName$ | async) === '/checklist'" fxFlex="20%" fxLayoutAlign="center center">
-    <button mat-icon-button (click)="addEvent($event)" class="bot-add-button">
+    <button mat-icon-button (click)="addEvent()" class="bot-add-button">
       <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
     </button>
   </div>
