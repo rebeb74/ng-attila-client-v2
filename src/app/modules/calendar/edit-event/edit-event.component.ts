@@ -1,24 +1,25 @@
-import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map, takeUntil } from 'rxjs/operators';
 import { Event } from 'src/app/shared/model/event.model';
 import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { Friend } from 'src/app/shared/model/user.model';
 import { getCurrentLanguage } from 'src/app/shared/store/ui.reducer';
 import { CalendarState, getSelectedDate } from '../store/calendar.reducer';
+import { SubscriptionManagerComponent } from 'src/app/shared/subscription-manager/subscription-manager.component';
 
 @Component({
   selector: 'app-edit-event',
   templateUrl: './edit-event.component.html',
   styleUrls: ['./edit-event.component.scss']
 })
-export class EditEventComponent implements OnInit, AfterViewInit {
+export class EditEventComponent extends SubscriptionManagerComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedDate$: Observable<string>;
   currentUserFriends$: Observable<Friend[]>;
   addTaskForm: FormGroup;
@@ -30,7 +31,9 @@ export class EditEventComponent implements OnInit, AfterViewInit {
     private calendarStore: Store<CalendarState>,
     private store: Store<AppState>,
     private dateAdapter: DateAdapter<any>,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     console.log('event', this.passedData.event);
@@ -48,7 +51,7 @@ export class EditEventComponent implements OnInit, AfterViewInit {
 
   initForm() {
     if (this.passedData.event.type === 'task') {
-      this.currentUserFriends$.subscribe((currentUserFriends) => {
+      this.currentUserFriends$.pipe(first()).subscribe((currentUserFriends) => {
         this.addTaskForm = new FormGroup({
           _id: new FormControl(this.passedData.event._id, {
             validators: [Validators.required]
@@ -102,7 +105,7 @@ export class EditEventComponent implements OnInit, AfterViewInit {
   }
 
   setLanguages() {
-    this.store.select(getCurrentLanguage).subscribe((lang) => {
+    this.store.select(getCurrentLanguage).pipe(takeUntil(this.ngDestroyed$)).subscribe((lang) => {
       this.dateAdapter.setLocale(lang + '-' + lang.toUpperCase());
       NgxMaterialTimepickerModule.setLocale(lang + '-' + lang.toUpperCase());
     });
@@ -110,5 +113,9 @@ export class EditEventComponent implements OnInit, AfterViewInit {
 
   friendComparisonFunction(friend, value): boolean {
     return friend.username === value.username;
+  }
+
+  onDestroy() {
+    this.onDestroy();
   }
 }

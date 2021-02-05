@@ -32,7 +32,7 @@ export class UserDataService extends DefaultDataService<User>{
                     this.store.dispatch(AuthActions.setCurrentUser({ user: currentUserUpdated }));
                     this.authService.storeCurrentUser(currentUserUpdated, secretKey);
                     return users;
-                })
+                }),
             );
     }
 }

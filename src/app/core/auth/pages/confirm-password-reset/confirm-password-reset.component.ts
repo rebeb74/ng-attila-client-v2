@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, noop } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
-import { take } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { UIService } from 'src/app/shared/services/ui.service';
 
 @Component({
@@ -38,7 +38,7 @@ export class ConfirmPasswordResetComponent implements OnInit {
   }
 
   checkToken() {
-    this.authService.validatePasswordResetLink(this.token).pipe(take(1)).subscribe(
+    this.authService.validatePasswordResetLink(this.token).pipe(first()).subscribe(
       noop,
       (error) => {
         this.showInvalidLinkMessage = true;
@@ -55,7 +55,7 @@ export class ConfirmPasswordResetComponent implements OnInit {
       return;
     }
 
-    this.authService.resetPassword(this.token, password).subscribe(
+    this.authService.resetPassword(this.token, password).pipe(first()).subscribe(
       () => {
         this.uiService.showSnackbar('reset_password_success', null, 5000, 'success');
         this.router.navigateByUrl('/login');

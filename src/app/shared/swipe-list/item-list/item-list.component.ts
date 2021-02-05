@@ -5,19 +5,22 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnDestroy,
   Output,
   TemplateRef,
   ViewChild, ViewContainerRef
 } from '@angular/core';
 import { SwipeServiceService } from '../swipe-service.service';
 import { Event } from '../../model/event.model';
+import { SubscriptionManagerComponent } from '../../subscription-manager/subscription-manager.component';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'sw-item-list',
   templateUrl: './item-list.component.html',
   styleUrls: ['./item-list.component.css']
 })
-export class ItemListComponent implements AfterViewInit {
+export class ItemListComponent extends SubscriptionManagerComponent implements AfterViewInit, OnDestroy {
   alive = true;
   result: boolean;
   opened: boolean;
@@ -72,11 +75,12 @@ export class ItemListComponent implements AfterViewInit {
   }
 
   constructor(elRef: ElementRef, private swService: SwipeServiceService) {
+    super();
     this.selfElement = elRef.nativeElement;
     this.idElement = `list-swipe-${this.random()}`;
     this.selfElement.setAttribute('data-id', this.idElement);
     this.selfElement.id = this.idElement;
-    this.swService.swipeObserver.subscribe((a) => {
+    this.swService.swipeObserver.pipe(takeUntil(this.ngDestroyed$)).subscribe((a) => {
       if (a !== this.selfElement.id) {
         this.result = false;
         this.opened = false;
@@ -186,4 +190,7 @@ export class ItemListComponent implements AfterViewInit {
 
   }
 
+  ngOnDestroy() {
+    this.onDestroy();
+  }
 }

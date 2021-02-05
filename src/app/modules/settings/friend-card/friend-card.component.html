@@ -1,0 +1,85 @@
+<div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center">
+    <mat-card class="settings-card" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center">
+
+      <mat-card-title>
+        {{ 'friend_title' | translate }}
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="(currentUserFriends$ | async).length === 0">
+        <p>{{ 'empty_friend' | translate }}</p>
+      </mat-card-subtitle>
+
+      <div *ngIf="(currentUserFriends$ | async).length > 0">
+        <mat-card-content fxLayoutAlign="center" class="content-no-padding">
+          <mat-list #friend>
+            <mat-list-item *ngFor="let friend of currentUserFriends$ | async" fxLayout="row"
+              fxLayoutAlign="center center">
+              <span fxFlex="85%" fxLayoutAlign="start">{{ friend.username }}</span>
+              <div fxFlex="15%" fxLayout="row">
+                <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
+                  (click)="removeFriend(friend.userId)" color="warn" fxLayoutAlign="center center">
+                  <mat-icon class="accept-decline-icon">close</mat-icon>
+                </button>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </div>
+
+      <mat-card-title>
+        {{ 'friend_request_sent_title' | translate }}
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="(friendRequestsSent$ | async).length === 0">
+        <p>{{ 'empty_request_sent_friend' | translate }}</p>
+      </mat-card-subtitle>
+
+      <div *ngIf="(friendRequestsSent$ | async).length > 0">
+        <mat-card-content fxLayoutAlign="center" class="content-no-padding">
+          <mat-list #friend>
+            <mat-list-item *ngFor="let friendRequest of friendRequestsSent$ | async" fxLayout="row"
+              fxLayoutAlign="center center">
+              <span fxFlex="85%" fxLayoutAlign="start">{{ friendRequest.notificationUsername }}</span>
+              <div fxFlex="15%" fxLayout="row">
+                <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
+                  (click)="deleteNotification(friendRequest)" color="warn" fxLayoutAlign="center center">
+                  <mat-icon class="accept-decline-icon">close</mat-icon>
+                </button>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </div>
+
+      <mat-card-title>
+        {{ 'friend_request_received_title' | translate }}
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="(friendRequestsReceived$ | async).length === 0">
+        <p>{{ 'empty_request_received_friend' | translate }}</p>
+      </mat-card-subtitle>
+      <mat-card-content fxLayoutAlign="center" class="content-no-padding"
+        *ngIf="(friendRequestsReceived$ | async).length > 0">
+        <mat-list #friendReceived fxLayout="column">
+          <mat-list-item *ngFor="let friendRequest of friendRequestsReceived$ | async" fxLayout="row"
+            fxLayoutAlign="center center">
+            <span fxFlex="70%" fxLayoutAlign="start">{{ friendRequest.senderUsername }}</span>
+            <div fxFlex="15%" fxLayout="row">
+              <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
+                (click)="onAcceptFriendRequest(friendRequest)" fxLayoutAlign="center center">
+                <mat-icon class="accept-decline-icon">done</mat-icon>
+              </button>
+            </div>
+            <div fxFlex="15%" fxLayout="row">
+              <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
+                (click)="onDeclineFriendRequest(friendRequest)" color="warn" fxLayoutAlign="center center">
+                <mat-icon class="accept-decline-icon">close</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+
+      <div fxLayoutAlign="center" class="margin-bottom-add-friend-btn">
+        <button type="submit" mat-raised-button color="accent"
+          (click)="addFriend()">{{ "add_friend_button" | translate }}</button>
+      </div>
+    </mat-card>
+  </div>

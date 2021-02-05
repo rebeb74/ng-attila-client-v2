@@ -1,0 +1,13 @@
+<mat-card class="settings-card" fxLayout="column" fxLayoutGap="10px">
+  <mat-card-title>
+    {{ 'language' | translate }}
+  </mat-card-title>
+  <mat-card-actions fxLayoutAlign="center center">
+    <mat-button-toggle-group #selectedLang="matButtonToggleGroup" name="language" [value]="currentLang$ | async"
+      (change)="switchLang(selectedLang.value)">
+      <mat-button-toggle *ngFor="let l of (languages$ | async)" [value]="l">
+        {{ l.toUpperCase() }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </mat-card-actions>
+</mat-card>

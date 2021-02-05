@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { getIsLoading } from 'src/app/shared/store/ui.reducer';
 import { Router } from '@angular/router';
 import { AppState } from '../../../store/app.reducer';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,7 @@ export class LoginComponent implements OnInit {
     this.authService.login({
       username: this.loginForm.value.username,
       password: this.loginForm.value.password
-    }).subscribe((result) => {
+    }).pipe(first()).subscribe((result) => {
       if (result) {
         this.router.navigateByUrl('/');
       }

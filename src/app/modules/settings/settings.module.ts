@@ -8,8 +8,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { SettingsRoutingModule } from './settings-routing.module';
-import { AskPasswordComponent } from './ask-password/ask-password.component';
-import { AskNewFriendComponent } from './ask-new-friend/ask-new-friend.component';
+import { AskPasswordComponent } from './account-card/ask-password/ask-password.component';
+import { AskNewFriendComponent } from './friend-card/ask-new-friend/ask-new-friend.component';
+import { AccountCardComponent } from './account-card/account-card.component';
+import { LanguageCardComponent } from './language-card/language-card.component';
+import { ResetPasswordCardComponent } from './reset-password-card/reset-password-card.component';
+import { FriendCardComponent } from './friend-card/friend-card.component';
+import { SettingsService } from './services/settings.service';
 
 // AOT compilation support
 function httpTranslateLoader(http: HttpClient) {
@@ -21,6 +26,10 @@ function httpTranslateLoader(http: HttpClient) {
     SettingsComponent,
     AskPasswordComponent,
     AskNewFriendComponent,
+    AccountCardComponent,
+    LanguageCardComponent,
+    ResetPasswordCardComponent,
+    FriendCardComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +45,8 @@ function httpTranslateLoader(http: HttpClient) {
       }
     })
   ],
-  entryComponents: [AskPasswordComponent, AskNewFriendComponent],
+  providers: [
+    SettingsService
+  ]
 })
 export class SettingsModule { }

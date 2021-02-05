@@ -1,20 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { User } from '../model/user.model';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { getCurrentUser, getIsLoggedIn } from 'src/app/core/auth/store/auth.reducer';
-import { tap, withLatestFrom } from 'rxjs/operators';
+import { takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { SubscriptionManagerComponent } from '../subscription-manager/subscription-manager.component';
 
 @Injectable()
-export class UserSocketService {
+export class UserSocketService extends SubscriptionManagerComponent implements OnDestroy {
   socket: any;
   readonly url: string = 'http://localhost:3000/user'
 
   constructor(
     private store: Store<AppState>
   ) {
+    super();
     this.store.select(getIsLoggedIn)
       .pipe(
         withLatestFrom(this.store.select(getCurrentUser)),
@@ -22,7 +24,8 @@ export class UserSocketService {
           if (isLoggedIn) {
             this.socket = io(this.url, { 'reconnection': true, 'reconnectionDelay': 500, query: `userId=${currentUser._id}` });
           }
-        })
+        }),
+        takeUntil(this.ngDestroyed$)
       )
       .subscribe();
   }
@@ -40,4 +43,7 @@ export class UserSocketService {
     this.socket.disconnect();
   }
 
+  onDestroy() {
+    this.onDestroy();
+  }
 }

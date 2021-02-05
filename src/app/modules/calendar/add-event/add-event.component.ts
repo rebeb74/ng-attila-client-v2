@@ -1,15 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { first, map, switchMap, takeUntil } from 'rxjs/operators';
 import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { Friend } from 'src/app/shared/model/user.model';
 import { getCurrentLanguage } from 'src/app/shared/store/ui.reducer';
+import { SubscriptionManagerComponent } from 'src/app/shared/subscription-manager/subscription-manager.component';
 import { CalendarState, getSelectedDate } from '../store/calendar.reducer';
 
 @Component({
@@ -17,7 +18,7 @@ import { CalendarState, getSelectedDate } from '../store/calendar.reducer';
   templateUrl: './add-event.component.html',
   styleUrls: ['./add-event.component.scss']
 })
-export class AddEventComponent implements OnInit {
+export class AddEventComponent extends SubscriptionManagerComponent implements OnInit, OnDestroy {
   selectedDate$: Observable<string>;
   currentUserFriends$: Observable<Friend[]>;
   addTaskForm: FormGroup;
@@ -29,7 +30,9 @@ export class AddEventComponent implements OnInit {
     private calendarStore: Store<CalendarState>,
     private store: Store<AppState>,
     private dateAdapter: DateAdapter<any>,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.setLanguages();
@@ -44,6 +47,7 @@ export class AddEventComponent implements OnInit {
   initForm() {
     this.selectedDate$
       .pipe(
+        first(),
         switchMap((selectedDate) => this.currentUserFriends$.pipe(
           map((currentUserFriends) => {
             return { selectedDate, currentUserFriends };
@@ -96,13 +100,15 @@ export class AddEventComponent implements OnInit {
   }
 
   setLanguages() {
-    this.store.select(getCurrentLanguage).subscribe((lang) => {
+    this.store.select(getCurrentLanguage).pipe(takeUntil(this.ngDestroyed$)).subscribe((lang) => {
       this.dateAdapter.setLocale(lang + '-' + lang.toUpperCase());
       NgxMaterialTimepickerModule.setLocale(lang + '-' + lang.toUpperCase());
     });
   }
 
-
+  ngOnDestroy() {
+    this.onDestroy();
+  }
 }
 
 

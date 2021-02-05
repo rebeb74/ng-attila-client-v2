@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { AuthService } from '../../services/auth.service';
 import { getIsLoading } from 'src/app/shared/store/ui.reducer';
 import { AppState } from '../../../store/app.reducer';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-password-reset',
@@ -34,7 +35,7 @@ export class PasswordResetComponent implements OnInit {
   sendPasswordResetRequest() {
     const email = this.frmPasswordReset.controls['email'].value;
 
-    this.authService.sendPasswordResetRequest(email).subscribe((result) => {
+    this.authService.sendPasswordResetRequest(email).pipe(first()).subscribe((result) => {
       if (result) {
         this.showConfirmMessage = true;
       }

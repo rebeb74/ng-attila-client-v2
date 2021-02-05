@@ -1,24 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { Notification } from '../model/notification.model';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { getCurrentUser, getIsLoggedIn } from 'src/app/core/auth/store/auth.reducer';
-import { tap, withLatestFrom } from 'rxjs/operators';
+import { takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { SubscriptionManagerComponent } from '../subscription-manager/subscription-manager.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationSocketService {
+export class NotificationSocketService extends SubscriptionManagerComponent implements OnDestroy {
   socket: any;
   readonly url: string = 'http://localhost:3000/notification'
 
   constructor(
     private store: Store<AppState>
   ) {
+    super();
     this.store.select(getIsLoggedIn)
       .pipe(
+        takeUntil(this.ngDestroyed$),
         withLatestFrom(this.store.select(getCurrentUser)),
         tap(([isLoggedIn, currentUser]) => {
           if (isLoggedIn) {
@@ -40,6 +43,10 @@ export class NotificationSocketService {
 
   disconnect() {
     this.socket.disconnect();
+  }
+
+  onDestroy() {
+    this.onDestroy();
   }
 
 }

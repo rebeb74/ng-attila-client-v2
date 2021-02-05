@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { first, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, first, map, mergeMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { UserEntityService } from './user-entity.service';
 import { UiActions } from '../store/action-types';
 import { getCurrentLanguage, getLanguages } from '../store/ui.reducer';
@@ -14,10 +14,11 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from '../../../environments/environment';
 import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
+import { SubscriptionManagerComponent } from '../subscription-manager/subscription-manager.component';
 
 
 @Injectable()
-export class UIService {
+export class UIService extends SubscriptionManagerComponent implements OnDestroy {
     currentUserId: string;
 
     constructor(
@@ -30,7 +31,7 @@ export class UIService {
         private userSocketService: UserSocketService,
         private http: HttpClient,
     ) {
-
+        super();
     }
 
     getCurrentUserId() {
@@ -42,7 +43,7 @@ export class UIService {
     }
 
     initLang(lang?: string) {
-        this.store.select(getLanguages).subscribe((languages) => this.translate.addLangs(languages));
+        this.store.select(getLanguages).pipe(takeUntil(this.ngDestroyed$)).subscribe((languages) => this.translate.addLangs(languages));
         this.store.select(getCurrentLanguage).pipe(first()).subscribe((currentLanguage) => {
             if (!!lang) {
                 this.translate.setDefaultLang(lang);
@@ -111,21 +112,24 @@ export class UIService {
                     }
                 }
                 ),
-                take(1),
+                first(),
             )
             .subscribe();
     }
 
+    deleteNotification(notification) {
+        this.notificationDataService.delete(notification);
+    }
 
     webSocketListener() {
-        this.notificationSocketService.listen('notification').subscribe(
+        this.notificationSocketService.listen('notification').pipe(takeUntil(this.ngDestroyed$), debounceTime(500)).subscribe(
             () => {
                 this.notificationDataService.clearCache();
                 this.notificationDataService.getAll();
             },
             (error) => console.log(error)
         );
-        this.userSocketService.listen('user').subscribe(
+        this.userSocketService.listen('user').pipe(takeUntil(this.ngDestroyed$), debounceTime(500)).subscribe(
             () => {
                 this.userDataService.getAll();
             },
@@ -137,7 +141,7 @@ export class UIService {
         this.store.dispatch(UiActions.startLoading());
         return this.http.post<any>(`${env.apiUrl}/contact`, mailData)
             .pipe(
-                take(1),
+                first(),
                 map((res) => {
                     this.store.dispatch(UiActions.stopLoading());
                     return res;
@@ -145,5 +149,8 @@ export class UIService {
             );
     }
 
+    onDestroy() {
+        this.onDestroy();
+    }
 }
 

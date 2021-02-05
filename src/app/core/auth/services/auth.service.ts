@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { UIService } from '../../../shared/services/ui.service';
 
 import { AuthData } from '../models/auth-data.model';
-import { catchError, concatMap, first, map, mapTo, tap } from 'rxjs/operators';
+import { catchError, concatMap, first, map, mapTo, switchMap, tap } from 'rxjs/operators';
 import { AuthActions } from '../store/action-types';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../../shared/model/user.model';
@@ -25,7 +25,6 @@ import { NotificationSocketService } from 'src/app/shared/services/notification-
 export class AuthService {
   private readonly ACCESS_TOKEN = 'ACCESS_TOKEN';
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
-  currentLang: string;
 
   constructor(
     private uiService: UIService,
@@ -113,14 +112,15 @@ export class AuthService {
 
   sendPasswordResetRequest(email): Observable<boolean> {
     this.store.dispatch(UiActions.startLoading());
-    this.store.select(getCurrentLanguage).subscribe((lang: string) => {
-      this.currentLang = lang;
-    });
-    return this.http.post<any>(`${env.apiUrl}/reset`, { lang: this.currentLang, email })
+    return this.store.select(getCurrentLanguage)
       .pipe(
-        first(),
-        tap(() => this.store.dispatch(UiActions.stopLoading())),
-        map((emailSent) => emailSent.emailSent)
+        switchMap((currentLanguage) => this.http.post<any>(`${env.apiUrl}/reset`, { lang: currentLanguage, email })
+          .pipe(
+            map((emailSent) => {
+              this.store.dispatch(UiActions.stopLoading());
+              return emailSent.emailSent;
+            })
+          ))
       );
   }
 
@@ -149,7 +149,7 @@ export class AuthService {
     if (!!secretKey) {
       localStorage.setItem('user', this.storageService.encryptData(JSON.stringify(user), secretKey));
     } else {
-      this.getKey().subscribe((key) => {
+      this.getKey().pipe(first()).subscribe((key) => {
         this.store.dispatch(AuthActions.setSecretKey({ key }));
         localStorage.setItem('user', this.storageService.encryptData(JSON.stringify(user), key));
       });

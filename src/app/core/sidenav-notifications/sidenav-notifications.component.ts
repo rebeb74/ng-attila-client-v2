@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Friend, User } from 'src/app/shared/model/user.model';
 import { Observable } from 'rxjs';
 import { Notification } from '../../shared/model/notification.model';
-import { first, map, take, withLatestFrom } from 'rxjs/operators';
+import { first, map, withLatestFrom } from 'rxjs/operators';
 import { getCurrentLanguage } from '../../shared/store/ui.reducer';
 import { NotificationEntityService } from '../../shared/services/notification-entity.service';
 import * as moment from 'moment';
@@ -49,7 +49,7 @@ export class SidenavNotificationsComponent implements OnInit {
 
 
   onAcceptFriendRequest(notification) {
-    this.userDataService.entities$.pipe(take(1)).subscribe((users) => {
+    this.userDataService.entities$.pipe(first()).subscribe((users) => {
       const currentUser: User = users.find((user) => user._id === notification.notificationUserId);
       const newFriend: Friend[] = _.cloneDeep(currentUser.friend);
       newFriend.push({

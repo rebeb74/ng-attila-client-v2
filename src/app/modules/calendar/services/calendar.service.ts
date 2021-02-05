@@ -35,7 +35,8 @@ export class CalendarService {
             return newEvent;
           }
           return event;
-        })
+        }),
+        first()
       )
       .subscribe((event: Event) => {
         if (!!event) {
@@ -63,7 +64,8 @@ export class CalendarService {
             return newEvent;
           }
           return event;
-        })
+        }),
+        first()
       )
       .subscribe((event: Event) => {
         if (!!event) {
