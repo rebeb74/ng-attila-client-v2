@@ -9,4 +9,9 @@ export const setSelectedDate = createAction(
     props<{ selectedDate: string }>()
 );
 
+export const setCurrentCalendar = createAction(
+    '[Calendar] Set Current Calendar',
+    props<{ currentCalendar: string }>()
+);
+
 

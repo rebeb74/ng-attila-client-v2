@@ -1,7 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
-import { Event } from '../../../shared/model/event.model';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { takeUntil, tap, withLatestFrom } from 'rxjs/operators';
@@ -40,16 +39,19 @@ export class EventSocketService extends SubscriptionManagerComponent implements 
 
   webSocketListener() {
     this.listen('event').pipe(takeUntil(this.ngDestroyed$)).subscribe(
-      () => {
-        this.eventDataService.clearCache();
-        this.eventDataService.getAll();
+      (eventEmit) => {
+        if (eventEmit.action === 'delete') {
+          this.eventDataService.removeOneFromCache(eventEmit.event);
+        } else {
+          this.eventDataService.getAll();
+        }
       },
       (error) => console.log(error)
     );
   }
 
   private listen(eventName: string) {
-    return new Observable<Event>((subscriber) => {
+    return new Observable<any>((subscriber) => {
       this.socket.on(eventName, (data) => {
         subscriber.next(data);
       });

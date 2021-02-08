@@ -3,10 +3,12 @@ import { CalendarActions } from './action-types';
 
 export interface CalendarState {
     selectedDate: string;
+    currentCalendar: string;
 }
 
 export const initialAuthState: CalendarState = {
     selectedDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).toString(),
+    currentCalendar: 'myCalendar'
 };
 
 export const calendarReducer = createReducer(
@@ -20,10 +22,10 @@ export const calendarReducer = createReducer(
         };
     }),
 
-    on(CalendarActions.setSelectedDate, (state, action) => {
+    on(CalendarActions.setCurrentCalendar, (state, action) => {
         return {
             ...state,
-            selectedDate: action.selectedDate
+            currentCalendar: action.currentCalendar
         };
     }),
 
@@ -31,3 +33,4 @@ export const calendarReducer = createReducer(
 
 export const getCalendarState = createFeatureSelector<CalendarState>('calendar');
 export const getSelectedDate = createSelector(getCalendarState, (state: CalendarState) => state.selectedDate);
+export const getCurrentCalendar = createSelector(getCalendarState, (state: CalendarState) => state.currentCalendar);

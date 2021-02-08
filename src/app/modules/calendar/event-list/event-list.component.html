@@ -1,5 +1,108 @@
-<mat-card class="event-list-card" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="top center">
-  <button mat-raised-button color="accent" (click)="addEvent()">{{ 'add_event' | translate }}</button>
+<mat-card fxHide.lt-md class="event-list-card large-screen" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="top center">
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab>
+      <div fxLayout fxLayoutAlign="center center" class="width-420">
+        <div fxFlex="10%" fxLayoutAlign="center center" (click)="deleteEvents(tasksList.selectedOptions.selected)" *ngIf="(taskList$ | async).length !== 0">
+          <i class="fas fa-trash icon"></i>
+        </div>
+        <div fxFlex="10%" fxLayoutAlign="center center" (click)="tasksList.selectAll()" *ngIf="(taskList$ | async).length !== 0">
+          <i class="fas fa-check-double icon"></i>
+        </div>
+        <div fxFlex="70%" fxLayoutAlign="center center" *ngIf="(taskList$ | async).length !== 0">
+        </div>
+        <button  fxFlex="10%" mat-icon-button (click)="addEvent('task')" class="bot-add-button" fxLayoutAlign="center center">
+          <mat-icon fxLayoutAlign="center center" class="add-icon" color="accent">add_circle</mat-icon>
+        </button>
+      </div>
+
+      <ng-template mat-tab-label>
+        <span class="task" [matBadge]="(taskList$ | async).length" matBadgeOverlap="false"
+          matBadgeColor="accent">{{ 'tasks' | translate}}</span>
+      </ng-template>
+
+      <mat-card-subtitle *ngIf="(taskList$ | async).length === 0" class="no-event">
+        {{ 'no_task' | translate}}
+      </mat-card-subtitle>
+
+      <mat-card-content>
+        <mat-selection-list #tasksList>
+          <div *ngFor="let task of taskList$ | async" fxLayout="row" fxLayoutAlign="center center">
+            <mat-list-option fxFlex="80%" [value]="task._id" checkboxPosition="before" fxLayoutAlign="center center">
+              <div fxFlex="99%" fxLayoutAlign="start center">
+                {{ task.title }}
+              </div>
+              <div fxFlex="1%" class="mark"></div>
+            </mat-list-option>
+            <div fxFlex="20%" class="item-btn" fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="2px">
+              <div fxFlex="50%" fxLayoutAlign="center center" (click)="repeatTask(task)" *ngIf="task.repeat !== '0'">
+                <i class="fas fa-redo icon"></i>
+              </div>
+              <div fxFlex="50%" fxLayoutAlign="center center" (click)="editEvent(task)">
+                <i class="fas fa-edit icon"></i>
+              </div>
+            </div>
+          </div>
+        </mat-selection-list>
+      </mat-card-content>
+
+
+    </mat-tab>
+
+    <mat-tab>
+
+      <div fxLayout fxLayoutAlign="center center" class="width-420">
+        <div fxFlex="10%" fxLayoutAlign="center center" (click)="deleteEvents(meetingsList.selectedOptions.selected)" *ngIf="(meetingList$ | async).length !== 0">
+          <i class="fas fa-trash icon"></i>
+        </div>
+        <div fxFlex="10%" fxLayoutAlign="center center" (click)="meetingsList.selectAll()" *ngIf="(meetingList$ | async).length !== 0">
+          <i class="fas fa-check-double icon"></i>
+        </div>
+        <div fxFlex="70%" fxLayoutAlign="center center" *ngIf="(meetingList$ | async).length !== 0">
+        </div>
+        <button  fxFlex="10%" mat-icon-button (click)="addEvent('meeting')" class="bot-add-button" fxLayoutAlign="center center">
+          <mat-icon fxLayoutAlign="center center" class="add-icon" color="warn">add_circle</mat-icon>
+        </button>
+      </div>
+
+      <ng-template mat-tab-label>
+        <span class="meeting" [matBadge]="(meetingList$ | async).length" matBadgeOverlap="false"
+          matBadgeColor="warn">{{ 'meetings' | translate}}</span>
+      </ng-template>
+
+      <mat-card-subtitle *ngIf="(meetingList$ | async).length === 0" class="no-event">
+        {{ 'no_meeting' | translate}}
+      </mat-card-subtitle>
+
+      <mat-card-content>
+        <mat-selection-list #meetingsList>
+          <div *ngFor="let meeting of meetingList$ | async" fxLayout="row" fxLayoutAlign="center center">
+            <mat-list-option fxFlex="80%" [value]="meeting._id" checkboxPosition="before">
+              <div fxFlex="99%" class="list-swipe" fxLayoutAlign="center start" fxLayout="column">
+                <div>
+                  {{ meeting.title }}
+                </div>
+                <div class="small">
+                  {{ meeting?.startHour }}
+                </div>
+              </div>
+              <div fxFlex="1%" class="mark"></div>
+            </mat-list-option>
+            <div fxFlex="20%" class="item-btn" fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="2px">
+              <div fxLayoutAlign="center center" (click)="editEvent(meeting)">
+                <i class="fas fa-edit icon"></i>
+              </div>
+            </div>
+          </div>
+        </mat-selection-list>
+      </mat-card-content>
+
+    </mat-tab>
+  </mat-tab-group>
+
+</mat-card>
+
+
+<mat-card fxHide.gt-sm class="event-list-card" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="top center">
   <mat-tab-group mat-align-tabs="center">
     <mat-tab>
 

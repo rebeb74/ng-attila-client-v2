@@ -1,0 +1,36 @@
+<div fxHide.gt-sm  fxLayoutGap="10px" fxLayout="column">
+  <mat-form-field class="select">
+    <mat-select [formControl]="calSelect" (selectionChange)="switchCalendar(calSelect.value)">
+      <mat-optgroup [label]="'calendar_friend' | translate">
+        <mat-option *ngFor="let calendar of calendarList$ | async" [value]="calendar.userId">
+          <span *ngIf="calendar.userId === 'myCalendar'">
+            {{ 'my_calendar' | translate }}
+          </span>
+          <span *ngIf="calendar.userId !== 'myCalendar'">
+            {{ calendar.username }}
+          </span>
+        </mat-option>
+      </mat-optgroup>
+    </mat-select>
+  </mat-form-field>
+  <app-app-calendar></app-app-calendar>
+  <app-event-list></app-event-list>
+</div>
+
+<div class="tabs">
+  <mat-tab-group fxHide.lt-md (selectedTabChange)="onTabChanged($event)" [selectedIndex]="tabIndex" mat-align-tabs="center">
+    <mat-tab *ngFor="let calendar of calendarList$ | async">
+      <ng-template mat-tab-label *ngIf="calendar.userId === 'myCalendar'">
+        {{ 'my_calendar' | translate }}
+      </ng-template>
+      <ng-template mat-tab-label *ngIf="calendar.userId !== 'myCalendar'">
+        {{ ('calendar_friend' | translate) + ' ' + calendar.username }}
+      </ng-template>
+      <div class="padding-top" fxLayout="row" fxLayoutGap="10px" fxLayout.gt-sm="row">
+        <app-app-calendar></app-app-calendar>
+        <app-event-list></app-event-list>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+  

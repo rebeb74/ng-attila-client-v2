@@ -36,7 +36,6 @@ export class EditEventComponent extends SubscriptionManagerComponent implements 
   }
 
   ngOnInit(): void {
-    console.log('event', this.passedData.event);
     this.setLanguages();
     this.currentUserFriends$ = this.store.select(getCurrentUser)
       .pipe(

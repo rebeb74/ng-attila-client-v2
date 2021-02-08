@@ -14,6 +14,7 @@ export interface User {
 }
 
 export interface Friend {
+    _id?: string,
     userId: string,
     email: string,
     username: string

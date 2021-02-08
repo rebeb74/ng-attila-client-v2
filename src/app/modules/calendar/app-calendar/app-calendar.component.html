@@ -1,0 +1,8 @@
+<mat-card class="calendar-card" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="top center">
+    <mat-card-content>
+      <lib-calendar firstDayOfWeek="Monday" [locale]="language$ | async" [min]="minDate" id="calendar"
+        (valueChange)="onDateChange($event)" [value]="selectedDate$ | async" #myCalendar>
+      </lib-calendar>
+      <!-- {{ myCalendar.value }} -->
+    </mat-card-content>
+  </mat-card>

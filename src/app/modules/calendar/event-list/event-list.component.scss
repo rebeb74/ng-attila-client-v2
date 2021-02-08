@@ -1,14 +1,18 @@
-mat-card-content {
+.event-list-card.mat-card-content {
   width: 100%;
   margin-bottom: 0px;
   font-size: 12px;
   text-align: justify;
 }
 
-::ng-deep.mat-tab-header {
+.event-list-card::ng-deep.mat-tab-header {
   max-width: 250px;
   min-width: 250px;
   border: 0 solid white;
+}
+
+.event-list-card::ng-deep.mat-tab-body-content {
+  overflow: hidden !important;
 }
 
 .event-list-card {
@@ -20,21 +24,13 @@ mat-card-content {
   box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
 }
 
-.icon {
-  width: 50px;
-}
-
 @media only screen and (min-width: 375px) {
-  .icon {
-    font-size: 15px;
-  }
-
   .event-list-card {
     max-width: 350px;
     min-width: 350px;
   }
 
-  ::ng-deep.mat-tab-header {
+  .event-list-card::ng-deep.mat-tab-header {
     max-width: 320px;
     min-width: 320px;
   }
@@ -43,7 +39,8 @@ mat-card-content {
 
 @media only screen and (min-width: 960px) {
   .icon {
-    font-size: 15px;
+    font-size: 22px;
+    cursor: pointer;
   }
 
   .event-list-card {
@@ -51,13 +48,13 @@ mat-card-content {
     min-width: 450px;
   }
 
-  ::ng-deep.mat-tab-header {
+  .event-list-card::ng-deep.mat-tab-header {
     max-width: 420px;
     min-width: 420px;
   }
 }
 
-mat-tab {
+.event-list-card.mat-tab {
   width: 100%;
 }
 
@@ -66,7 +63,6 @@ mat-tab {
   font-size: 14px;
   line-height: 19px;
   color: #9B9B9B;
-  padding: .5rem 0 0 0;
 }
 
 .mark {
@@ -79,4 +75,64 @@ mat-tab {
   background: url("../../../../assets/images/trash-outline.svg") no-repeat center;
 }
 
+.large-screen::ng-deep.mat-list {
+  &-item {
+    box-shadow: 0px 5px 7px rgba(181, 181, 181, 0.18);
+    border-radius: .25em;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    z-index: 9;
+    margin: .75rem 0rem;
+    border: 0.2px solid rgba(255, 255, 255, 0.18);
+    max-height: 72px;
+      min-height: 72px;
+      
 
+    &-content {
+      padding-left: 16px;
+      max-width: 380px;
+      min-width: 380px;
+      max-height: 72px;
+      min-height: 72px;
+      
+    }
+
+  }
+
+  &-option {
+    max-width: 380px;
+    min-width: 380px;
+  }
+
+}
+
+.large-screen::ng-deep.mat-selection-list{
+  outline: none;
+  padding: 0px;
+}
+
+.item-btn {
+  max-height: 72px;
+      min-height: 72px;
+}
+
+.width-420{
+  padding-top: 20px;
+  width: 420px;
+}
+
+.add-button {
+  outline: none;
+  cursor: pointer;
+}
+
+.add-icon {
+  font-size: 35px;
+}
+
+.no-event{
+  font-style: italic;
+  padding-top: 20px;
+  text-align: center;
+}

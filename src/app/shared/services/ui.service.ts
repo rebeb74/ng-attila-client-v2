@@ -123,9 +123,12 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
 
     webSocketListener() {
         this.notificationSocketService.listen('notification').pipe(takeUntil(this.ngDestroyed$), debounceTime(500)).subscribe(
-            () => {
-                this.notificationDataService.clearCache();
-                this.notificationDataService.getAll();
+            (notificationEmit) => {
+                if (notificationEmit.action === 'delete') {
+                    this.notificationDataService.removeOneFromCache(notificationEmit.notification);
+                } else {
+                    this.notificationDataService.getAll();
+                }
             },
             (error) => console.log(error)
         );

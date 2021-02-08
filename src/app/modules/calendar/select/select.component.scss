@@ -1,0 +1,53 @@
+  .select::ng-deep.mat-optgroup-label {
+    font-style: italic;
+    color: #687a92;
+  }
+
+  .select::ng-deep.mat-form-field-underline {
+    display: none;
+  }
+
+  .select::ng-deep.mat-form-field-appearance-legacy, .select::ng-deep.mat-form-field-wrapper {
+    padding: 0px;
+  }
+
+  .select::ng-deep.mat-form-field-infix {
+    border: none;
+  }
+
+  .select::ng-deep.mat-form-field-appearance-legacy, .select::ng-deep.mat-form-field-infix {
+    padding: 10px;
+    padding-left: 20px;
+    border-radius: 20px;
+    -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+    background-color: #172a47;
+    min-width: 270px;
+    max-width: 270px;
+
+  }
+
+  @media (min-width: 375px) {
+    .select::ng-deep.mat-form-field-appearance-legacy, .select::ng-deep.mat-form-field-infix {
+      min-width: 320px;
+      max-width: 320px;
+    }
+  }
+
+  .select::ng-deep.mat-select-value {
+    color: #12e0da;
+  }
+
+  // .tabs::ng-deep.mat-tab-body {
+  //   padding: 10px;
+  // }
+
+  .tabs::ng-deep.mat-tab-label-active {
+    color: #12e0da;
+    font-size: 16px;
+    opacity: 1;
+  }
+
+  .padding-top {
+    padding:10px
+  }

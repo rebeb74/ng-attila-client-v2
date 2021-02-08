@@ -1,19 +1,4 @@
 <section class="menu-margin" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center top"
   fxLayoutAlign="center center">
-
-  <div fxLayout="row" fxLayoutGap="10px" fxLayout.lt-md="column" fxLayout.gt-sm="row">
-    <mat-card class="calendar-card" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="top center">
-      <mat-card-title fxHide.lt-md>
-        {{ 'calendar' | translate }}
-      </mat-card-title>
-      <mat-card-content>
-        <lib-calendar firstDayOfWeek="Monday" [locale]="language$ | async" [min]="minDate" id="calendar"
-          (valueChange)="onDateChange($event)" [value]="today" #myCalendar>
-        </lib-calendar>
-        <!-- {{ myCalendar.value }} -->
-      </mat-card-content>
-    </mat-card>
-    <app-event-list></app-event-list>
-  </div>
-
+    <app-select></app-select>
 </section>

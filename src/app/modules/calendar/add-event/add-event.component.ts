@@ -24,9 +24,10 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
   addTaskForm: FormGroup;
   addMeetingForm: FormGroup;
   minDate = new Date();
+  tabIndex = 0;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public passedData: any,
+    @Inject(MAT_DIALOG_DATA) public passedData: { eventType: string },
     private calendarStore: Store<CalendarState>,
     private store: Store<AppState>,
     private dateAdapter: DateAdapter<any>,
@@ -35,6 +36,9 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
   }
 
   ngOnInit(): void {
+    if (this.passedData.eventType === 'meeting') {
+      this.tabIndex = 1;
+    }
     this.setLanguages();
     this.currentUserFriends$ = this.store.select(getCurrentUser)
       .pipe(

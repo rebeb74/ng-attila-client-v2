@@ -1,7 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
-import { Notification } from '../model/notification.model';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { getCurrentUser, getIsLoggedIn } from 'src/app/core/auth/store/auth.reducer';
@@ -34,7 +33,7 @@ export class NotificationSocketService extends SubscriptionManagerComponent impl
 
 
   listen(eventName: string) {
-    return new Observable<Notification>((subscriber) => {
+    return new Observable<any>((subscriber) => {
       this.socket.on(eventName, (data) => {
         subscriber.next(data);
       });

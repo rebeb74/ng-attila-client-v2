@@ -1,6 +1,6 @@
 <div fxLayout="column" class="add-event" fxLayoutAlign="center center">
   <h3 class="accent" fxLayoutAlign="center center">{{ 'add_event' | translate }}</h3>
-  <mat-tab-group mat-align-tabs="center" fxLayoutAlign="center center" fxLayout="column">
+  <mat-tab-group mat-align-tabs="center" fxLayoutAlign="center center" fxLayout="column" [selectedIndex]="tabIndex">
 
     <!-- TASK TAB -->
     <mat-tab fxLayout="column" fxLayoutAlign="center center">

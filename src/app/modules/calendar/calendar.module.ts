@@ -4,7 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { DefaultDataServiceConfig, EntityDataService } from '@ngrx/data';
 
-import { CalendarModule as CalModule } from './calendar/calendar.module';
+import { CalendarModule as CalModule } from './app-calendar/calendar/calendar.module';
 import { CalendarService } from './services/calendar.service';
 import { EventResolver } from './resolvers/event.resolver';
 import { EventEntityService } from './store/event-entity.service';
@@ -27,6 +27,8 @@ import { EventListComponent } from './event-list/event-list.component';
 import { SwipeAngularListModule } from 'src/app/shared/swipe-list/swipe-angular-list.module';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { EditEventComponent } from './edit-event/edit-event.component';
+import { AppCalendarComponent } from './app-calendar/app-calendar.component';
+import { SelectComponent } from './select/select.component';
 
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
@@ -44,7 +46,9 @@ function httpTranslateLoader(http: HttpClient) {
     CalendarComponent,
     AddEventComponent,
     EventListComponent,
-    EditEventComponent
+    EditEventComponent,
+    AppCalendarComponent,
+    SelectComponent,
   ],
   imports: [
     CommonModule,

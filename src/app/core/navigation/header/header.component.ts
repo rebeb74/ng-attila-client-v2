@@ -69,7 +69,7 @@ export class HeaderComponent implements OnInit {
   }
 
   addEvent() {
-    this.calendarService.addEvent();
+    this.calendarService.addEvent('task');
   }
 
 }

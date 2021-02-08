@@ -16,9 +16,13 @@ import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keyc
 
 import { addDays, areDatesInSameMonth, getDaysOfMonth, isDateAfter, isSameDate, isValidDate, startOfDay } from '../date-utils';
 import { DayStepDelta } from './day-step-delta.model';
-import { EventEntityService } from '../../store/event-entity.service';
+import { EventEntityService } from '../../../store/event-entity.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/core/store/app.reducer';
+import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
+import { CalendarState, getCurrentCalendar } from '../../../store/calendar.reducer';
 
 export const keyCodesToDaySteps = new Map<number, DayStepDelta>([
   [RIGHT_ARROW, 1],
@@ -58,20 +62,29 @@ export class MonthComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
       this.daysOfMonth = getDaysOfMonth(this._month);
       this.daysOfMonth$ = this.eventDataService.entities$
         .pipe(
-          map((events) => {
-            const daysOfMonth = getDaysOfMonth(this._month);
-            let newDaysOfMonth = [];
-            daysOfMonth.forEach((dayOfMonth) => {
-              const tasksOfDay = events.filter((event) => new Date(event.startTime).getTime() === dayOfMonth.getTime() && event.type === 'task');
-              const meetingsOfDay = events.filter((event) => new Date(event.startTime).getTime() === dayOfMonth.getTime() && event.type === 'meeting');
-              newDaysOfMonth = [...newDaysOfMonth, {
-                dayOfMonth: dayOfMonth,
-                tasks: tasksOfDay,
-                meetings: meetingsOfDay
-              }];
-            });
-            return newDaysOfMonth;
-          })
+          mergeMap((events) => this.calendarStore.select(getCurrentCalendar).pipe(
+            withLatestFrom(this.store.select(getCurrentUser)),
+            map(([currentCalendar, currentUser]) => {
+              let currentCalendarEvents = [];
+              if (currentCalendar === 'myCalendar') {
+                currentCalendarEvents = events.filter((event) => event.userId === currentUser._id);
+              } else {
+                currentCalendarEvents = events.filter((event) => event.userId === currentCalendar);
+              }
+              const daysOfMonth = getDaysOfMonth(this._month);
+              let newDaysOfMonth = [];
+              daysOfMonth.forEach((dayOfMonth) => {
+                const tasksOfDay = currentCalendarEvents.filter((event) => new Date(event.startTime).getTime() === dayOfMonth.getTime() && event.type === 'task');
+                const meetingsOfDay = currentCalendarEvents.filter((event) => new Date(event.startTime).getTime() === dayOfMonth.getTime() && event.type === 'meeting');
+                newDaysOfMonth = [...newDaysOfMonth, {
+                  dayOfMonth: dayOfMonth,
+                  tasks: tasksOfDay,
+                  meetings: meetingsOfDay
+                }];
+              });
+              return newDaysOfMonth;
+            })
+          ))
         );
       this.firstDayOfMonth = WeekDay[this.daysOfMonth[0].getDay()].toLowerCase();
     }
@@ -83,6 +96,8 @@ export class MonthComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
     private eventDataService: EventEntityService,
+    private store: Store<AppState>,
+    private calendarStore: Store<CalendarState>
   ) { }
 
   ngOnInit() {
