@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
     private store: Store<AppState>,
     private authService: AuthService,
     private uiService: UIService,
-    private notificationDataService: NotificationEntityService,
+    private notificationEntityService: NotificationEntityService,
     private router: Router,
     private calendarService: CalendarService
   ) {
@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
     this.pageName$ = this.store.select(selectUrl);
     this.currentLang$ = this.store.select(getCurrentLanguage);
     this.languages$ = this.store.select(getLanguages);
-    this.currentUserNotifications$ = this.notificationDataService.entities$
+    this.currentUserNotifications$ = this.notificationEntityService.entities$
       .pipe(
         withLatestFrom(this.store.select(getCurrentUser)),
         map(([allNotifications, currentUser]: [Notification[], User]) => allNotifications.filter((userNotifications) => userNotifications.notificationUserId === currentUser._id))

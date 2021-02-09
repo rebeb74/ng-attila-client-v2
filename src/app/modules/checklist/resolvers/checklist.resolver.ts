@@ -2,28 +2,28 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { filter, first, tap } from 'rxjs/operators';
-import { EventEntityService } from '../store/event-entity.service';
+import { ChecklistEntityService } from '../store/checklist-entity.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EventResolver implements Resolve<boolean> {
+export class ChecklistResolver implements Resolve<boolean> {
 
   constructor(
-    private eventEntityService: EventEntityService,
+    private checklistEntityService: ChecklistEntityService,
   ) { }
 
   resolve(): Observable<boolean> {
     const isUser = localStorage.getItem('user');
     if (!!isUser) {
-      return this.eventEntityService.loaded$
+      return this.checklistEntityService.loaded$
         .pipe(
-          tap((eventLoaded) => {
-            if (!eventLoaded) {
-              this.eventEntityService.getAll();
+          tap((checklistLoaded) => {
+            if (!checklistLoaded) {
+              this.checklistEntityService.getAll();
             }
           }),
-          filter((eventLoaded) => !!eventLoaded),
+          filter((checklistLoaded) => !!checklistLoaded),
           first()
         );
     } else {

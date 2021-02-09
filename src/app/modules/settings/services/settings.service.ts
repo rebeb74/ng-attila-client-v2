@@ -28,9 +28,9 @@ export class SettingsService {
     private dialog: MatDialog,
     private store: Store<AppState>,
     private authService: AuthService,
-    private userDataService: UserEntityService,
+    private userEntityService: UserEntityService,
     private uiService: UIService,
-    private notificationDataService: NotificationEntityService,
+    private notificationEntityService: NotificationEntityService,
   ) {
     this.setCurrentUser();
     this.setCurrentUserFriends();
@@ -51,7 +51,7 @@ export class SettingsService {
   }
 
   setFriendRequestsReceived(): void {
-    this.friendRequestsReceived$ = this.notificationDataService.entities$
+    this.friendRequestsReceived$ = this.notificationEntityService.entities$
       .pipe(
         withLatestFrom(this.currentUser$),
         map(([notifications, currentUser]: [Notification[], User]) => notifications.filter((notification: Notification) => notification.code === 'friend_request' && notification.notificationUserId === currentUser._id))
@@ -59,7 +59,7 @@ export class SettingsService {
   }
 
   setFriendRequestsSent(): void {
-    this.friendRequestsSent$ = this.notificationDataService.entities$
+    this.friendRequestsSent$ = this.notificationEntityService.entities$
       .pipe(
         withLatestFrom(this.currentUser$),
         map(([notifications, currentUser]: [Notification[], User]) => notifications.filter((notification: Notification) => notification.code === 'friend_request' && notification.senderUserId === currentUser._id))
@@ -67,7 +67,7 @@ export class SettingsService {
   }
 
   setAvailableNewFriends(): void {
-    this.availableNewFriends$ = this.userDataService.entities$
+    this.availableNewFriends$ = this.userEntityService.entities$
       .pipe(
         withLatestFrom(this.friendRequestsSent$, this.currentUser$),
         map(([users, friendRequestSent, currentUser]: [User[], Notification[], User]) => {
@@ -100,7 +100,7 @@ export class SettingsService {
   }
 
   onAcceptFriendRequest(notification): Observable<boolean> {
-    return this.userDataService.entities$
+    return this.userEntityService.entities$
       .pipe(
         map((users) => {
           const currentUser: User = users.find((user) => user._id === notification.notificationUserId);
@@ -114,9 +114,9 @@ export class SettingsService {
             ...currentUser,
             friend: newFriend
           };
-          this.userDataService.update(newUser);
+          this.userEntityService.update(newUser);
           this.uiService.addNotification(notification.senderUserId, notification.notificationUserId, 'friend_request_accepted');
-          this.notificationDataService.delete(notification);
+          this.notificationEntityService.delete(notification);
           return true;
         }),
         first()
@@ -138,7 +138,7 @@ export class SettingsService {
       .pipe(
         switchMap((newFriendUsername) => {
           if (!!newFriendUsername) {
-            return this.userDataService.entities$
+            return this.userEntityService.entities$
               .pipe(
                 withLatestFrom(this.availableNewFriends$, this.currentUser$),
                 map(([users, availableNewFriends, currentUser]) => {
@@ -177,7 +177,7 @@ export class SettingsService {
           updatedUser.friend = updatedUser.friend.filter((friend: Friend) => friend.userId !== id);
           return { updatedUser, friend, currentUser };
         }),
-        switchMap((data) => this.userDataService.update(data.updatedUser).pipe(
+        switchMap((data) => this.userEntityService.update(data.updatedUser).pipe(
           map((resultUpdateUser) => {
             if (!!resultUpdateUser) {
               this.uiService.addNotification(data.friend.userId, data.currentUser._id, 'removed_from_friends');
@@ -214,7 +214,7 @@ export class SettingsService {
                         ...accountForm.value
                       };
                       return of(updatedUser).pipe(
-                        concatMap((updatedUser: User) => this.userDataService.update(updatedUser).pipe(
+                        concatMap((updatedUser: User) => this.userEntityService.update(updatedUser).pipe(
                           map(() => {
                             this.uiService.showSnackbar('account_update_success', null, 5000, 'success');
                             return true;

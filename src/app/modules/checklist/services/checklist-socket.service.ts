@@ -5,19 +5,19 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { getCurrentUser, getIsLoggedIn } from 'src/app/core/auth/store/auth.reducer';
-import { EventEntityService } from '../store/event-entity.service';
+import { ChecklistEntityService } from '../store/checklist-entity.service';
 import { SubscriptionManagerComponent } from 'src/app/shared/subscription-manager/subscription-manager.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EventSocketService extends SubscriptionManagerComponent implements OnDestroy {
+export class ChecklistSocketService extends SubscriptionManagerComponent implements OnDestroy {
   socket: any;
-  readonly url: string = 'http://localhost:3000/event'
+  readonly url: string = 'http://localhost:3000/checklist'
 
   constructor(
     private store: Store<AppState>,
-    private eventEntityService: EventEntityService
+    private checklistEntityService: ChecklistEntityService
   ) {
     super();
     this.store.select(getIsLoggedIn)
@@ -38,21 +38,21 @@ export class EventSocketService extends SubscriptionManagerComponent implements 
   }
 
   webSocketListener() {
-    this.listen('event').pipe(takeUntil(this.ngDestroyed$)).subscribe(
-      (eventEmit) => {
-        if (eventEmit.action === 'delete') {
-          this.eventEntityService.removeOneFromCache(eventEmit.event);
+    this.listen('checklist').pipe(takeUntil(this.ngDestroyed$)).subscribe(
+      (checklistEmit) => {
+        if (checklistEmit.action === 'delete') {
+          this.checklistEntityService.removeOneFromCache(checklistEmit.checklist);
         } else {
-          this.eventEntityService.getAll();
+          this.checklistEntityService.getAll();
         }
       },
       (error) => console.log(error)
     );
   }
 
-  private listen(eventName: string) {
+  private listen(checklistName: string) {
     return new Observable<any>((subscriber) => {
-      this.socket.on(eventName, (data) => {
+      this.socket.on(checklistName, (data) => {
         subscriber.next(data);
       });
     });

@@ -17,8 +17,8 @@ import { UserEntityService } from '../../shared/services/user-entity.service';
 export class UserResolver implements Resolve<boolean> {
 
     constructor(
-        private userDataService: UserEntityService,
-        private notificationDataService: NotificationEntityService,
+        private userEntityService: UserEntityService,
+        private notificationEntityService: NotificationEntityService,
         private store: Store<AppState>,
         private uiService: UIService,
         private authService: AuthService,
@@ -36,8 +36,8 @@ export class UserResolver implements Resolve<boolean> {
                         const currentUser: User = JSON.parse(this.storageService.decryptData(localStorage.getItem('user'), key));
                         return currentUser;
                     }),
-                    switchMap((currentUser) => this.userDataService.loaded$.pipe(
-                        mergeMap((userLoaded) => this.notificationDataService.loaded$.pipe(
+                    switchMap((currentUser) => this.userEntityService.loaded$.pipe(
+                        mergeMap((userLoaded) => this.notificationEntityService.loaded$.pipe(
                             map((notificationsLoaded) => {
                                 if (!userLoaded && !notificationsLoaded) {
                                     if (!!accessToken) {

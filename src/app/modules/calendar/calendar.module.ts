@@ -71,7 +71,6 @@ function httpTranslateLoader(http: HttpClient) {
   providers: [
     EventDataService,
     EventEntityService,
-    EventDataService,
     EventSocketService,
     CalendarService,
     EventResolver,

@@ -15,7 +15,7 @@ import { EventEntityService } from '../store/event-entity.service';
 export class CalendarService {
 
   constructor(
-    private eventDataService: EventEntityService,
+    private eventEntityService: EventEntityService,
     private dialog: MatDialog,
     private store: Store<AppState>,
     private calendarStore: Store<CalendarState>
@@ -58,7 +58,7 @@ export class CalendarService {
       )
       .subscribe((event: Event) => {
         if (!!event) {
-          this.eventDataService.add(event);
+          this.eventEntityService.add(event);
         }
       });
   }
@@ -87,7 +87,7 @@ export class CalendarService {
       .subscribe((event: Event) => {
         if (!!event) {
           console.log('Edited Event', event);
-          this.eventDataService.update(event);
+          this.eventEntityService.update(event);
         }
       });
   }
@@ -115,9 +115,9 @@ export class CalendarService {
           altern: newAltern
         };
       }
-      this.eventDataService.update(task);
+      this.eventEntityService.update(task);
       if (!!task.altern) {
-        this.eventDataService.removeOneFromCache(task);
+        this.eventEntityService.removeOneFromCache(task);
       }
     });
   }

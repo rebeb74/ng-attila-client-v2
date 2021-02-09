@@ -22,12 +22,12 @@ export class EventListComponent implements OnInit {
   constructor(
     private calendarService: CalendarService,
     private calendarStore: Store<CalendarState>,
-    private eventDataService: EventEntityService,
+    private eventEntityService: EventEntityService,
     private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
-    this.currentCalendarEvents$ = this.eventDataService.entities$
+    this.currentCalendarEvents$ = this.eventEntityService.entities$
       .pipe(
         mergeMap((events) => this.calendarStore.select(getCurrentCalendar).pipe(
           withLatestFrom(this.store.select(getCurrentUser)),
@@ -81,7 +81,7 @@ export class EventListComponent implements OnInit {
   }
 
   deleteEvent(event) {
-    this.eventDataService.delete(event);
+    this.eventEntityService.delete(event);
   }
 
   deleteEvents(selectedEvents) {

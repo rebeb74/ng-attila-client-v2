@@ -25,8 +25,8 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
         public translate: TranslateService,
         private snackbar: MatSnackBar,
         private store: Store<AppState>,
-        private userDataService: UserEntityService,
-        private notificationDataService: NotificationEntityService,
+        private userEntityService: UserEntityService,
+        private notificationEntityService: NotificationEntityService,
         private notificationSocketService: NotificationSocketService,
         private userSocketService: UserSocketService,
         private http: HttpClient,
@@ -74,13 +74,13 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
         this.translate.use(newLang);
         this.store.select(getCurrentUser).pipe(first()).subscribe((user) => {
             if (user) {
-                this.userDataService.update({ ...user, lang: newLang });
+                this.userEntityService.update({ ...user, lang: newLang });
             }
         });
     }
 
     addNotification(targetUserId: string, senderUserId: string, code: string) {
-        this.userDataService.entities$
+        this.userEntityService.entities$
             .pipe(
                 map((users) => {
                     const target = users.find((filteredUser) => filteredUser._id === targetUserId);
@@ -93,7 +93,7 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
                     return { target, sender };
                 }),
                 mergeMap((data) =>
-                    this.notificationDataService.add({
+                    this.notificationEntityService.add({
                         notificationUserId: data.target._id,
                         notificationUsername: data.target.username,
                         notificationUserEmail: data.target.email,
@@ -108,7 +108,7 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
                 withLatestFrom(this.store.select(getCurrentUser)),
                 map(([result, currentUser]) => {
                     if (result.notificationUserId === currentUser._id) {
-                        this.notificationDataService.removeOneFromCache(result._id);
+                        this.notificationEntityService.removeOneFromCache(result._id);
                     }
                 }
                 ),
@@ -118,23 +118,23 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
     }
 
     deleteNotification(notification) {
-        this.notificationDataService.delete(notification);
+        this.notificationEntityService.delete(notification);
     }
 
     webSocketListener() {
         this.notificationSocketService.listen('notification').pipe(takeUntil(this.ngDestroyed$), debounceTime(500)).subscribe(
             (notificationEmit) => {
                 if (notificationEmit.action === 'delete') {
-                    this.notificationDataService.removeOneFromCache(notificationEmit.notification);
+                    this.notificationEntityService.removeOneFromCache(notificationEmit.notification);
                 } else {
-                    this.notificationDataService.getAll();
+                    this.notificationEntityService.getAll();
                 }
             },
             (error) => console.log(error)
         );
         this.userSocketService.listen('user').pipe(takeUntil(this.ngDestroyed$), debounceTime(500)).subscribe(
             () => {
-                this.userDataService.getAll();
+                this.userEntityService.getAll();
             },
             (error) => console.log(error)
         );

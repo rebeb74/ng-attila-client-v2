@@ -14,8 +14,8 @@ export class AuthEffects {
             .pipe(
                 ofType(AuthActions.login),
                 tap(() => {
-                    this.notificationDataService.getAll();
-                    this.userDataService.getAll();
+                    this.notificationEntityService.getAll();
+                    this.userEntityService.getAll();
                 })
             )
         ,
@@ -26,8 +26,8 @@ export class AuthEffects {
             .pipe(
                 ofType(AuthActions.logout),
                 tap(() => {
-                    this.userDataService.clearCache();
-                    this.notificationDataService.clearCache();
+                    this.userEntityService.clearCache();
+                    this.notificationEntityService.clearCache();
 
                 })
             )
@@ -36,8 +36,8 @@ export class AuthEffects {
 
     constructor(
         private actions$: Actions,
-        private userDataService: UserEntityService,
-        private notificationDataService: NotificationEntityService,
+        private userEntityService: UserEntityService,
+        private notificationEntityService: NotificationEntityService,
     ) {
 
     }

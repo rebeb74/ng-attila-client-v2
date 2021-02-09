@@ -60,7 +60,7 @@ export class MonthComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
     if (!this._month || !areDatesInSameMonth(this._month, month)) {
       this._month = month;
       this.daysOfMonth = getDaysOfMonth(this._month);
-      this.daysOfMonth$ = this.eventDataService.entities$
+      this.daysOfMonth$ = this.eventEntityService.entities$
         .pipe(
           mergeMap((events) => this.calendarStore.select(getCurrentCalendar).pipe(
             withLatestFrom(this.store.select(getCurrentUser)),
@@ -95,7 +95,7 @@ export class MonthComponent implements OnInit, AfterViewInit, OnChanges, OnDestr
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    private eventDataService: EventEntityService,
+    private eventEntityService: EventEntityService,
     private store: Store<AppState>,
     private calendarStore: Store<CalendarState>
   ) { }

@@ -8,8 +8,9 @@
      role="listbox"
      tabindex="-1"
 >
-  <div class="month__time"
+  <time class="month__time"
         *ngFor="let dayOfMonth of daysOfMonth$ | async" 
+        [dateTime]="dayOfMonth.dayOfMonth | date:'yyyy-MM-dd'"
         fxLayoutAlign="center center"
         fxLayout="column">
     <span fxFlex="20%" fxLayoutAlign="center center">
@@ -31,5 +32,5 @@
       <span class="month__date--nbTasks" *ngIf="dayOfMonth.tasks.length !== 0">{{ dayOfMonth.tasks.length }}</span>
       <span class="month__date--nbMeetings" *ngIf="dayOfMonth.meetings.length !== 0">{{ dayOfMonth.meetings.length }}</span>
     </div>
-  </div>
+  </time>
 </div>
