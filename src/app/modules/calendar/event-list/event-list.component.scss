@@ -86,8 +86,8 @@
     margin: .75rem 0rem;
     border: 0.2px solid rgba(255, 255, 255, 0.18);
     max-height: 72px;
-      min-height: 72px;
-      
+    min-height: 72px;
+
 
     &-content {
       padding-left: 16px;
@@ -95,7 +95,7 @@
       min-width: 380px;
       max-height: 72px;
       min-height: 72px;
-      
+
     }
 
   }
@@ -107,17 +107,17 @@
 
 }
 
-.large-screen::ng-deep.mat-selection-list{
+.large-screen::ng-deep.mat-selection-list {
   outline: none;
   padding: 0px;
 }
 
 .item-btn {
   max-height: 72px;
-      min-height: 72px;
+  min-height: 72px;
 }
 
-.width-420{
+.width-420 {
   padding-top: 20px;
   width: 420px;
 }
@@ -131,7 +131,7 @@
   font-size: 35px;
 }
 
-.no-event{
+.no-event {
   font-style: italic;
   padding-top: 20px;
   text-align: center;

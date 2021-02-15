@@ -21,6 +21,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatBadgeModule,
     MatMenuModule,
     MatAutocompleteModule,
-    MatTabsModule
+    MatTabsModule,
+    MatChipsModule
   ],
   exports: [
     MatSidenavModule,
@@ -66,10 +68,11 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatBadgeModule,
     MatMenuModule,
     MatAutocompleteModule,
-    MatTabsModule
+    MatTabsModule,
+    MatChipsModule
   ],
   providers: [
-    {provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUtc: false}},
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: false } },
     {
       provide: MAT_DATE_FORMATS,
       useValue: {
@@ -84,7 +87,7 @@ import { MatTabsModule } from '@angular/material/tabs';
         },
       },
     }
-    
+
   ]
 })
 export class MaterialModule { }

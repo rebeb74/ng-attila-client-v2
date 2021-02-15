@@ -1,5 +1,5 @@
 
 
-import * as ChecklistActions from './calendar.actions';
+import * as ChecklistActions from './checklist.actions';
 
 export { ChecklistActions };

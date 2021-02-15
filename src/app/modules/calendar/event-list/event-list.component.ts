@@ -73,11 +73,11 @@ export class EventListComponent implements OnInit {
   }
 
   addEvent(eventType) {
-    this.calendarService.addEvent(eventType);
+    this.calendarService.addEvent(eventType).subscribe();
   }
 
   editEvent(event) {
-    this.calendarService.editEvent(event);
+    this.calendarService.editEvent(event).subscribe();
   }
 
   deleteEvent(event) {
@@ -92,7 +92,7 @@ export class EventListComponent implements OnInit {
   }
 
   repeatTask(event) {
-    this.calendarService.repeatTask(event);
+    this.calendarService.repeatTask(event).subscribe();
   }
 
 }

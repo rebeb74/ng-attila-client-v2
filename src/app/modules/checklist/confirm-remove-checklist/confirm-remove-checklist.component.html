@@ -1,0 +1,14 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <mat-dialog-content fxLayout="column">
+    <p>
+      {{ 'confirm_remove_checklist_message' | translate }}
+    </p>
+    <p class="accent">
+      {{ passedData.checklist.checklistName }}
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutGap="20px">
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">{{ "delete" | translate }}</button>
+    <button mat-raised-button color="accent" mat-dialog-close>{{ 'cancel' | translate }}</button>
+  </mat-dialog-actions>
+</div>

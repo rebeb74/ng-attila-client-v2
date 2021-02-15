@@ -1,0 +1,21 @@
+.checklist-header {
+  min-width: 280px;
+  max-width: 280px;
+
+}
+
+@media only screen and (min-width: 375px) {
+  .checklist-header {
+    min-width: 320px;
+    max-width: 320px;
+
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .checklist-header {
+    min-width: 680px;
+    max-width: 680px;
+
+  }
+}

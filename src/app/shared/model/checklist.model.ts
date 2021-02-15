@@ -1,16 +1,28 @@
-export interface List {
+import { Friend } from './user.model';
+
+export interface Item {
     _id?: string;
     value: string;
-    checked: boolean;
     createdOn: string;
 }
 
 export interface Checklist {
     _id?: string;
     userId: string;
-    listName: string;
+    checklistName: string;
     username: string;
-    list: List[];
-    public: boolean;
+    items: Item[];
+    friendShares: Friend[];
     createdOn: string;
 }
+
+export function compareChecklists(a, b) {
+    if (a.createdOn < b.createdOn) {
+        return 1;
+    }
+    if (a.createdOn > b.createdOn) {
+        return -1;
+    }
+    return 0;
+}
+

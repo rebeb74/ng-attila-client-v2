@@ -1,0 +1,13 @@
+
+.no-checklist-card {
+  border-radius: 20px;
+  -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+mat-card-subtitle{
+  font-style: italic;
+  text-align: center;
+}

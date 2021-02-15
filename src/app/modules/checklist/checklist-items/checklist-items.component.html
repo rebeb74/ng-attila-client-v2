@@ -1,0 +1,18 @@
+<mat-card class="checklist-items-card" fyLayoutAlign="center center">
+  <mat-form-field fxLayoutAlign="center center" *ngIf="selectedChecklist$ | async">
+    <div class="item-list">
+      <mat-label>{{ (selectedChecklist$ | async).checklistName }}</mat-label>
+      <mat-chip-list #chipList class="mat-chip-list-stacked" fxLayoutAlign="center center">
+        <mat-chip *ngFor="let item of selectedChecklistItems$ | async" removable="true"
+          (removed)="remove(item)">
+          <mat-icon matChipRemove>cancel</mat-icon>
+          {{ item.value }}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <p class="empty-checklist" *ngIf="(selectedChecklistItems$ | async).length === 0">{{ 'checklist_empty' | translate }}</p>
+    <input id="inputList" placeholder="{{ 'new_item' | translate }}" [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes" matChipInputAddOnBlur="true"
+      (keydown.backspace)="onBackspaceKeydown($event)" (matChipInputTokenEnd)="add($event)">
+  </mat-form-field>
+</mat-card>

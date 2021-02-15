@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { first, map, withLatestFrom } from 'rxjs/operators';
 import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 import { AppState } from 'src/app/core/store/app.reducer';
@@ -21,13 +22,13 @@ export class CalendarService {
     private calendarStore: Store<CalendarState>
   ) { }
 
-  addEvent(eventType) {
+  addEvent(eventType): Observable<boolean> {
     const addEvent = this.dialog.open(AddEventComponent, {
       data: {
         eventType: eventType
       }
     });
-    addEvent.afterClosed()
+    return addEvent.afterClosed()
       .pipe(
         withLatestFrom(this.store.select(getCurrentUser), this.calendarStore.select(getCurrentCalendar)),
         map(([event, currentUser, currentCalendar]) => {
@@ -40,7 +41,8 @@ export class CalendarService {
                 createdOn: new Date().toString(),
                 updatedOn: new Date().toString(),
               };
-              return newEvent;
+              this.eventEntityService.add(newEvent);
+              return true;
             } else {
               const newEvent: Event = {
                 ...event,
@@ -49,27 +51,24 @@ export class CalendarService {
                 createdOn: new Date().toString(),
                 updatedOn: new Date().toString(),
               };
-              return newEvent;
+              this.eventEntityService.add(newEvent);
+              return true;
             }
+          } else {
+            return false;
           }
-          return event;
         }),
         first()
-      )
-      .subscribe((event: Event) => {
-        if (!!event) {
-          this.eventEntityService.add(event);
-        }
-      });
+      );
   }
 
-  editEvent(event: Event) {
+  editEvent(event: Event): Observable<boolean> {
     const addEvent = this.dialog.open(EditEventComponent, {
       data: {
         event: event,
       }
     });
-    addEvent.afterClosed()
+    return addEvent.afterClosed()
       .pipe(
         map((event) => {
           if (!!event) {
@@ -78,48 +77,47 @@ export class CalendarService {
               startTime: this.startOfDay(new Date(event.startTime)).toString(),
               updatedOn: new Date().toString(),
             };
-            return newEvent;
+            this.eventEntityService.update(newEvent);
+            return true;
           }
-          return event;
+          return false;
         }),
         first()
-      )
-      .subscribe((event: Event) => {
-        if (!!event) {
-          console.log('Edited Event', event);
-          this.eventEntityService.update(event);
-        }
-      });
+      );
   }
 
-  repeatTask(task) {
-    this.store.select(getCurrentUser).pipe(first()).subscribe((currentUser) => {
+  repeatTask(task: Event): Observable<Event> {
+    return this.store.select(getCurrentUser)
+      .pipe(
+        map((currentUser) => {
+          const startTime = new Date(task.startTime);
+          const newStartTime = new Date(startTime.setDate(startTime.getDate() + Number(task.repeat))).toString();
+          task = {
+            ...task,
+            startTime: newStartTime
+          };
 
-      const startTime = new Date(task.startTime);
-      const newStartTime = new Date(startTime.setDate(startTime.getDate() + Number(task.repeat))).toString();
-      task = {
-        ...task,
-        startTime: newStartTime
-      };
-
-      if (!!task.altern) {
-        const newUserId = task.altern.userId;
-        const newAltern: Friend = {
-          userId: currentUser._id,
-          email: currentUser.email,
-          username: currentUser.username
-        };
-        task = {
-          ...task,
-          userId: newUserId,
-          altern: newAltern
-        };
-      }
-      this.eventEntityService.update(task);
-      if (!!task.altern) {
-        this.eventEntityService.removeOneFromCache(task);
-      }
-    });
+          if (!!task.altern) {
+            const newUserId = task.altern.userId;
+            const newAltern: Friend = {
+              userId: currentUser._id,
+              email: currentUser.email,
+              username: currentUser.username
+            };
+            task = {
+              ...task,
+              userId: newUserId,
+              altern: newAltern
+            };
+          }
+          this.eventEntityService.update(task);
+          if (!!task.altern) {
+            this.eventEntityService.removeOneFromCache(task);
+          }
+          return task;
+        }),
+        first()
+      );
   }
 
   startOfDay(date: Date) {

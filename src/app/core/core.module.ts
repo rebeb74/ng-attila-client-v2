@@ -13,6 +13,8 @@ import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CalendarService } from '../modules/calendar/services/calendar.service';
 import { EventEntityService } from '../modules/calendar/store/event-entity.service';
+import { ChecklistService } from '../modules/checklist/services/checklist.service';
+import { ChecklistEntityService } from '../modules/checklist/store/checklist-entity.service';
 
 // AOT compilation support
 function httpTranslateLoader(http: HttpClient) {
@@ -44,7 +46,9 @@ function httpTranslateLoader(http: HttpClient) {
   ],
   providers: [
     CalendarService,
-    EventEntityService
+    ChecklistService,
+    EventEntityService,
+    ChecklistEntityService
   ]
 })
 export class CoreModule { }

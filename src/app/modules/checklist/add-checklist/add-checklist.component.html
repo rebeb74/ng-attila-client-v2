@@ -1,0 +1,26 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <h3 class="accent" fxLayoutAlign="center center">{{ 'add_checklist' | translate }}</h3>
+        <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="addChecklistForm">
+  
+          <mat-dialog-content fxLayoutAlign="start center" fxLayout="column" fxLayoutGap="5px">
+            <mat-form-field>
+              <input type="text" matInput [placeholder]=" 'name' | translate" formControlName="checklistName" name="name">
+              <mat-error>{{ "required" | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select formControlName="friendShares" [placeholder]=" 'friend_shares' | translate" multiple>
+                  <mat-option *ngFor="let friend of (currentUserFriends$ | async)" [value]="friend">
+                    {{ friend.username }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          </mat-dialog-content>
+  
+          <div fxLayoutGap="50px">
+            <button mat-raised-button color="accent" [disabled]="addChecklistForm.invalid"
+              [mat-dialog-close]="addChecklistForm.value">{{ "add" | translate }}</button>
+            <button mat-raised-button mat-dialog-close>{{ 'cancel' | translate }}</button>
+          </div>
+        </form>
+  </div>
+  

@@ -84,8 +84,12 @@
               name="repeat">
           </mat-form-field>
           <mat-form-field>
-            <input type="altern" matInput [placeholder]=" 'event_altern' | translate" formControlName="altern"
-              name="altern">
+            <mat-select formControlName="altern" [placeholder]=" 'event_altern' | translate">
+              <mat-option value="">{{ 'dont_altern' | translate }}</mat-option>
+              <mat-option *ngFor="let friend of (currentUserFriends$ | async)" [value]="friend">
+                {{ friend.username }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </mat-dialog-content>
 

@@ -90,8 +90,13 @@
     <!-- <span fxFlex="90%" fxLayoutAlign="center top" class="bot-text-icon">{{ 'calendar' | translate}}</span> -->
   </div>
 
-  <div mat-fab *ngIf="(pageName$ | async) === '/calendar' || (pageName$ | async) === '/checklist'" fxFlex="20%" fxLayoutAlign="center center">
-    <button mat-icon-button (click)="addEvent()" class="bot-add-button">
+  <div mat-fab *ngIf="(pageName$ | async) === '/calendar'" fxFlex="20%" fxLayoutAlign="center center">
+    <button mat-icon-button (click)="addEvent('calendar')" class="bot-add-button">
+      <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
+    </button>
+  </div>
+  <div mat-fab *ngIf="(pageName$ | async) === '/checklist'" fxFlex="20%" fxLayoutAlign="center center">
+    <button mat-icon-button (click)="addEvent('checklist')" class="bot-add-button">
       <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
     </button>
   </div>

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ChecklistResolver } from './checklist.resolver';
 
-describe('EventResolver', () => {
+describe('ChecklistResolver', () => {
   let resolver: ChecklistResolver;
 
   beforeEach(() => {

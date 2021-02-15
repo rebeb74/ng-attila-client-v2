@@ -1,4 +1,21 @@
 <section class="menu-margin" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center top"
   fxLayoutAlign="center center">
-  test
+  <app-toggle></app-toggle>
+  <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutGap="10px" *ngIf="(checklists$ | async).length > 0">
+    <app-checklist-list></app-checklist-list>
+    <app-checklist-items></app-checklist-items>
+  </div>
+  <mat-card class="no-checklist-card" *ngIf="(checklists$ | async).length === 0">
+    <mat-card-subtitle>
+      <span class="italic" *ngIf="(toggleChecklist$ | async) === 'all'">
+        {{ 'no_checklist' | translate }}
+      </span>
+      <span class="italic" *ngIf="(toggleChecklist$ | async) === 'private'">
+        {{ 'no_private_checklist' | translate }}
+      </span>
+      <span class="italic" *ngIf="(toggleChecklist$ | async) === 'public'">
+        {{ 'no_public_checklist' | translate }}
+      </span>
+    </mat-card-subtitle>
+  </mat-card>
 </section>

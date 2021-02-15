@@ -1,0 +1,79 @@
+.checklist-items-card {
+  min-width: 260px;
+  max-width: 260px;
+  @media only screen and (min-width: 375px) {
+    min-width: 300px;
+    max-width: 300px;
+}
+  padding-top: 10px;
+  border-radius: 20px;
+  -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+}
+
+mat-form-field {
+  margin: auto;
+
+  ::ng-deep.mat-form-field-infix {
+    border-top: 0px;
+  }
+  
+  ::ng-deep.mat-form-field-wrapper {
+    min-width: 240px;
+    max-width: 240px;
+    
+    @media only screen and (min-width: 375px) {
+          min-width: 300px;
+          max-width: 300px;
+    }
+  
+    @media only screen and (min-width: 960px) {
+          min-width: 300px;
+          max-width: 300px;
+    }
+  }
+}
+
+.empty-checklist{
+  font-style: italic;
+  text-align: center;
+  font-size: 14px;
+}
+
+.item-list {
+  font-size: 16px;
+  color: #12e0da;
+  text-align: center;
+
+  ::ng-deep.mat-chip-list-wrapper {
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    .mat-chip {
+      background-color: #274163;
+      width: 240px;
+
+      @media only screen and (min-width: 375px) {
+        width: 300px;
+      }
+
+      @media only screen and (min-width: 960px) {
+        width: 300px;
+      }
+    }
+  }
+
+  .mat-standard-chip.mat-chip-with-trailing-icon {
+    padding-left: 8px;
+  }
+
+  mat-label {
+    margin-bottom: 10px;
+  }
+
+  .mat-icon {
+    margin-left: 0px;
+    margin-right: 8px;
+  }
+
+}

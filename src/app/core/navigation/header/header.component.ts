@@ -12,6 +12,7 @@ import { map, withLatestFrom } from 'rxjs/operators';
 import { User } from 'src/app/shared/model/user.model';
 import { Router } from '@angular/router';
 import { CalendarService } from 'src/app/modules/calendar/services/calendar.service';
+import { ChecklistService } from 'src/app/modules/checklist/services/checklist.service';
 
 @Component({
   selector: 'app-header',
@@ -34,7 +35,8 @@ export class HeaderComponent implements OnInit {
     private uiService: UIService,
     private notificationEntityService: NotificationEntityService,
     private router: Router,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private ChecklistService: ChecklistService
   ) {
   }
 
@@ -68,8 +70,11 @@ export class HeaderComponent implements OnInit {
     this.authService.logout().subscribe();
   }
 
-  addEvent() {
-    this.calendarService.addEvent('task');
+  addEvent(pageName) {
+    if (pageName === 'calendar') {
+      this.calendarService.addEvent('task').subscribe();
+    } else if (pageName === 'checklist') {
+      this.ChecklistService.addChecklist().subscribe();
+    }
   }
-
 }

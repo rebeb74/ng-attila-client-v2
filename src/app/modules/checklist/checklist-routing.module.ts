@@ -5,7 +5,7 @@ import { ChecklistComponent } from './checklist.component';
 import { ChecklistResolver } from './resolvers/checklist.resolver';
 
 const routes: Routes = [
-  { path: '', resolve: { event: ChecklistResolver }, component: ChecklistComponent }
+  { path: '', resolve: { checklist: ChecklistResolver }, component: ChecklistComponent }
 ];
 
 @NgModule({

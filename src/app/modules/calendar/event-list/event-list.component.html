@@ -111,6 +111,10 @@
           matBadgeColor="accent">{{ 'tasks' | translate}}</span>
       </ng-template>
 
+      <mat-card-subtitle *ngIf="(taskList$ | async).length === 0" class="no-event">
+        {{ 'no_task' | translate}}
+      </mat-card-subtitle>
+
       <mat-card-content>
         <sw-item-list *ngFor="let item of taskList$ | async" [inside]="item" [trashTemplate]="trashTemplate"
           [editTemplate]="editTemplate" (callback)="action($event)" (swipeCb)="swipeCallback($event)"
@@ -126,6 +130,10 @@
         <span class="meeting" [matBadge]="(meetingList$ | async).length" matBadgeOverlap="false"
           matBadgeColor="warn">{{ 'meetings' | translate}}</span>
       </ng-template>
+
+      <mat-card-subtitle *ngIf="(meetingList$ | async).length === 0" class="no-event">
+        {{ 'no_meeting' | translate}}
+      </mat-card-subtitle>
 
       <mat-card-content>
         <sw-item-list *ngFor="let item of meetingList$ | async" [inside]="item" [editTemplate]="editTemplate"

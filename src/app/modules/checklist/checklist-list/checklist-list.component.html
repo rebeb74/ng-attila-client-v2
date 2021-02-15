@@ -1,0 +1,32 @@
+<mat-card class="checklist-list-card" fyLayoutAlign="start start" fxLayoutGap="10px" fxHide.lt-md>
+  <div class="checklist-list--container" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+    <div *ngFor="let checklist of checklists$ | async" fxLayoutAlign="start center">
+      <div fxLayoutAlign="center start" class="checklist-item-trash" fxLayout="column" fxLayoutGap="10px">
+        <i class="fas fa-edit checklist-item-trash_icon" (click)="editChecklist(checklist)"></i>
+        <i class="fas fa-trash checklist-item-trash_icon" (click)="removeChecklist(checklist)"></i>
+      </div>
+      <div class="checklist-item--container" [ngClass]="{
+        'checklist-item--container_not-active': (selectedChecklist$ | async)._id !== checklist._id && firstView === false,
+        'checklist-item--container_active': (selectedChecklist$ | async)._id === checklist._id && firstView === false && !(selectedChecklistAnimation$ | async),
+        'checklist-item--container_active-animate': (selectedChecklist$ | async)._id === checklist._id && firstView === false && (selectedChecklistAnimation$ | async)
+      }" fxLayoutAlign="start center" (click)="setSelectedChecklist(checklist)">
+        <div fxFlex="90%" class="checklist-item--name">
+          {{ checklist.checklistName }}
+        </div>
+        <div fxFlex="10%" class="checklist-item--mark"></div>
+      </div>
+    </div>
+  </div>
+</mat-card>
+
+<div fyLayoutAlign="start start" fxLayoutGap="10px" fxHide.gt-sm>
+  <div class="checklist-list--container" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+    <mat-chip-list class="checklist-list--scroll-box">
+      <mat-chip *ngFor="let checklist of checklists$ | async" removable="true" [selected]="(selectedChecklist$ | async)._id === checklist._id" (removed)="removeChecklist(checklist)" (click)="setSelectedChecklist(checklist)">
+        {{checklist.checklistName}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+</div>
+

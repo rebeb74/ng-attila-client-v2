@@ -1,0 +1,12 @@
+form {
+    padding: 5px;
+  }
+  
+  mat-dialog-content {
+    font-size: 16px;
+    padding-bottom: 20px;
+  }
+  
+  mat-form-field {
+    width: 220px;
+  }
