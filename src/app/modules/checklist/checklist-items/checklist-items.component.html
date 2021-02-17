@@ -1,7 +1,12 @@
 <mat-card class="checklist-items-card" fyLayoutAlign="center center">
   <mat-form-field fxLayoutAlign="center center" *ngIf="selectedChecklist$ | async">
     <div class="item-list">
-      <mat-label>{{ (selectedChecklist$ | async).checklistName }}</mat-label>
+      <mat-label fxLayout="row">
+        <i *ngIf="(selectedChecklist$ | async).userId === (currentUser$ | async)._id" fxFlex="20%" fxLayoutAlign="start center" class="fas fa-trash item-list-icon" (click)="removeChecklist()"></i>
+        <i *ngIf="(selectedChecklist$ | async).userId !== (currentUser$ | async)._id" fxFlex="20%" fxLayoutAlign="start center"></i>
+        <span fxFlex="60%" fxLayoutAlign="center center" class="item-list-name">{{ (selectedChecklist$ | async).checklistName }}</span>
+        <i fxFlex="20%" fxLayoutAlign="end center" class="fas fa-edit item-list-icon" (click)="editChecklist()"></i>
+      </mat-label>
       <mat-chip-list #chipList class="mat-chip-list-stacked" fxLayoutAlign="center center">
         <mat-chip *ngFor="let item of selectedChecklistItems$ | async" removable="true"
           (removed)="remove(item)">

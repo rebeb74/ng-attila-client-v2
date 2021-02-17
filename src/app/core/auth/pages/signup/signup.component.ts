@@ -57,7 +57,8 @@ export class SignupComponent extends SubscriptionManagerComponent implements OnI
         email: this.signupForm.value.email,
         password: this.signupForm.value.password,
         username: this.signupForm.value.username,
-        birthdate: this.signupForm.value.birthdate,
+        birthdate: new Date(this.signupForm.value.birthdate).toString(),
+        createdOn: new Date().toString(),
         lang: currentLang.toString()
       }).pipe(first()).subscribe();
     });

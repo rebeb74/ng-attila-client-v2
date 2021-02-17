@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { first, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { Checklist, Item } from '../../../shared/model/checklist.model';
 import { ChecklistActions } from '../store/action-types';
 import { ChecklistEntityService } from '../store/checklist-entity.service';
@@ -13,6 +13,8 @@ import { AppState } from 'src/app/core/store/app.reducer';
 import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 import { EditChecklistComponent } from '../edit-checklist/edit-checklist.component';
 import { ConfirmRemoveChecklistComponent } from '../confirm-remove-checklist/confirm-remove-checklist.component';
+import { UIService } from 'src/app/shared/services/ui.service';
+import { User } from 'src/app/shared/model/user.model';
 
 @Injectable()
 export class ChecklistService {
@@ -22,15 +24,25 @@ export class ChecklistService {
     private cheklistEntityService: ChecklistEntityService,
     private dialog: MatDialog,
     private checklistEntityService: ChecklistEntityService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private uiService: UIService,
   ) { }
 
-  getToggleChecklist(): Observable<string> {
-    return this.checklistStore.select(getToggleChecklist);
+  setSelectedChecklist(selectedChecklist: Checklist): void {
+    this.selectedChecklistAnimationStart();
+    this.checklistStore.dispatch(ChecklistActions.setSelectedChecklist({ selectedChecklist }));
+    setTimeout(() => {
+      document.getElementById('inputList').focus();
+    }, 50);
+    this.selectedChecklistAnimationStop();
   }
 
   setToggleChecklist(toggleChecklist): void {
     this.checklistStore.dispatch(ChecklistActions.SetToggleChecklist({ toggleChecklist }));
+  }
+
+  getChecklists(): Observable<Checklist[]> {
+    return this.checklistEntityService.entities$;
   }
 
   getFilteredChecklists(): Observable<Checklist[]> {
@@ -53,34 +65,17 @@ export class ChecklistService {
       );
   }
 
-  getChecklists(): Observable<Checklist[]> {
-    return this.checklistEntityService.entities$;
-  }
-
-  setSelectedChecklist(selectedChecklist: Checklist): void {
-    this.selectedChecklistAnimationStart();
-    this.checklistStore.dispatch(ChecklistActions.setSelectedChecklist({ selectedChecklist }));
-    setTimeout(() => {
-      document.getElementById('inputList').focus();
-    }, 50);
-    this.selectedChecklistAnimationStop();
-  }
-
   getSelectedChecklist(): Observable<Checklist> {
-    return this.checklistStore.select(getSelectedChecklist);
-  }
-
-  getSelectedChecklistItems(): Observable<Item[]> {
-    return this.getSelectedChecklist()
+    return this.checklistStore.select(getSelectedChecklist)
       .pipe(
-        mergeMap((selectedChecklist) => this.getFilteredChecklists().pipe(
+        switchMap((selectedChecklist) => this.getFilteredChecklists().pipe(
           map((checklists) => {
             if (checklists.length > 0) {
               const checklist = checklists.find((c) => c._id === selectedChecklist._id);
               if (!checklist) {
                 return null;
               } else {
-                return checklist.items;
+                return checklist;
               }
             } else {
               return null;
@@ -88,6 +83,37 @@ export class ChecklistService {
           })
         )),
       );
+  }
+
+  getSelectedChecklistItems(): Observable<Item[]> {
+    return this.getSelectedChecklist()
+      .pipe(
+        map((selectedChecklist) => {
+          if (selectedChecklist) {
+            return selectedChecklist.items;
+          } else {
+            return null;
+          }
+        })
+      );
+  }
+
+  getToggleChecklist(): Observable<string> {
+    return this.checklistStore.select(getToggleChecklist);
+  }
+
+  selectedChecklistAnimationStart(): void {
+    this.checklistStore.dispatch(ChecklistActions.SelectedChecklistAnimationStart());
+  }
+
+  selectedChecklistAnimationStop(): void {
+    setTimeout(() => {
+      this.checklistStore.dispatch(ChecklistActions.SelectedChecklistAnimationStop());
+    }, 500);
+  }
+
+  getSlectedChecklistAnimation(): Observable<boolean> {
+    return this.checklistStore.select(getSelectedChecklistIsAnimated);
   }
 
   addChecklist(): Observable<boolean> {
@@ -129,13 +155,52 @@ export class ChecklistService {
     });
     return editChecklist.afterClosed()
       .pipe(
-        map((editedChecklist) => {
+        withLatestFrom(this.getSelectedChecklist(), this.getFilteredChecklists(), this.store.select(getCurrentUser), this.getToggleChecklist()),
+        map(([editedChecklist, selectedChecklist, checklists, currentUser, toggleSelected]: [Checklist, Checklist, Checklist[], User, string]) => {
           console.log(editedChecklist);
           if (!!editedChecklist) {
-            if (editedChecklist.friendShares === '') {
-              editedChecklist.friendShares = [];
+
+            if (currentUser._id === editedChecklist.userId) {
+              const removedShareFriends = selectedChecklist.friendShares.filter((selectedChecklistFriend) => !editedChecklist.friendShares.find((editedChecklistFriend) => selectedChecklistFriend.userId === editedChecklistFriend.userId));
+              removedShareFriends.forEach((friend) => {
+                this.uiService.addNotification(friend.userId, currentUser._id, 'removed_shared_checklist');
+              });
+
+              const addedShareFriends = editedChecklist.friendShares.filter((editedChecklistFriend) => !selectedChecklist.friendShares.find((selectedChecklistFriend) => editedChecklistFriend.userId === selectedChecklistFriend.userId));
+              addedShareFriends.forEach((friend) => {
+                this.uiService.addNotification(friend.userId, currentUser._id, 'new_shared_checklist');
+              });
             }
-            this.checklistEntityService.update(editedChecklist);
+
+            if (selectedChecklist.checklistName !== editedChecklist.checklistName) {
+              selectedChecklist.friendShares.forEach((friend) => {
+                if (friend.userId !== currentUser._id) {
+                  this.uiService.addNotification(friend.userId, currentUser._id, 'checklist_name_updated', [selectedChecklist.checklistName, editedChecklist.checklistName]);
+                }
+              });
+            }
+
+            if (toggleSelected === 'private' && editedChecklist.friendShares.length > 0) {
+              if (checklists.length > 1) {
+                const index = checklists.findIndex((c) => checklist._id === c._id);
+                if (index === 0) {
+                  this.setSelectedChecklist(checklists[index + 1]);
+                } else {
+                  this.setSelectedChecklist(checklists[index - 1]);
+                }
+              }
+            } else if (toggleSelected === 'public' && editedChecklist.friendShares.length === 0) {
+              if (checklists.length > 1) {
+                const index = checklists.findIndex((c) => checklist._id === c._id);
+                if (index === 0) {
+                  this.setSelectedChecklist(checklists[index + 1]);
+                } else {
+                  this.setSelectedChecklist(checklists[index - 1]);
+                }
+              }
+            }
+
+            this.updateChecklist(editedChecklist);
             return true;
           } else {
             return false;
@@ -145,7 +210,7 @@ export class ChecklistService {
       );
   }
 
-  updateChecklist(checklist: Checklist) {
+  updateChecklist(checklist: Checklist): void {
     this.cheklistEntityService.update(checklist);
   }
 
@@ -210,20 +275,6 @@ export class ChecklistService {
       }),
       first()
     );
-  }
-
-  getSlectedChecklistAnimation(): Observable<boolean> {
-    return this.checklistStore.select(getSelectedChecklistIsAnimated);
-  }
-
-  selectedChecklistAnimationStart() {
-    this.checklistStore.dispatch(ChecklistActions.SelectedChecklistAnimationStart());
-  }
-
-  selectedChecklistAnimationStop() {
-    setTimeout(() => {
-      this.checklistStore.dispatch(ChecklistActions.SelectedChecklistAnimationStop());
-    }, 500);
   }
 
 }

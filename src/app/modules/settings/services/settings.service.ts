@@ -211,7 +211,9 @@ export class SettingsService {
                     if (!!loginSuccess) {
                       const updatedUser: User = {
                         ...currentUser,
-                        ...accountForm.value
+                        ...accountForm.value,
+                        updatedOn: new Date().toString(),
+                        birthdate: new Date(accountForm.value.birthdate).toString()
                       };
                       return of(updatedUser).pipe(
                         concatMap((updatedUser: User) => this.userEntityService.update(updatedUser).pipe(

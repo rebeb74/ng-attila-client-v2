@@ -5,13 +5,13 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { Observable } from 'rxjs';
-import { first, map, switchMap, takeUntil } from 'rxjs/operators';
+import { first, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { Friend } from 'src/app/shared/model/user.model';
 import { getCurrentLanguage } from 'src/app/shared/store/ui.reducer';
 import { SubscriptionManagerComponent } from 'src/app/shared/subscription-manager/subscription-manager.component';
-import { CalendarState, getSelectedDate } from '../store/calendar.reducer';
+import { CalendarState, getCurrentCalendar, getSelectedDate } from '../store/calendar.reducer';
 
 @Component({
   selector: 'app-add-event',
@@ -20,7 +20,8 @@ import { CalendarState, getSelectedDate } from '../store/calendar.reducer';
 })
 export class AddEventComponent extends SubscriptionManagerComponent implements OnInit, OnDestroy {
   selectedDate$: Observable<string>;
-  currentUserFriends$: Observable<Friend[]>;
+  alternList$: Observable<Friend[]>;
+  currentCalendar$: Observable<string>;
   addTaskForm: FormGroup;
   addMeetingForm: FormGroup;
   minDate = new Date();
@@ -36,13 +37,26 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
   }
 
   ngOnInit(): void {
+    this.currentCalendar$ = this.calendarStore.select(getCurrentCalendar);
     if (this.passedData.eventType === 'meeting') {
       this.tabIndex = 1;
     }
     this.setLanguages();
-    this.currentUserFriends$ = this.store.select(getCurrentUser)
+    this.alternList$ = this.store.select(getCurrentUser)
       .pipe(
-        map((currentUser) => currentUser.friend)
+        withLatestFrom(this.currentCalendar$),
+        map(([currentUser, currentCalendar]) => {
+          if (currentCalendar === 'myCalendar') {
+            return currentUser.friend;
+          } else {
+            const currentUserAsFriend: Friend[] = [{
+              userId: currentUser._id,
+              username: currentUser.username,
+              email: currentUser.email
+            }];
+            return currentUserAsFriend;
+          }
+        })
       );
     this.selectedDate$ = this.calendarStore.select(getSelectedDate);
     this.initForm();
@@ -52,9 +66,10 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
     this.selectedDate$
       .pipe(
         first(),
-        switchMap((selectedDate) => this.currentUserFriends$.pipe(
+        withLatestFrom(this.currentCalendar$),
+        switchMap(([selectedDate, currentCalendar]) => this.alternList$.pipe(
           map((currentUserFriends) => {
-            return { selectedDate, currentUserFriends };
+            return { selectedDate, currentUserFriends, currentCalendar };
           })
         ))
       )
@@ -69,7 +84,7 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
           repeat: new FormControl('0', {
             validators: []
           }),
-          altern: new FormControl({ value: '', disabled: data.currentUserFriends.length === 0 }, {
+          altern: new FormControl({ value: '', disabled: data.currentUserFriends.length === 0 && data.currentCalendar === 'myCalendar' }, {
             validators: []
           }),
           type: new FormControl('task', {

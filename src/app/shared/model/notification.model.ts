@@ -8,5 +8,6 @@ export interface Notification {
     senderUserId: string;
     senderUsername: string;
     senderEmail: string;
+    passedData: string[];
     createdOn: string;
 }

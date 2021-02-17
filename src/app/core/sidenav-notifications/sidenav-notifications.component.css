@@ -47,9 +47,7 @@ mat-card-content {
   padding-top: 4px;
 }
 
-mat-toolbar {
-  /* position: fixed; */
-  /* z-index: 1000; */
+.no-notification{
+  font-style: italic;
+  
 }
-
-

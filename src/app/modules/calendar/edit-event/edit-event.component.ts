@@ -5,13 +5,13 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { Observable } from 'rxjs';
-import { first, map, takeUntil } from 'rxjs/operators';
+import { first, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { Event } from 'src/app/shared/model/event.model';
 import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { Friend } from 'src/app/shared/model/user.model';
 import { getCurrentLanguage } from 'src/app/shared/store/ui.reducer';
-import { CalendarState, getSelectedDate } from '../store/calendar.reducer';
+import { CalendarState, getCurrentCalendar, getSelectedDate } from '../store/calendar.reducer';
 import { SubscriptionManagerComponent } from 'src/app/shared/subscription-manager/subscription-manager.component';
 
 @Component({
@@ -21,7 +21,8 @@ import { SubscriptionManagerComponent } from 'src/app/shared/subscription-manage
 })
 export class EditEventComponent extends SubscriptionManagerComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedDate$: Observable<string>;
-  currentUserFriends$: Observable<Friend[]>;
+  alternList$: Observable<Friend[]>;
+  currentCalendar$: Observable<string>;
   addTaskForm: FormGroup;
   addMeetingForm: FormGroup;
   minDate = new Date();
@@ -36,10 +37,13 @@ export class EditEventComponent extends SubscriptionManagerComponent implements 
   }
 
   ngOnInit(): void {
+    this.currentCalendar$ = this.calendarStore.select(getCurrentCalendar);
     this.setLanguages();
-    this.currentUserFriends$ = this.store.select(getCurrentUser)
+    this.alternList$ = this.store.select(getCurrentUser)
       .pipe(
-        map((currentUser) => currentUser.friend)
+        map((currentUser) => {
+          return currentUser.friend;
+        })
       );
     this.selectedDate$ = this.calendarStore.select(getSelectedDate);
     this.initForm();
@@ -50,28 +54,36 @@ export class EditEventComponent extends SubscriptionManagerComponent implements 
 
   initForm() {
     if (this.passedData.event.type === 'task') {
-      this.currentUserFriends$.pipe(first()).subscribe((currentUserFriends) => {
-        this.addTaskForm = new FormGroup({
-          _id: new FormControl(this.passedData.event._id, {
-            validators: [Validators.required]
+      this.alternList$
+        .pipe(
+          withLatestFrom(this.currentCalendar$),
+          map(([currentUserFriends, currentCalendar]) => {
+            return { currentUserFriends, currentCalendar };
           }),
-          title: new FormControl(this.passedData.event.title, {
-            validators: [Validators.required]
-          }),
-          startTime: new FormControl(new Date(this.passedData.event.startTime), {
-            validators: [Validators.required]
-          }),
-          repeat: new FormControl(this.passedData.event.repeat, {
-            validators: []
-          }),
-          altern: new FormControl({ value: this.passedData.event.altern, disabled: currentUserFriends.length === 0 }, {
-            validators: []
-          }),
-          type: new FormControl(this.passedData.event.type, {
-            validators: [Validators.required]
-          })
+          first()
+        )
+        .subscribe((data) => {
+          this.addTaskForm = new FormGroup({
+            _id: new FormControl(this.passedData.event._id, {
+              validators: [Validators.required]
+            }),
+            title: new FormControl(this.passedData.event.title, {
+              validators: [Validators.required]
+            }),
+            startTime: new FormControl(new Date(this.passedData.event.startTime), {
+              validators: [Validators.required]
+            }),
+            repeat: new FormControl(this.passedData.event.repeat, {
+              validators: []
+            }),
+            altern: new FormControl({ value: this.passedData.event.altern, disabled: (data.currentUserFriends.length === 0 && data.currentCalendar === 'myCalendar') || data.currentCalendar !== 'myCalendar' }, {
+              validators: []
+            }),
+            type: new FormControl(this.passedData.event.type, {
+              validators: [Validators.required]
+            })
+          });
         });
-      });
     } else if (this.passedData.event.type === 'meeting') {
 
       this.addMeetingForm = new FormGroup({

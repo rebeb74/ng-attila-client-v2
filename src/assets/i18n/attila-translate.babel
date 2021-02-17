@@ -332,6 +332,27 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>add_event_from_friend_title</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>add_friend_button</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -542,6 +563,27 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>cant_modify_altern</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>change</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -585,6 +627,27 @@
             </concept_node>
             <concept_node>
                 <name>checklist_empty</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>checklist_name_updated_title</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -731,6 +794,69 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>content_add_event_from_friend</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>content_checklist_name_updated</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>content_edit_event_from_friend</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>content_friend_request</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -794,7 +920,70 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>content_new_shared_checklist</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>content_remove_event_from_friend</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>content_removed_from_friends</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>content_removed_shared_checklist</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -879,6 +1068,27 @@
             </concept_node>
             <concept_node>
                 <name>edit_checklist</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>edit_event_from_friend_title</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -1613,6 +1823,27 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>name</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>new_item</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -1635,6 +1866,27 @@
             </concept_node>
             <concept_node>
                 <name>new_pw</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>new_shared_checklist_title</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -1698,6 +1950,27 @@
             </concept_node>
             <concept_node>
                 <name>no_meeting</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>no_notification</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -1928,6 +2201,27 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>only_add_yourself_as_altern</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>password_reset</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -2033,7 +2327,49 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>remove_event_from_friend_title</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>removed_from_friends_title</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>removed_shared_checklist_title</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>

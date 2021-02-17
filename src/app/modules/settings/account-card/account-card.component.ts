@@ -47,7 +47,7 @@ export class AccountCardComponent extends SubscriptionManagerComponent implement
         username: new FormControl(user.username, {
           validators: [Validators.required, Validators.pattern('.{4,}')]
         }),
-        birthdate: new FormControl(user.birthdate, {
+        birthdate: new FormControl(new Date(user.birthdate), {
           validators: [Validators.required]
         }),
       });

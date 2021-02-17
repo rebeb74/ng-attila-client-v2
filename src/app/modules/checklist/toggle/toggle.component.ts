@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { ChecklistService } from '../services/checklist.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class ToggleComponent implements OnInit {
   }
 
   addChecklist() {
-    this.checklistService.addChecklist().subscribe();
+    this.checklistService.addChecklist().pipe(first()).subscribe();
   }
 
 }

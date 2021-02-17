@@ -13,6 +13,8 @@ import { UserEntityService } from '../../shared/services/user-entity.service';
 import { UIService } from '../../shared/services/ui.service';
 import * as _ from 'lodash';
 import { getCurrentUser } from '../auth/store/auth.reducer';
+import { ChecklistService } from 'src/app/modules/checklist/services/checklist.service';
+import { Checklist } from 'src/app/shared/model/checklist.model';
 
 
 @Component({
@@ -26,15 +28,18 @@ import { getCurrentUser } from '../auth/store/auth.reducer';
 export class SidenavNotificationsComponent implements OnInit {
   @Output() sidenavNotificationsClose = new EventEmitter<void>()
   currentUserNotifications$: Observable<Notification[]>;
+  selectedChecklist$: Observable<Checklist>
 
   constructor(
     private store: Store<AppState>,
     private notificationEntityService: NotificationEntityService,
     private userEntityService: UserEntityService,
-    private uiService: UIService
+    private uiService: UIService,
+    private checklistService: ChecklistService
   ) { }
 
   ngOnInit(): void {
+    this.selectedChecklist$ = this.checklistService.getSelectedChecklist();
     this.currentUserNotifications$ = this.notificationEntityService.entities$
       .pipe(
         withLatestFrom(this.store.select(getCurrentUser)),
@@ -64,7 +69,7 @@ export class SidenavNotificationsComponent implements OnInit {
       this.userEntityService.update(newUser);
     });
     this.uiService.addNotification(notification.senderUserId, notification.notificationUserId, 'friend_request_accepted');
-    this.notificationEntityService.delete(notification);
+    this.deleteNotification(notification);
   }
 
   onDeclineFriendRequest(notification) {
@@ -74,6 +79,11 @@ export class SidenavNotificationsComponent implements OnInit {
 
   deleteNotification(notification) {
     this.notificationEntityService.delete(notification);
+    this.currentUserNotifications$.pipe(first()).subscribe((notifications) => {
+      if (notifications.length === 0) {
+        this.onClose();
+      }
+    });
   }
 
   getFormat(date) {

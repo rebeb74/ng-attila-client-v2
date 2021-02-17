@@ -41,9 +41,17 @@ mat-form-field {
 }
 
 .item-list {
-  font-size: 16px;
-  color: #12e0da;
-  text-align: center;
+  // text-align: center;
+  
+  &-name{
+    font-size: 16px;
+    color: #12e0da;
+  }
+  
+  &-icon{
+    font-size: 18px;
+    padding-left: 10px;
+  }
 
   ::ng-deep.mat-chip-list-wrapper {
     margin-top: 10px;

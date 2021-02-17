@@ -22,10 +22,11 @@
             <mat-select formControlName="altern" [placeholder]=" 'event_altern' | translate"
               [compareWith]="friendComparisonFunction">
               <mat-option value="">{{ 'dont_altern' | translate }}</mat-option>
-              <mat-option *ngFor="let friend of (currentUserFriends$ | async)" [value]="friend">
+              <mat-option *ngFor="let friend of (alternList$ | async)" [value]="friend">
                 {{ friend.username }}
               </mat-option>
             </mat-select>
+            <mat-hint *ngIf="(currentCalendar$ | async) !== 'myCalendar' ">{{ "cant_modify_altern" | translate }}</mat-hint>
           </mat-form-field>
           <mat-form-field>
             <input type="text" matInput [matAutocomplete]="auto" formControlName="repeat"
@@ -79,10 +80,11 @@
           <mat-select formControlName="altern" [placeholder]=" 'event_altern' | translate"
             [compareWith]="friendComparisonFunction">
             <mat-option value="">{{ 'dont_altern' | translate }}</mat-option>
-            <mat-option *ngFor="let friend of (currentUserFriends$ | async)" [value]="friend">
+            <mat-option *ngFor="let friend of (alternList$ | async)" [value]="friend">
               {{ friend.username }}
             </mat-option>
           </mat-select>
+          <mat-hint *ngIf="(currentCalendar$ | async) !== 'myCalendar' ">{{ "cant_modify_altern" | translate }}</mat-hint>
         </mat-form-field>
       </mat-dialog-content>
 

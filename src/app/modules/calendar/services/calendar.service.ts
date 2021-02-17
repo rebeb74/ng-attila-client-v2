@@ -7,6 +7,7 @@ import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { Event } from 'src/app/shared/model/event.model';
 import { Friend } from 'src/app/shared/model/user.model';
+import { UIService } from 'src/app/shared/services/ui.service';
 import { AddEventComponent } from '../add-event/add-event.component';
 import { EditEventComponent } from '../edit-event/edit-event.component';
 import { CalendarState, getCurrentCalendar } from '../store/calendar.reducer';
@@ -19,7 +20,8 @@ export class CalendarService {
     private eventEntityService: EventEntityService,
     private dialog: MatDialog,
     private store: Store<AppState>,
-    private calendarStore: Store<CalendarState>
+    private calendarStore: Store<CalendarState>,
+    private uiService: UIService
   ) { }
 
   addEvent(eventType): Observable<boolean> {
@@ -51,6 +53,7 @@ export class CalendarService {
                 createdOn: new Date().toString(),
                 updatedOn: new Date().toString(),
               };
+              this.uiService.addNotification(currentCalendar, currentUser._id, 'add_event_from_friend', [newEvent.title, newEvent.startTime]);
               this.eventEntityService.add(newEvent);
               return true;
             }
@@ -70,14 +73,18 @@ export class CalendarService {
     });
     return addEvent.afterClosed()
       .pipe(
-        map((event) => {
+        withLatestFrom(this.store.select(getCurrentUser), this.calendarStore.select(getCurrentCalendar)),
+        map(([event, currentUser, currentCalendar]) => {
           if (!!event) {
-            const newEvent: Event = {
+            const editedEvent: Event = {
               ...event,
               startTime: this.startOfDay(new Date(event.startTime)).toString(),
               updatedOn: new Date().toString(),
             };
-            this.eventEntityService.update(newEvent);
+            if (currentCalendar !== 'myCalendar') {
+              this.uiService.addNotification(currentCalendar, currentUser._id, 'edit_event_from_friend', [editedEvent.title, editedEvent.startTime]);
+            }
+            this.eventEntityService.update(editedEvent);
             return true;
           }
           return false;
@@ -117,6 +124,20 @@ export class CalendarService {
           return task;
         }),
         first()
+      );
+  }
+
+  deleteEvent(event: Event): Observable<boolean> {
+    console.log(event);
+    return this.eventEntityService.delete(event)
+      .pipe(
+        withLatestFrom(this.store.select(getCurrentUser), this.calendarStore.select(getCurrentCalendar)),
+        map(([, currentUser, currentCalendar]) => {
+          if (currentCalendar !== 'myCalendar') {
+            this.uiService.addNotification(currentCalendar, currentUser._id, 'remove_event_from_friend', [event.title, event.startTime]);
+          }
+          return true;
+        })
       );
   }
 

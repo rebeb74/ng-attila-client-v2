@@ -27,7 +27,7 @@
       <mat-card-content>
         <mat-selection-list #tasksList>
           <div *ngFor="let task of taskList$ | async" fxLayout="row" fxLayoutAlign="center center">
-            <mat-list-option fxFlex="80%" [value]="task._id" checkboxPosition="before" fxLayoutAlign="center center">
+            <mat-list-option fxFlex="80%" [value]="task" checkboxPosition="before" fxLayoutAlign="center center">
               <div fxFlex="99%" fxLayoutAlign="start center">
                 {{ task.title }}
               </div>
@@ -76,7 +76,7 @@
       <mat-card-content>
         <mat-selection-list #meetingsList>
           <div *ngFor="let meeting of meetingList$ | async" fxLayout="row" fxLayoutAlign="center center">
-            <mat-list-option fxFlex="80%" [value]="meeting._id" checkboxPosition="before">
+            <mat-list-option fxFlex="80%" [value]="meeting" checkboxPosition="before">
               <div fxFlex="99%" class="list-swipe" fxLayoutAlign="center start" fxLayout="column">
                 <div>
                   {{ meeting.title }}

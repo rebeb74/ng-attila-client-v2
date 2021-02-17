@@ -8,7 +8,7 @@ import { first, map } from 'rxjs/operators';
 import { getCurrentUser } from '../../../core/auth/store/auth.reducer';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { Checklist } from '../../../shared/model/checklist.model';
-import { Friend } from '../../../shared/model/user.model';
+import { Friend, User } from '../../../shared/model/user.model';
 
 @Component({
   selector: 'app-edit-checklist',
@@ -18,6 +18,8 @@ import { Friend } from '../../../shared/model/user.model';
 export class EditChecklistComponent implements OnInit {
   editChecklistForm: FormGroup;
   currentUserFriends$: Observable<Friend[]>;
+  currentUser$: Observable<User>;
+
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public passedData: { checklist: Checklist },
@@ -26,11 +28,12 @@ export class EditChecklistComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUserFriends$ = this.store.select(getCurrentUser).pipe(map((currentUser) => currentUser.friend), first());
-    this.currentUserFriends$
+    this.currentUser$ = this.store.select(getCurrentUser);
+    this.currentUser$
       .pipe(
         first()
       )
-      .subscribe((currentUserFriends) => {
+      .subscribe((currentUser) => {
         this.editChecklistForm = new FormGroup({
           _id: new FormControl(this.passedData.checklist._id, {
             validators: [Validators.required]
@@ -50,7 +53,7 @@ export class EditChecklistComponent implements OnInit {
           createdOn: new FormControl(this.passedData.checklist.createdOn, {
             validators: [Validators.required]
           }),
-          friendShares: new FormControl({ value: this.passedData.checklist.friendShares, disabled: currentUserFriends.length === 0 }, {
+          friendShares: new FormControl({ value: this.passedData.checklist.friendShares, disabled: currentUser.friend.length === 0 || currentUser._id !== this.passedData.checklist.userId }, {
             validators: []
           })
         });

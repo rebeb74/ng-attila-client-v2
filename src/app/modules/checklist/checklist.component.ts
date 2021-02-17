@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Checklist } from 'src/app/shared/model/checklist.model';
+import { ChecklistSocketService } from './services/checklist-socket.service';
 import { ChecklistService } from './services/checklist.service';
 
 @Component({
@@ -14,14 +15,16 @@ export class ChecklistComponent implements OnInit {
 
   constructor(
     private checklistService: ChecklistService,
+    private checklistSocketService: ChecklistSocketService
   ) { }
 
   ngOnInit(): void {
     this.checklists$ = this.checklistService.getFilteredChecklists();
     this.toggleChecklist$ = this.checklistService.getToggleChecklist();
+    this.checklistSocketService.webSocketListener();
   }
 
-  addChecklist() {
-    this.checklistService.addChecklist().subscribe();
+  ngOnDestroy() {
+    this.checklistSocketService.disconnect();
   }
 }

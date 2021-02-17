@@ -59,7 +59,6 @@ export class EventListComponent implements OnInit {
   }
 
   action(action) {
-    console.log(action);
     if (action.action === 'trash') {
       this.deleteEvent(action.value);
     }
@@ -81,11 +80,10 @@ export class EventListComponent implements OnInit {
   }
 
   deleteEvent(event) {
-    this.eventEntityService.delete(event);
+    this.calendarService.deleteEvent(event).subscribe();
   }
 
   deleteEvents(selectedEvents) {
-
     selectedEvents.forEach((event) => {
       this.deleteEvent(event.value);
     });

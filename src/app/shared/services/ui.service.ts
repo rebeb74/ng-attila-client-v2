@@ -79,7 +79,7 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
         });
     }
 
-    addNotification(targetUserId: string, senderUserId: string, code: string) {
+    addNotification(targetUserId: string, senderUserId: string, code: string, passedData?: string[]) {
         this.userEntityService.entities$
             .pipe(
                 map((users) => {
@@ -102,6 +102,7 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
                         senderUserId: data.sender._id,
                         senderUsername: data.sender.username,
                         senderEmail: data.sender.email,
+                        passedData: passedData,
                         createdOn: (new Date()).toISOString()
                     })
                 ),
