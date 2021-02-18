@@ -82,6 +82,7 @@
 	"mail_not_found": "Mail nicht gefunden.",
 	"mail_sent_content": "Vielen Dank für Ihre Nachricht, wir werden Ihnen so schnell wie möglich antworten!",
 	"meetings": "Treffen",
+	"min_date": "Sie können kein altes Datum auswählen.",
 	"missing_email": "Ungültige oder fehlende Mail.",
 	"missing_pw": "Fehlendes Passwort.",
 	"my_calendar": "Mein Kalender",

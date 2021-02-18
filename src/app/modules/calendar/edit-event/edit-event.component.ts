@@ -13,6 +13,7 @@ import { Friend } from 'src/app/shared/model/user.model';
 import { getCurrentLanguage } from 'src/app/shared/store/ui.reducer';
 import { CalendarState, getCurrentCalendar, getSelectedDate } from '../store/calendar.reducer';
 import { SubscriptionManagerComponent } from 'src/app/shared/subscription-manager/subscription-manager.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-edit-event',
@@ -118,6 +119,7 @@ export class EditEventComponent extends SubscriptionManagerComponent implements 
   setLanguages() {
     this.store.select(getCurrentLanguage).pipe(takeUntil(this.ngDestroyed$)).subscribe((lang) => {
       this.dateAdapter.setLocale(lang + '-' + lang.toUpperCase());
+      moment.locale(lang);
       NgxMaterialTimepickerModule.setLocale(lang + '-' + lang.toUpperCase());
     });
   }

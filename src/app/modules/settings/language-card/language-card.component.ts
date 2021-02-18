@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { Store } from '@ngrx/store';
+import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/core/store/app.reducer';
@@ -36,7 +37,10 @@ export class LanguageCardComponent extends SubscriptionManagerComponent implemen
   setLanguages() {
     this.languages$ = this.store.select(getLanguages);
     this.currentLang$ = this.store.select(getCurrentLanguage);
-    this.currentLang$.pipe(takeUntil(this.ngDestroyed$)).subscribe((lang) => this.datePickerLocale(lang));
+    this.currentLang$.pipe(takeUntil(this.ngDestroyed$)).subscribe((lang) => {
+      this.datePickerLocale(lang);
+      moment.locale(lang);
+    });
   }
 
   datePickerLocale(lang: string) {

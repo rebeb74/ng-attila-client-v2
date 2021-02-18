@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment as env } from '../../../environments/environment';
 import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 import { SubscriptionManagerComponent } from '../subscription-manager/subscription-manager.component';
+import * as moment from 'moment';
 
 
 @Injectable()
@@ -47,6 +48,7 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
         this.store.select(getCurrentLanguage).pipe(first()).subscribe((currentLanguage) => {
             if (!!lang) {
                 this.translate.setDefaultLang(lang);
+                moment.locale(lang);
                 this.store.dispatch(UiActions.setCurrentLanguage({ currentLanguage: lang }));
             } else {
                 this.translate.setDefaultLang(currentLanguage);
@@ -72,6 +74,7 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
     switchLang(newLang: string) {
         this.store.dispatch(UiActions.setCurrentLanguage({ currentLanguage: newLang }));
         this.translate.use(newLang);
+        moment.locale(newLang);
         this.store.select(getCurrentUser).pipe(first()).subscribe((user) => {
             if (user) {
                 this.userEntityService.update({ ...user, lang: newLang });

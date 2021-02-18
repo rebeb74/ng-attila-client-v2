@@ -1,0 +1,12 @@
+.home-card{
+    min-width: 260px;
+    max-width: 260px;
+    border-radius: 20px;
+    -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+}
+
+mat-card-title{
+    font-size: 18px;
+    text-align: center;
+}

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+import * as moment from 'moment';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { Observable } from 'rxjs';
 import { first, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -24,7 +25,7 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
   currentCalendar$: Observable<string>;
   addTaskForm: FormGroup;
   addMeetingForm: FormGroup;
-  minDate = new Date();
+  minDate = this.startOfDay(new Date());
   tabIndex = 0;
 
   constructor(
@@ -74,6 +75,7 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
         ))
       )
       .subscribe((data) => {
+        console.log('selectedDate)', data.selectedDate);
         this.addTaskForm = new FormGroup({
           title: new FormControl('', {
             validators: [Validators.required]
@@ -120,9 +122,19 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
 
   setLanguages() {
     this.store.select(getCurrentLanguage).pipe(takeUntil(this.ngDestroyed$)).subscribe((lang) => {
+      this.dateAdapter.localeChanges.subscribe((localeChange) => console.log('localeChange', localeChange));
       this.dateAdapter.setLocale(lang + '-' + lang.toUpperCase());
+      moment.locale(lang);
       NgxMaterialTimepickerModule.setLocale(lang + '-' + lang.toUpperCase());
     });
+  }
+
+  formatDate(stringDate: string): Date {
+    return this.startOfDay(new Date(moment(stringDate, 'LL').toString()));
+  }
+
+  startOfDay(date: Date) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
   ngOnDestroy() {

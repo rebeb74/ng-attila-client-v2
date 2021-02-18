@@ -73,17 +73,44 @@
             <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title" name="title">
             <mat-error>{{ "required" | translate }}</mat-error>
           </mat-form-field>
-          <mat-form-field>
-            <input matInput [placeholder]=" 'event_start_time' | translate" [matDatepicker]="taskSmallPicker"
+          <mat-form-field >
+            <input matInput #date [placeholder]=" 'event_start_time' | translate" [matDatepicker]="taskSmallPicker"
               [min]="minDate" formControlName="startTime" name="date">
             <mat-datepicker-toggle matSuffix [for]="taskSmallPicker"></mat-datepicker-toggle>
             <mat-datepicker #taskSmallPicker></mat-datepicker>
             <mat-error>{{ "required" | translate }}</mat-error>
+            <mat-hint class="start-time" *ngIf="formatDate(date.value) < minDate">{{ "min_date" | translate }}</mat-hint>
           </mat-form-field>
+          <br *ngIf="formatDate(date.value) < minDate">
           <mat-form-field>
-            <input type="text" matInput [placeholder]=" 'event_repeat' | translate" formControlName="repeat"
-              name="repeat">
+            <input type="text" matInput [matAutocomplete]="auto" formControlName="repeat"
+              [placeholder]=" 'event_repeat' | translate" name="repeat">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option [value]="">
+                {{ 'no_repeat' | translate }}
+              </mat-option>
+              <mat-option [value]="'1'">
+                {{ '1_day' | translate }}
+              </mat-option>
+              <mat-option [value]="'7'">
+                {{ '1_week' | translate }}
+              </mat-option>
+              <mat-option [value]="'14'">
+                {{ '2_weeks' | translate }}
+              </mat-option>
+              <mat-option [value]="'21'">
+                {{ '3_weeks' | translate }}
+              </mat-option>
+              <mat-option [value]="'28'">
+                {{ '1_month' | translate }}
+              </mat-option>
+              <mat-option [value]="'56'">
+                {{ '2_months' | translate }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-hint>{{ "event_repeat_hint_1" | translate }}</mat-hint>
           </mat-form-field>
+          <br>
           <mat-form-field>
             <mat-select formControlName="altern" [placeholder]=" 'event_altern' | translate">
               <mat-option value="">{{ 'dont_altern' | translate }}</mat-option>
@@ -95,7 +122,7 @@
           </mat-form-field>
         </mat-dialog-content>
 
-        <div fxLayoutGap="50px">
+        <div fxLayoutGap="10px">
           <button mat-raised-button color="accent" [disabled]="addTaskForm.invalid"
             [mat-dialog-close]="addTaskForm.value">{{ "add" | translate }}</button>
           <button mat-raised-button mat-dialog-close>{{ 'cancel' | translate }}</button>
@@ -190,7 +217,7 @@
 
         </mat-dialog-content>
 
-        <div fxLayoutGap="50px">
+        <div fxLayoutGap="10px">
           <button mat-raised-button color="accent" [disabled]="addMeetingForm.invalid"
             [mat-dialog-close]="addMeetingForm.value">{{ "add" | translate }}</button>
           <button mat-raised-button mat-dialog-close>{{ 'cancel' | translate }}</button>

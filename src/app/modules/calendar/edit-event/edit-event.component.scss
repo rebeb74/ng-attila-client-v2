@@ -1,74 +1,73 @@
 form {
-    padding: 5px;
-  }
-  
+  padding: 5px;
+}
+
+mat-dialog-content {
+  font-size: 16px;
+  padding-bottom: 20px;
+}
+
+mat-form-field {
+  width: 220px;
+}
+
+::ng-deep.mat-tab-body-content {
+  overflow: inherit !important;
+}
+
+@media only screen and (min-width: 375px) {
   mat-dialog-content {
     font-size: 16px;
-    padding-bottom: 20px;
   }
-  
+
   mat-form-field {
-    width: 220px;
+    width: 250px;
   }
-  
-  ::ng-deep.mat-tab-body-content {
-    overflow: inherit !important;
+}
+
+@media only screen and (min-width: 960px) {
+  mat-form-field {
+    width: 250px;
   }
-  
-  @media only screen and (min-width: 375px) {
-    mat-dialog-content {
-      font-size: 16px;
-    }
-  
-    mat-form-field {
-      width: 250px;
-    }
-  }
-  
-  @media only screen and (min-width: 960px) {
-    mat-form-field {
-      width: 250px;
-    }
-  
-  }
-  
-  ::ng-deep .ngx-timepicker {
-    &-control {
-      &__input {
-        color: inherit !important;
-        background-color: transparent !important;
-        font-size: 16px !important;
-      }
-  
-      &__arrow {
-        color: inherit !important;
-        background-color: transparent !important;
-        font-size: 10px !important;
-        max-height: 12px;
-      }
-    }
-  
-    &__toggle {
-      fill: #bec6d0;
-      margin-top: 2px;
+
+}
+
+::ng-deep .ngx-timepicker {
+  &-control {
+    &__input {
+      color: inherit !important;
       background-color: transparent !important;
+      font-size: 16px !important;
+    }
+
+    &__arrow {
+      color: inherit !important;
+      background-color: transparent !important;
+      font-size: 10px !important;
+      max-height: 12px;
     }
   }
-  
-  ::ng-deep ngx-material-timepicker-content {
-    --body-background-color: #172a47;
-    --primary-font-family: 'Roboto', sans-serif;
-    --button-color: #12e0da !important;
-    --dial-active-color: #12e0da;
-    --dial-inactive-color: #bec6d0;
-    --dial-background-color: #172a47 !important;
-    --dial-editable-active-color: #c6ff00 !important;
-    --dial-editable-background-color: #fff;
-    --clock-face-time-active-color: #fff;
-    --clock-face-time-inactive-color: #6c6c6c;
-    --clock-face-inner-time-inactive-color: #6c6c6c;
-    --clock-face-time-disabled-color: #c5c5c5;
-    --clock-face-background-color: #bec6d0;
-    --clock-hand-color: #12e0da !important;
+
+  &__toggle {
+    fill: #bec6d0;
+    margin-top: 2px;
+    background-color: transparent !important;
   }
-  
+}
+
+::ng-deep ngx-material-timepicker-content {
+  --body-background-color: #172a47;
+  --primary-font-family: 'Roboto', sans-serif;
+  --button-color: #12e0da !important;
+  --dial-active-color: #12e0da;
+  --dial-inactive-color: #bec6d0;
+  --dial-background-color: #172a47 !important;
+  --dial-editable-active-color: #c6ff00 !important;
+  --dial-editable-background-color: #fff;
+  --clock-face-time-active-color: #fff;
+  --clock-face-time-inactive-color: #6c6c6c;
+  --clock-face-inner-time-inactive-color: #6c6c6c;
+  --clock-face-time-disabled-color: #c5c5c5;
+  --clock-face-background-color: #bec6d0;
+  --clock-hand-color: #12e0da !important;
+}
