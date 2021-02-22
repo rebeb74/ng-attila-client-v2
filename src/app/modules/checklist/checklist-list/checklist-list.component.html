@@ -12,6 +12,8 @@
       }" fxLayoutAlign="start center" (click)="setSelectedChecklist(checklist)">
         <div fxFlex="90%" class="checklist-item--name">
           {{ checklist.checklistName }}
+          <span class="accent public" *ngIf="checklist.userId !== (currentUser$ | async)._id">{{ checklist.username }}</span>
+          <i *ngIf="checklist.friendShares.length > 0" class="fas fa-share-alt share accent"></i>
         </div>
         <div fxFlex="10%" class="checklist-item--mark"></div>
       </div>
@@ -23,7 +25,8 @@
   <div class="checklist-list--container" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
     <mat-chip-list class="checklist-list--scroll-box">
       <mat-chip *ngFor="let checklist of checklists$ | async" removable="true" [selected]="(selectedChecklist$ | async)._id === checklist._id" (removed)="removeChecklist(checklist)" (click)="setSelectedChecklist(checklist)">
-        {{checklist.checklistName}}
+        {{checklist.checklistName}} 
+        <i *ngIf="checklist.friendShares.length > 0" class="fas fa-share-alt share"></i>
         <mat-icon *ngIf="checklist.userId === (currentUser$ | async)._id" matChipRemove>cancel</mat-icon>
       </mat-chip>
     </mat-chip-list>

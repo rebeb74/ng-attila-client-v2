@@ -1,0 +1,107 @@
+.home-card {
+  &-welcome {
+    min-width: 280px;
+    max-width: 280px;
+    border-radius: 20px;
+    -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+    // border: 1px solid white;
+
+    &-content{
+        text-align: center;
+    }
+
+    &-logo {
+      //   border: 1px solid red;
+      background: url("../../../assets/images/light-logo.svg") no-repeat center;
+      min-height: 200px;
+      max-height: 200px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    &-text {
+      min-width: 250px;
+      max-width: 250px;
+      text-align: center;
+      //   border: 1px solid white;
+      margin-top: 10px;
+
+      &-title {
+        font-size: 20px;
+        color: #12e0da;
+      }
+
+      &-content {
+        font-size: 15px;
+      }
+    }
+    @media only screen and (min-width: 375px) {
+        min-width: 300px;
+        max-width: 300px;
+    
+          &-text {
+            min-width: 270px;
+            max-width: 270px;
+          }
+      }
+  }
+
+  min-width: 280px;
+  max-width: 280px;
+  border-radius: 20px;
+  -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+
+  &-image {
+    min-width: 260px;
+    max-width: 260px;
+  }
+
+  &-content {
+    min-width: 260px;
+    max-width: 260px;
+  }
+
+  @media only screen and (min-width: 375px) {
+    min-width: 300px;
+    max-width: 300px;
+
+    &-image {
+      min-width: 280px;
+      max-width: 280px;
+    }
+
+    &-content {
+      min-width: 280px;
+      max-width: 280px;
+    }
+  }
+
+  @media only screen and (min-width: 960px) {
+    min-width: 400px;
+    max-width: 400px;
+
+    &-image {
+      min-width: 370px;
+      max-width: 370px;
+    }
+
+    &-content {
+      min-width: 370px;
+      max-width: 370px;
+    }
+  }
+}
+
+mat-card-title {
+  font-size: 18px;
+  text-align: center;
+}
+
+app-carousel {
+  width: 900px;
+  border-radius: 20px;
+  -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+}

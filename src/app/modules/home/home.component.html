@@ -1,19 +1,55 @@
-<div class="menu-margin" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px" fxLayoutAlign="center center"  color="primary" >
-    
-    <mat-card class="home-card">
+<div class="menu-margin" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center" color="primary">
+  <app-carousel fxHide.lt-md></app-carousel>
+  <div fxHide.gt-sm fxLayout="column" fxLayoutAlign="center center">
+    <mat-card class="home-card-welcome" fxLayout="column" fxLaxoutAlign="center center">
+      <mat-card-content fxLayout="column" fxLaxoutAlign="center center" class="home-card-welcome-content">
+        <div class="home-card-welcome-logo"></div>
+        <div class="home-card-welcome-text" fxLayout="column" fxLaxoutAlign=" center center">
+          <p class="home-card-welcome-text-title">{{ 'welcome_card_content' | translate }}</p>
+          <span class="home-card-welcome-text-content">{{ 'welcome_card_content2' | translate }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="20px" fxLayoutAlign="center start" color="primary">
+    <mat-card class="home-card" fxLayoutAlign="center center" fxLayout="column">
       <mat-card-title class="accent">
         {{ 'calendar' | translate }}
       </mat-card-title>
-      <mat-card-content>
-        
+      <img class="home-card-image" mat-card-image src="../../../assets/images/screen-calendar.jpg"
+        alt="calendar">
+      <mat-card-content fxLayout="column" fxLayoutAlign=" start start">
+        <p>
+          {{ 'calendar_card_content' | translate }}
+        </p>
+        <ul>
+          <li>{{ 'calendar_card_content_feature1' | translate }}</li>
+          <li>{{ 'calendar_card_content_feature2' | translate }}</li>
+          <li>{{ 'calendar_card_content_feature3' | translate }}</li>
+          <li>{{ 'calendar_card_content_feature4' | translate }}</li>
+          <li>{{ 'calendar_card_content_feature5' | translate }}</li>
+        </ul>
       </mat-card-content>
-      <mat-card-actions>
-
-      </mat-card-actions>
     </mat-card>
-    
-    <mat-card class="home-card">
 
+    <mat-card class="home-card" fxLayoutAlign="center center" fxLayout="column">
+      <mat-card-title class="accent">
+        {{ 'checklist' | translate }}
+      </mat-card-title>
+      <img class="home-card-image" mat-card-image src="../../../assets/images/screen-checklist.jpg"
+        alt="checklist">
+      <mat-card-content fxLayout="column" fxLayoutAlign=" start start" class="home-card-content">
+        <p>
+          {{ 'checklist_card_content' | translate }}
+        </p>
+        <ul>
+          <li>{{ 'checklist_card_content_feature1' | translate }}</li>
+          <li>{{ 'checklist_card_content_feature2' | translate }}</li>
+          <li>{{ 'checklist_card_content_feature3' | translate }}</li>
+          <li>{{ 'checklist_card_content_feature4' | translate }}</li>
+        </ul>
+      </mat-card-content>
     </mat-card>
-    
+
   </div>
+</div>

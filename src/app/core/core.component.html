@@ -5,12 +5,13 @@
     <mat-sidenav class="notifications-sidenav" #sidenavNotifications role="navigation" position="end">
       <app-sidenav-notifications (sidenavNotificationsClose)="sidenavNotifications.close()"></app-sidenav-notifications>
     </mat-sidenav>
-    <mat-sidenav-content>
+    <mat-sidenav-content fxLayout="column">
       <app-header (sidenavToggle)="sidenav.toggle()" (sidenavNotificationsToggle)="sidenavNotifications.toggle()">
       </app-header>
-      <main>
-        <router-outlet></router-outlet>
+      <main fxFlex.gt-sm fxLayoutAlign.gt-sm="center start">
+          <router-outlet></router-outlet>
       </main>
+      <app-footer fxFlex.gt-sm="200px" fxLayoutAlign.gt-sm="end end"></app-footer>
     </mat-sidenav-content>
   </mat-sidenav-container>
   

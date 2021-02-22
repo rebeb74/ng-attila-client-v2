@@ -1,0 +1,79 @@
+<mat-carousel timings="250ms ease-in-out" [autoplay]="true" [interval]="5000" color="accent" maxWidth="900"
+  [proportion]="30" [slides]="6" [loop]="true" [hideArrows]="true" [hideIndicators]="true" [useKeyboard]="true"
+  [useMouseWheel]="true" orientation="ltr">
+  <mat-carousel-slide #matCarouselSlide *ngFor="let slide of slides; let i = index" [image]="slide.image"
+    [hideOverlay]="true">
+    <div *ngIf="i === 0" fxLayout="row" fxLayoutAlign="end center" class="slide1">
+      <div fxFlex="300px" fxLayoutAlign="center center" fxLayout="column">
+        <p class="slide1-text">{{ slide.text | translate }}</p>
+        <div *ngIf="(isLoggedOut$ | async)" class="slide1-btn" fxLayoutAlign="center center">
+          <button mat-raised-button color="accent" routerLink="/signup">
+            {{ 'signup' | translate }}
+          </button>
+        </div>
+      </div>
+      <div fxFlex="300px" fxLayoutAlign="center center" class="slide1-logo"></div>
+    </div>
+
+    <div *ngIf="i === 1" fxLayout="row" fxLayoutAlign="start center" class="slide2">
+      <div fxFlex="200px" fxLayoutAlign="center center" class="slide2-logo"></div>
+      <div fxFlex="200px" fxLayoutAlign="center center"></div>
+      <div fxFlex="500px" fxLayoutAlign="start center" fxLayout="row">
+        <div class="slide2-btn" fxLayoutAlign="start center">
+          <button *ngIf="(isLoggedOut$ | async)" mat-raised-button color="accent" routerLink="/signup">
+            {{ 'signup' | translate }}
+          </button>
+        </div>
+        <p class="slide2-text">{{ slide.text | translate }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="i === 2" fxLayout="row" fxLayoutAlign="start start" class="slide3">
+      <div fxFlex="110px" fxLayoutAlign="center center" class="slide3-logo"></div>
+      <div fxFlex="545px" fxLayoutAlign="center center"></div>
+      <div fxFlex="227px" fxLayoutAlign="center center" fxLayout="column">
+        <p class="slide3-text">{{ slide.text | translate }}</p>
+        <div *ngIf="(isLoggedOut$ | async)" class="slide3-btn" fxLayoutAlign="end center">
+          <button mat-raised-button color="accent" routerLink="/signup">
+            {{ 'signup' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="i === 3" fxLayout="row" fxLayoutAlign="end center" class="slide4">
+      <div fxFlex="250px" fxLayoutAlign="center center" fxLayout="column">
+        <p  class="slide4-text">{{ slide.text | translate }}</p>
+        <div class="slide4-btn" *ngIf="(isLoggedOut$ | async)" fxLayoutAlign="center center">
+          <button mat-raised-button color="accent" routerLink="/signup">
+            {{ 'signup' | translate }}
+          </button>
+        </div>
+      </div>
+      <div fxFlex="250px" fxLayoutAlign="center center" class="slide4-logo"></div>
+    </div>
+
+    <div *ngIf="i === 4" fxLayout="row" fxLayoutAlign="center center" class="slide5">
+      <div fxFlex="300px" fxLayoutAlign="center center" fxLayout="column">
+        <p class="slide5-text">{{ slide.text | translate }}</p>
+        <div *ngIf="(isLoggedOut$ | async)" class="slide5-btn" fxLayoutAlign="center center">
+          <button mat-raised-button color="accent" routerLink="/signup">
+            {{ 'signup' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="i === 5" fxLayout="row" fxLayoutAlign="end center" class="slide6">
+      <div fxFlex="300px" fxLayoutAlign="center center" fxLayout="column">
+        <p class="slide6-text">{{ slide.text | translate }}</p>
+        <div *ngIf="(isLoggedOut$ | async)" class="slide6-btn" fxLayoutAlign="center center">
+          <button mat-raised-button color="accent" routerLink="/signup">
+            {{ 'signup' | translate }}
+          </button>
+        </div>
+      </div>
+      <div fxFlex="250px" fxLayoutAlign="center center" class="slide1-logo"></div>
+    </div>
+  </mat-carousel-slide>
+</mat-carousel>

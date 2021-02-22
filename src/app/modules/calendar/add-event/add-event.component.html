@@ -11,7 +11,7 @@
         </ng-template>
 
         <!-- LARGE SCREEN -->
-        <mat-dialog-content fxHide.lt-md fxLayoutAlign="start" fxLayout="column">
+        <mat-dialog-content fxHide.lt-md fxLayoutAlign="start" fxLayout="column"  fxLayoutGap="20px">
           <div fxLayoutGap="50px" fxLayout>
             <mat-form-field>
               <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title"
@@ -24,7 +24,9 @@
               <mat-datepicker-toggle matSuffix [for]="taskPicker"></mat-datepicker-toggle>
               <mat-datepicker #taskPicker></mat-datepicker>
               <mat-error>{{ "required" | translate }}</mat-error>
+              <mat-hint class="start-time" *ngIf="formatDate(date.value) < minDate">{{ "min_date" | translate }}</mat-hint>
             </mat-form-field>
+            <br *ngIf="formatDate(date.value) < minDate">
           </div>
           <div fxLayoutGap="50px" fxLayout>
             <mat-form-field>
@@ -138,7 +140,7 @@
         </ng-template>
 
         <!-- LARGE SCREEN -->
-        <mat-dialog-content fxHide.lt-md fxLayoutAlign="start" fxLayout="column">
+        <mat-dialog-content fxHide.lt-md fxLayoutAlign="start" fxLayout="column" fxLayoutGap="20px">
           <div fxLayoutGap="50px" fxLayout="row">
             <mat-form-field>
               <input type="text" matInput [placeholder]=" 'event_title' | translate" formControlName="title"
@@ -157,7 +159,9 @@
               <mat-datepicker-toggle matSuffix [for]="meetingPicker"></mat-datepicker-toggle>
               <mat-datepicker #meetingPicker></mat-datepicker>
               <mat-error>{{ "required" | translate }}</mat-error>
+              <mat-hint class="start-time" *ngIf="formatDate(date.value) < minDate">{{ "min_date" | translate }}</mat-hint>
             </mat-form-field>
+            <br *ngIf="formatDate(date.value) < minDate">
             <div>
               <ngx-timepicker-field [format]="24" [defaultTime]="'08:00'" formControlName="startHour" name="startHour"
                 [cancelBtnTmpl]="cancelBtn" [confirmBtnTmpl]="confirmBtn">
@@ -198,7 +202,9 @@
             <mat-datepicker-toggle matSuffix [for]="meetingSmallPicker"></mat-datepicker-toggle>
             <mat-datepicker #meetingSmallPicker></mat-datepicker>
             <mat-error>{{ "required" | translate }}</mat-error>
+            <mat-hint class="start-time" *ngIf="formatDate(date.value) < minDate">{{ "min_date" | translate }}</mat-hint>
           </mat-form-field>
+          <br *ngIf="formatDate(date.value) < minDate">
           <ngx-timepicker-field [format]="24" [defaultTime]="'08:00'" formControlName="startHour" name="startHour"
             [cancelBtnTmpl]="cancelBtn" [confirmBtnTmpl]="confirmBtn">
           </ngx-timepicker-field>

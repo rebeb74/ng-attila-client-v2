@@ -20,10 +20,9 @@ export class EditChecklistComponent implements OnInit {
   currentUserFriends$: Observable<Friend[]>;
   currentUser$: Observable<User>;
 
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public passedData: { checklist: Checklist },
-    private store: Store<AppState>
+    private store: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
@@ -39,9 +38,6 @@ export class EditChecklistComponent implements OnInit {
             validators: [Validators.required]
           }),
           userId: new FormControl(this.passedData.checklist.userId, {
-            validators: []
-          }),
-          username: new FormControl(this.passedData.checklist.username, {
             validators: []
           }),
           checklistName: new FormControl(this.passedData.checklist.checklistName, {

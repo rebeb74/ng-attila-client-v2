@@ -167,6 +167,8 @@ body {
 }
 
 body {
+  box-sizing: border-box;
+
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -189,8 +191,8 @@ body {
 
 @media only screen and (min-width: 960px) {
   .menu-margin {
-    margin-top: 150px;
-    margin-bottom: 150px;
+    margin-top: 140px;
+    margin-bottom: 30px;
   }
 }
 

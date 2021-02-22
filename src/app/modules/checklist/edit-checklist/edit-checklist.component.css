@@ -10,3 +10,8 @@ form {
   mat-form-field {
     width: 220px;
   }
+
+  .owner{
+    font-size: 14px;
+    font-style: italic;
+  }

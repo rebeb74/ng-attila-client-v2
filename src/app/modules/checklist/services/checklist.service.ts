@@ -15,6 +15,7 @@ import { EditChecklistComponent } from '../edit-checklist/edit-checklist.compone
 import { ConfirmRemoveChecklistComponent } from '../confirm-remove-checklist/confirm-remove-checklist.component';
 import { UIService } from 'src/app/shared/services/ui.service';
 import { User } from 'src/app/shared/model/user.model';
+import { UserEntityService } from 'src/app/shared/services/user-entity.service';
 
 @Injectable()
 export class ChecklistService {
@@ -26,6 +27,7 @@ export class ChecklistService {
     private checklistEntityService: ChecklistEntityService,
     private store: Store<AppState>,
     private uiService: UIService,
+    private userEntityService: UserEntityService
   ) { }
 
   setSelectedChecklist(selectedChecklist: Checklist): void {
@@ -42,19 +44,33 @@ export class ChecklistService {
   }
 
   getChecklists(): Observable<Checklist[]> {
-    return this.checklistEntityService.entities$;
+    return this.checklistEntityService.entities$
+      .pipe(
+        withLatestFrom(this.userEntityService.entities$),
+        map(([checklists, users]) => {
+          let newChecklists: Checklist[] = [];
+          checklists.forEach((checklist) => {
+            const checklistOwner = users.find((user) => user._id === checklist.userId);
+            checklist = {
+              ...checklist,
+              username: checklistOwner.username
+            };
+            newChecklists = [...newChecklists, checklist];
+          });
+          return newChecklists;
+        })
+      );
   }
 
   getFilteredChecklists(): Observable<Checklist[]> {
     return this.getToggleChecklist()
       .pipe(
         switchMap((toggleChecklist) => this.getChecklists().pipe(
-          map((checklists) => {
+          withLatestFrom(this.store.select(getCurrentUser)),
+          map(([checklists, currentUser]) => {
             let filteredChecklists = [];
-            if (toggleChecklist === 'private') {
-              filteredChecklists = checklists.filter((checklist) => checklist.friendShares.length === 0);
-            } else if (toggleChecklist === 'public') {
-              filteredChecklists = checklists.filter((checklist) => checklist.friendShares.length > 0);
+            if (toggleChecklist === 'myCheklists') {
+              filteredChecklists = checklists.filter((checklist) => checklist.userId === currentUser._id);
             } else {
               filteredChecklists = checklists;
             }
@@ -132,7 +148,6 @@ export class ChecklistService {
             const newChecklist: Checklist = {
               checklistName: checklist.checklistName,
               userId: currentUser._id,
-              username: currentUser.username,
               items: [],
               friendShares: checklist.friendShares,
               createdOn: new Date().toString()

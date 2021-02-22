@@ -500,6 +500,132 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>calendar_card_content</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>calendar_card_content_feature1</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>calendar_card_content_feature2</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>calendar_card_content_feature3</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>calendar_card_content_feature4</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>calendar_card_content_feature5</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>calendar_friend</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -606,6 +732,111 @@
             </concept_node>
             <concept_node>
                 <name>checklist</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>checklist_card_content</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>checklist_card_content_feature1</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>checklist_card_content_feature2</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>checklist_card_content_feature3</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>checklist_card_content_feature4</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -1613,6 +1844,27 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>home</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>invalid_link_set_new_password</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -1824,6 +2076,27 @@
             </concept_node>
             <concept_node>
                 <name>my_calendar</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>my_checklists</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -2243,6 +2516,27 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>owner</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>password_reset</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -2264,7 +2558,49 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>private</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>private_checklists</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>public</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>
@@ -2726,6 +3062,132 @@
                 </translations>
             </concept_node>
             <concept_node>
+                <name>text_slide1</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>text_slide2</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>text_slide3</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>text_slide4</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>text_slide5</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>text_slide6</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
                 <name>today_events</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
@@ -2895,6 +3357,48 @@
             </concept_node>
             <concept_node>
                 <name>week_events</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>welcome_card_content</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>de-DE</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>en-GB</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-FR</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
+            <concept_node>
+                <name>welcome_card_content2</name>
                 <definition_loaded>false</definition_loaded>
                 <description/>
                 <comment/>

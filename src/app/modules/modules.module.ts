@@ -9,6 +9,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { CarouselComponent } from './home/carousel/carousel.component';
+import { MatCarouselModule } from '@ngbmodule/material-carousel';
 
 // AOT compilation support
 function httpTranslateLoader(http: HttpClient) {
@@ -21,12 +23,14 @@ function httpTranslateLoader(http: HttpClient) {
     HomeComponent,
     PageNotFoundComponent,
     ContactUsComponent,
+    CarouselComponent,
   ],
   imports: [
     CommonModule,
     MaterialModule,
     FlexLayoutModule,
     ReactiveFormsModule,
+    MatCarouselModule.forRoot(),
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,

@@ -122,7 +122,6 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
 
   setLanguages() {
     this.store.select(getCurrentLanguage).pipe(takeUntil(this.ngDestroyed$)).subscribe((lang) => {
-      this.dateAdapter.localeChanges.subscribe((localeChange) => console.log('localeChange', localeChange));
       this.dateAdapter.setLocale(lang + '-' + lang.toUpperCase());
       moment.locale(lang);
       NgxMaterialTimepickerModule.setLocale(lang + '-' + lang.toUpperCase());

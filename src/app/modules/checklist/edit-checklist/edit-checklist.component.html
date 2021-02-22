@@ -15,6 +15,10 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <div *ngIf="(currentUser$ | async)._id !== passedData.checklist.userId">
+        {{ 'owner' | translate }}
+        <span class="accent owner">{{ passedData.checklist.username }}</span>
+      </div>
     </mat-dialog-content>
 
     <div fxLayoutGap="50px">

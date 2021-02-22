@@ -1,0 +1,62 @@
+.bot-toolbar {
+  -webkit-box-shadow: 0px 0px 10px 0px black;
+  box-shadow: 0px 0px 10px 0px black;
+  min-height: 100px;
+  max-height: 100px;
+  font-size: 16px;
+}
+
+.bot-toolbar-small {
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  -webkit-box-shadow: 0px 0px 10px 0px black;
+  box-shadow: 0px 0px 10px 0px black;
+  height: 50px;
+}
+
+.bot-home-button {
+  background: url("../../../../assets/images/logo.svg") no-repeat center;
+  margin-top: 20px;
+  height: 50px;
+  outline: none;
+  cursor: pointer;
+}
+
+
+.bot-home-button:hover {
+  background: url("../../../../assets/images/logo2.svg") no-repeat center;
+}
+
+
+.bot-cal-list-icon {
+  font-size: 35px;
+
+}
+
+.bot-cal-list-button {
+  outline: none;
+  cursor: pointer;
+}
+
+.bot-text-icon {
+  font-size: 10px;
+}
+
+.bot-add-button {
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+  -webkit-box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.5);
+}
+
+.bot-add-icon {
+  font-size: 60px;
+  width: auto;
+}
+
+.link{
+  outline: none;
+  cursor: pointer;
+}

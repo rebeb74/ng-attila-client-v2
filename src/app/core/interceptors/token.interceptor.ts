@@ -1,8 +1,9 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, filter, switchMap, take } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, filter, first, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../auth/services/auth.service';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -13,6 +14,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   constructor(
     public authService: AuthService,
+    private router: Router
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -27,6 +29,11 @@ export class TokenInterceptor implements HttpInterceptor {
         catchError((error) => {
           console.error('Error in TokenInterceptor', error.error);
           if (error instanceof HttpErrorResponse && error.status === 401 && error.error.message !== 'username_password_invalid') {
+            if (error.error.name === 'invalid_token') {
+              this.authService.logout().pipe(first()).subscribe();
+              this.router.navigateByUrl('/');
+              return of(null);
+            }
             return this.handle401Error(request, next);
           } else {
             return throwError(error);

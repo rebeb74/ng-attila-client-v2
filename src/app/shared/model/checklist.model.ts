@@ -10,7 +10,7 @@ export interface Checklist {
     _id?: string;
     userId: string;
     checklistName: string;
-    username: string;
+    username?: string;
     items: Item[];
     friendShares: Friend[];
     createdOn: string;
