@@ -16,6 +16,7 @@ import { environment as env } from '../../../environments/environment';
 import { getCurrentUser } from 'src/app/core/auth/store/auth.reducer';
 import { SubscriptionManagerComponent } from '../subscription-manager/subscription-manager.component';
 import * as moment from 'moment';
+import { Title } from '@angular/platform-browser';
 
 
 @Injectable()
@@ -31,6 +32,7 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
         private notificationSocketService: NotificationSocketService,
         private userSocketService: UserSocketService,
         private http: HttpClient,
+        private titleService: Title
     ) {
         super();
     }
@@ -43,6 +45,16 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
         this.currentUserId = userId;
     }
 
+    public setTitle(lang: string) {
+        if (lang === 'fr') {
+            this.titleService.setTitle('Attila - Gérez votre calendrier et vos checklists');
+        } else if (lang === 'en') {
+            this.titleService.setTitle('Attila - Manage your calendar and checklists');
+        } else if (lang === 'de') {
+            this.titleService.setTitle('Attila - Verwalten Sie Ihren Kalender und Ihre Checklisten');
+        }
+    }
+
     initLang(lang?: string) {
         this.store.select(getLanguages).pipe(takeUntil(this.ngDestroyed$)).subscribe((languages) => this.translate.addLangs(languages));
         this.store.select(getCurrentLanguage).pipe(first()).subscribe((currentLanguage) => {
@@ -50,8 +62,10 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
                 this.translate.setDefaultLang(lang);
                 moment.locale(lang);
                 this.store.dispatch(UiActions.setCurrentLanguage({ currentLanguage: lang }));
+                this.setTitle(lang);
             } else {
                 this.translate.setDefaultLang(currentLanguage);
+                this.setTitle(currentLanguage);
             }
         }
         );
@@ -75,6 +89,7 @@ export class UIService extends SubscriptionManagerComponent implements OnDestroy
         this.store.dispatch(UiActions.setCurrentLanguage({ currentLanguage: newLang }));
         this.translate.use(newLang);
         moment.locale(newLang);
+        this.setTitle(newLang);
         this.store.select(getCurrentUser).pipe(first()).subscribe((user) => {
             if (user) {
                 this.userEntityService.update({ ...user, lang: newLang });
