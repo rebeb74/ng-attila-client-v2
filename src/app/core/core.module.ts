@@ -16,6 +16,8 @@ import { EventEntityService } from '../modules/calendar/store/event-entity.servi
 import { ChecklistService } from '../modules/checklist/services/checklist.service';
 import { ChecklistEntityService } from '../modules/checklist/store/checklist-entity.service';
 import { FooterComponent } from './navigation/footer/footer.component';
+import { AskUserToUpdateComponent } from './pwa/ask-user-to-update/ask-user-to-update.component';
+import { PwaService } from './pwa/pwa.service';
 
 // AOT compilation support
 function httpTranslateLoader(http: HttpClient) {
@@ -29,6 +31,7 @@ function httpTranslateLoader(http: HttpClient) {
     SidenavNotificationsComponent,
     CoreComponent,
     FooterComponent,
+    AskUserToUpdateComponent,
   ],
   imports: [
     CommonModule,
@@ -50,7 +53,8 @@ function httpTranslateLoader(http: HttpClient) {
     CalendarService,
     ChecklistService,
     EventEntityService,
-    ChecklistEntityService
+    ChecklistEntityService,
+    PwaService
   ]
 })
 export class CoreModule { }
