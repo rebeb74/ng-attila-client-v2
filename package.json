@@ -8,8 +8,7 @@
     "test": "ng test",
     "lint": "eslint . --ext .ts",
     "lintfix": "eslint . --ext .ts --fix",
-    "e2e": "ng e2e",
-    "rename": "renamer -f \"/^environment.ts/\" -r \"environment.dev.ts/\" \"src/environments\""
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

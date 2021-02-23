@@ -11,7 +11,7 @@ import FrenchLocale from '@angular/common/locales/fr';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { extModules } from '../build-specifics';
 import { EffectsModule } from '@ngrx/effects';
 import { DefaultDataServiceConfig, EntityDataModule, EntityDataService } from '@ngrx/data';
 import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -68,7 +68,7 @@ registerLocaleData(GermanLocale);
         strictStateSerializability: true
       }
     }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    extModules,
     EffectsModule.forRoot([AuthEffects]),
     StoreRouterConnectingModule.forRoot({
       stateKey: 'router',
