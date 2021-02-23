@@ -1,7 +1,7 @@
 {
   "name": "Attila",
   "short_name": "Attila",
-  "theme_color": "#bec6d0",
+  "theme_color": "#0e1c35",
   "background_color": "#0e1c35",
   "display": "standalone",
   "scope": "./",
