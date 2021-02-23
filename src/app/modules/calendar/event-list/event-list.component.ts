@@ -46,14 +46,14 @@ export class EventListComponent implements OnInit {
       .pipe(
         mergeMap((events) => this.calendarStore.select(getSelectedDate).pipe(
           map((selectedDate) => {
-            return events.filter((event) => event.type === 'task' && event.startTime === selectedDate);
+            return events.filter((event) => event.type === 'task' && new Date(event.startTime).toString() === new Date(selectedDate).toString());
           })
         ))
       );
     this.meetingList$ = this.currentCalendarEvents$
       .pipe(
         mergeMap((events) => this.calendarStore.select(getSelectedDate).pipe(
-          map((selectedDate) => events.filter((event) => event.type === 'meeting' && event.startTime === selectedDate))
+          map((selectedDate) => events.filter((event) => event.type === 'meeting' && new Date(event.startTime).toString() === new Date(selectedDate).toString()))
         ))
       );
   }
