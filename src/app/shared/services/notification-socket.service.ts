@@ -6,13 +6,15 @@ import { AppState } from 'src/app/core/store/app.reducer';
 import { getCurrentUser, getIsLoggedIn } from 'src/app/core/auth/store/auth.reducer';
 import { takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { SubscriptionManagerComponent } from '../subscription-manager/subscription-manager.component';
+import * as environment from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationSocketService extends SubscriptionManagerComponent implements OnDestroy {
   socket: any;
-  readonly url: string = 'http://localhost:3000/notification'
+  socketUrl = environment.environment.socketUrl
+  readonly url: string = this.socketUrl + 'notification'
 
   constructor(
     private store: Store<AppState>

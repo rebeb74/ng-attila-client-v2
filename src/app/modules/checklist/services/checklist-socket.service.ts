@@ -7,19 +7,25 @@ import { takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { getCurrentUser, getIsLoggedIn } from 'src/app/core/auth/store/auth.reducer';
 import { ChecklistEntityService } from '../store/checklist-entity.service';
 import { SubscriptionManagerComponent } from '../../../shared/subscription-manager/subscription-manager.component';
+import * as environment from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChecklistSocketService extends SubscriptionManagerComponent implements OnDestroy {
   socket: any;
-  readonly url: string = 'http://localhost:3000/checklist'
+  socketUrl = environment.environment.socketUrl
+  readonly url: string = this.socketUrl + 'checklist'
 
   constructor(
     private store: Store<AppState>,
     private checklistEntityService: ChecklistEntityService
   ) {
     super();
+  }
+
+  connect() {
+    console.log('open2');
     this.store.select(getIsLoggedIn)
       .pipe(
         takeUntil(this.ngDestroyed$),

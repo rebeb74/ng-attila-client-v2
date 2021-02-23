@@ -7,19 +7,24 @@ import { takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { getCurrentUser, getIsLoggedIn } from 'src/app/core/auth/store/auth.reducer';
 import { EventEntityService } from '../store/event-entity.service';
 import { SubscriptionManagerComponent } from 'src/app/shared/subscription-manager/subscription-manager.component';
+import * as environment from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventSocketService extends SubscriptionManagerComponent implements OnDestroy {
   socket: any;
-  readonly url: string = 'http://localhost:3000/event'
+  socketUrl = environment.environment.socketUrl
+  readonly url: string = this.socketUrl + 'event'
 
   constructor(
     private store: Store<AppState>,
     private eventEntityService: EventEntityService
   ) {
     super();
+  }
+
+  connect() {
     this.store.select(getIsLoggedIn)
       .pipe(
         takeUntil(this.ngDestroyed$),

@@ -19,6 +19,8 @@ export class ChecklistComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log('open');
+    this.checklistSocketService.connect();
     this.checklists$ = this.checklistService.getFilteredChecklists();
     this.toggleChecklist$ = this.checklistService.getToggleChecklist();
     this.checklistSocketService.webSocketListener();

@@ -14,6 +14,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.eventSocketService.connect();
     this.eventSocketService.webSocketListener();
   }
 
