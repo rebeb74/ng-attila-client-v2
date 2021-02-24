@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { CalendarService } from 'src/app/modules/calendar/services/calendar.service';
-import { getIsLoggedIn } from '../../auth/store/auth.reducer';
+import { getIsLoggedIn, getIsLoggedOut } from '../../auth/store/auth.reducer';
 import { AppState, selectUrl } from '../../store/app.reducer';
 import { ChecklistService } from 'src/app/modules/checklist/services/checklist.service';
 
@@ -24,7 +24,7 @@ export class FooterComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.store.select(getIsLoggedIn);
-    this.isLoggedOut$ = this.store.select(getIsLoggedIn);
+    this.isLoggedOut$ = this.store.select(getIsLoggedOut);
     this.pageName$ = this.store.select(selectUrl);
   }
 
