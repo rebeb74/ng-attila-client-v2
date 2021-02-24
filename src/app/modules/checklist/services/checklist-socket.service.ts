@@ -25,7 +25,6 @@ export class ChecklistSocketService extends SubscriptionManagerComponent impleme
   }
 
   connect() {
-    console.log('open2');
     this.store.select(getIsLoggedIn)
       .pipe(
         takeUntil(this.ngDestroyed$),

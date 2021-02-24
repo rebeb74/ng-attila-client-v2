@@ -23,10 +23,13 @@
 <!-- SMALL SCREEN -->
 <mat-toolbar class="bot-toolbar-small" fxHide.gt-sm fxFlex fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoggedIn$ | async">
     <div fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/calendar"  [routerLinkActive]="['calendar']" class="bot-cal-list-button">
-      <mat-icon fxLayoutAlign="center center" class="bot-cal-list-icon">event</mat-icon>
+      <div fxLayoutAlign="center center" fxLayout="column">
+        <mat-icon class="bot-cal-list-icon">event</mat-icon>
+        <span class="bot-text-icon">{{ 'calendar' | translate}}</span>
+      </div>
     </div>
   
-    <div mat-fab *ngIf="(pageName$ | async) === '/calendar'" fxFlex="20%" fxLayoutAlign="center center">
+    <div mat-fab *ngIf="(pageName$ | async) === '/calendar'" fxFlex="40%" fxLayoutAlign="center center">
       <button mat-icon-button (click)="addEvent('calendar')" class="bot-add-button">
         <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
       </button>
@@ -36,8 +39,13 @@
         <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
       </button>
     </div>
+    <div mat-fab *ngIf="(pageName$ | async) !== '/checklist' && (pageName$ | async) !== '/calendar'" fxFlex="20%" fxLayoutAlign="center center">
+    </div>
   
     <div fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/checklist"  [routerLinkActive]="['checklist']" class="bot-cal-list-button">
-      <mat-icon fxLayoutAlign="center center" class="bot-cal-list-icon">list_alt</mat-icon>
+      <div fxLayoutAlign="center center" fxLayout="column">
+        <mat-icon class="bot-cal-list-icon">list_alt</mat-icon>
+        <span class="bot-text-icon">{{ 'checklist' | translate}}</span>
+      </div>
     </div>
   </mat-toolbar>

@@ -172,7 +172,6 @@ export class ChecklistService {
       .pipe(
         withLatestFrom(this.getSelectedChecklist(), this.getFilteredChecklists(), this.store.select(getCurrentUser), this.getToggleChecklist()),
         map(([editedChecklist, selectedChecklist, checklists, currentUser, toggleSelected]: [Checklist, Checklist, Checklist[], User, string]) => {
-          console.log(editedChecklist);
           if (!!editedChecklist) {
 
             if (currentUser._id === editedChecklist.userId) {
@@ -268,7 +267,6 @@ export class ChecklistService {
       map(([checklists, selectedChecklist]) => {
         const updatedChecklist: Checklist = _.cloneDeep(checklists.find((checklist) => checklist._id === selectedChecklist._id));
         updatedChecklist.items = [...updatedChecklist.items, item];
-        console.log('updatedChecklist', updatedChecklist);
         this.updateChecklist(updatedChecklist);
         return true;
       }),

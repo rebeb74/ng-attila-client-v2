@@ -7,43 +7,36 @@
 }
 
 .bot-toolbar-small {
+  // border: 1px solid white;
   position: fixed;
   bottom: 0;
   z-index: 1000;
   -webkit-box-shadow: 0px 0px 10px 0px black;
   box-shadow: 0px 0px 10px 0px black;
-  height: 50px;
+  height: 80px;
 }
-
-.bot-home-button {
-  background: url("../../../../assets/images/logo.svg") no-repeat center;
-  margin-top: 20px;
-  height: 50px;
-  outline: none;
-  cursor: pointer;
-}
-
-
-.bot-home-button:hover {
-  background: url("../../../../assets/images/logo2.svg") no-repeat center;
-}
-
 
 .bot-cal-list-icon {
+  // border: 1px solid white;
   font-size: 35px;
-
-}
-
-.bot-cal-list-button {
-  outline: none;
-  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  margin-top:10px;
 }
 
 .bot-text-icon {
-  font-size: 10px;
+  // border: 1px solid white;
+  font-size: 14px;
+}
+
+.bot-cal-list-button {
+  // border: 1px solid white;
+  outline: none;
+  cursor: pointer;
 }
 
 .bot-add-button {
+  // border: 1px solid white;
   outline: none;
   cursor: pointer;
   margin-bottom: 20px;
@@ -52,6 +45,7 @@
 }
 
 .bot-add-icon {
+  // border: 1px solid white;
   font-size: 60px;
   width: auto;
 }
