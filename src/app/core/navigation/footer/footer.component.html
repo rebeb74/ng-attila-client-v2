@@ -24,7 +24,7 @@
 <!-- LOGGED IN -->
 <mat-toolbar class="bot-toolbar-small" fxHide.gt-sm fxFlex fxLayout="row" fxLayoutAlign="center center"
   *ngIf="isLoggedIn$ | async">
-  <div  *ngIf="(pageName$ | async) !== '/checklist' && (pageName$ | async) !== '/calendar'" fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/calendar"
+  <div  *ngIf="(pageName$ | async) !== '/checklist' && (pageName$ | async) !== '/calendar'" fxFlex="50%" fxLayoutAlign="center center" fxLayout="column" routerLink="/calendar"
     [routerLinkActive]="['calendar']" class="bot-cal-list-button">
     <div fxLayoutAlign="center center" fxLayout="column">
       <mat-icon class="bot-cal-list-icon">event</mat-icon>
@@ -32,7 +32,7 @@
     </div>
   </div>
   
-  <div  *ngIf="(pageName$ | async) !== '/checklist' && (pageName$ | async) !== '/calendar'" fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/checklist"
+  <div  *ngIf="(pageName$ | async) !== '/checklist' && (pageName$ | async) !== '/calendar'" fxFlex="50%" fxLayoutAlign="center center" fxLayout="column" routerLink="/checklist"
     [routerLinkActive]="['checklist']" class="bot-cal-list-button">
     <div fxLayoutAlign="center center" fxLayout="column">
       <mat-icon class="bot-cal-list-icon">list_alt</mat-icon>
