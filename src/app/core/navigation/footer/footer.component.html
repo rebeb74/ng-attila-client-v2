@@ -1,51 +1,74 @@
 <!-- LARGE SCREEN -->
 <mat-toolbar class="bot-toolbar" fxHide.lt-md fxLayoutAlign="center center" fxLayoutGap="30px">
-    <a class="link" href="https://www.bertrandpetit.ch" target="_blank">
-        © Bertrand PETIT
-    </a> 
-    <span class="link" routerLink="/home">
-        {{ 'home' | translate }}
-    </span>
-    <span *ngIf="isLoggedIn$ | async" class="link" routerLink="/calendar">
-        {{ 'calendar' | translate }}
-    </span>
-    <span *ngIf="isLoggedIn$ | async" class="link" routerLink="/checklist">
-        {{ 'checklist' | translate }}
-    </span>
-    <span *ngIf="isLoggedIn$ | async" class="link" routerLink="/settings">
-        {{ 'settings' | translate }}
-    </span>
-    <span class="link" routerLink="/contact-us">
-        {{ 'contact_us' | translate }}
-    </span>
+  <a class="link" href="https://www.bertrandpetit.ch" target="_blank">
+    © Bertrand PETIT
+  </a>
+  <span class="link" routerLink="/home">
+    {{ 'home' | translate }}
+  </span>
+  <span *ngIf="isLoggedIn$ | async" class="link" routerLink="/calendar">
+    {{ 'calendar' | translate }}
+  </span>
+  <span *ngIf="isLoggedIn$ | async" class="link" routerLink="/checklist">
+    {{ 'checklist' | translate }}
+  </span>
+  <span *ngIf="isLoggedIn$ | async" class="link" routerLink="/settings">
+    {{ 'settings' | translate }}
+  </span>
+  <span class="link" routerLink="/contact-us">
+    {{ 'contact_us' | translate }}
+  </span>
 </mat-toolbar>
 
 <!-- SMALL SCREEN -->
-<mat-toolbar class="bot-toolbar-small" fxHide.gt-sm fxFlex fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoggedIn$ | async">
-    <div fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/calendar"  [routerLinkActive]="['calendar']" class="bot-cal-list-button">
-      <div fxLayoutAlign="center center" fxLayout="column">
-        <mat-icon class="bot-cal-list-icon">event</mat-icon>
-        <span class="bot-text-icon">{{ 'calendar' | translate}}</span>
-      </div>
+<!-- LOGGED IN -->
+<mat-toolbar class="bot-toolbar-small" fxHide.gt-sm fxFlex fxLayout="row" fxLayoutAlign="center center"
+  *ngIf="isLoggedIn$ | async">
+  <div fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/calendar"
+    [routerLinkActive]="['calendar']" class="bot-cal-list-button">
+    <div fxLayoutAlign="center center" fxLayout="column">
+      <mat-icon class="bot-cal-list-icon">event</mat-icon>
+      <span class="bot-text-icon">{{ 'calendar' | translate}}</span>
     </div>
-  
-    <div mat-fab *ngIf="(pageName$ | async) === '/calendar'" fxFlex="40%" fxLayoutAlign="center center">
-      <button mat-icon-button (click)="addEvent('calendar')" class="bot-add-button">
-        <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
-      </button>
+  </div>
+
+  <div mat-fab *ngIf="(pageName$ | async) === '/calendar'" fxFlex="40%" fxLayoutAlign="center center">
+    <button mat-icon-button (click)="addEvent('calendar')" class="bot-add-button">
+      <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
+    </button>
+  </div>
+  <div mat-fab *ngIf="(pageName$ | async) === '/checklist'" fxFlex="20%" fxLayoutAlign="center center">
+    <button mat-icon-button (click)="addEvent('checklist')" class="bot-add-button">
+      <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
+    </button>
+  </div>
+  <div mat-fab *ngIf="(pageName$ | async) !== '/checklist' && (pageName$ | async) !== '/calendar'" fxFlex="20%"
+    fxLayoutAlign="center center">
+  </div>
+
+  <div fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/checklist"
+    [routerLinkActive]="['checklist']" class="bot-cal-list-button">
+    <div fxLayoutAlign="center center" fxLayout="column">
+      <mat-icon class="bot-cal-list-icon">list_alt</mat-icon>
+      <span class="bot-text-icon">{{ 'checklist' | translate}}</span>
     </div>
-    <div mat-fab *ngIf="(pageName$ | async) === '/checklist'" fxFlex="20%" fxLayoutAlign="center center">
-      <button mat-icon-button (click)="addEvent('checklist')" class="bot-add-button">
-        <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
-      </button>
+  </div>
+</mat-toolbar>
+
+<!-- LOGGED OUT -->
+<mat-toolbar class="bot-toolbar-small" fxHide.gt-sm fxFlex fxLayout="row" fxLayoutAlign="center center"
+  *ngIf="isLoggedOut$ | async">
+  <div fxFlex="50%" fxLayoutAlign="center center" fxLayout="column" routerLink="/signup" class="bot-cal-list-button">
+    <div fxLayoutAlign="center center" fxLayout="column">
+      <mat-icon class="bot-cal-list-icon">face</mat-icon>
+      <span class="bot-text-icon">{{ 'signup' | translate}}</span>
     </div>
-    <div mat-fab *ngIf="(pageName$ | async) !== '/checklist' && (pageName$ | async) !== '/calendar'" fxFlex="20%" fxLayoutAlign="center center">
+  </div>
+
+  <div fxFlex="50%" fxLayoutAlign="center center" fxLayout="column" routerLink="/login" class="bot-cal-list-button">
+    <div fxLayoutAlign="center center" fxLayout="column">
+      <mat-icon class="bot-cal-list-icon">input</mat-icon>
+      <span class="bot-text-icon">{{ 'login' | translate}}</span>
     </div>
-  
-    <div fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/checklist"  [routerLinkActive]="['checklist']" class="bot-cal-list-button">
-      <div fxLayoutAlign="center center" fxLayout="column">
-        <mat-icon class="bot-cal-list-icon">list_alt</mat-icon>
-        <span class="bot-text-icon">{{ 'checklist' | translate}}</span>
-      </div>
-    </div>
-  </mat-toolbar>
+  </div>
+</mat-toolbar>
