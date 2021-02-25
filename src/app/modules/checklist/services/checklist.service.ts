@@ -35,7 +35,7 @@ export class ChecklistService {
     this.checklistStore.dispatch(ChecklistActions.setSelectedChecklist({ selectedChecklist }));
     setTimeout(() => {
       document.getElementById('inputList').focus();
-    }, 50);
+    }, 100);
     this.selectedChecklistAnimationStop();
   }
 
@@ -69,7 +69,7 @@ export class ChecklistService {
           withLatestFrom(this.store.select(getCurrentUser)),
           map(([checklists, currentUser]) => {
             let filteredChecklists = [];
-            if (toggleChecklist === 'myCheklists') {
+            if (toggleChecklist === 'myChecklists') {
               filteredChecklists = checklists.filter((checklist) => checklist.userId === currentUser._id);
             } else {
               filteredChecklists = checklists;
@@ -144,6 +144,10 @@ export class ChecklistService {
           if (!!checklist) {
             if (checklist.friendShares === '') {
               checklist.friendShares = [];
+            } else {
+              checklist.friendShares.forEach((friend) => {
+                this.uiService.addNotification(friend.userId, currentUser._id, 'new_shared_checklist', [checklist.checklistName]);
+              });
             }
             const newChecklist: Checklist = {
               checklistName: checklist.checklistName,
@@ -177,12 +181,12 @@ export class ChecklistService {
             if (currentUser._id === editedChecklist.userId) {
               const removedShareFriends = selectedChecklist.friendShares.filter((selectedChecklistFriend) => !editedChecklist.friendShares.find((editedChecklistFriend) => selectedChecklistFriend.userId === editedChecklistFriend.userId));
               removedShareFriends.forEach((friend) => {
-                this.uiService.addNotification(friend.userId, currentUser._id, 'removed_shared_checklist');
+                this.uiService.addNotification(friend.userId, currentUser._id, 'removed_shared_checklist', [selectedChecklist.checklistName]);
               });
 
               const addedShareFriends = editedChecklist.friendShares.filter((editedChecklistFriend) => !selectedChecklist.friendShares.find((selectedChecklistFriend) => editedChecklistFriend.userId === selectedChecklistFriend.userId));
               addedShareFriends.forEach((friend) => {
-                this.uiService.addNotification(friend.userId, currentUser._id, 'new_shared_checklist');
+                this.uiService.addNotification(friend.userId, currentUser._id, 'new_shared_checklist', [selectedChecklist.checklistName]);
               });
             }
 
@@ -228,35 +232,42 @@ export class ChecklistService {
     this.cheklistEntityService.update(checklist);
   }
 
-  removeChecklist(checklist: Checklist): Observable<boolean> {
+  removeChecklist(removedChecklist: Checklist): Observable<boolean> {
     const confirmRemoveChecklist = this.dialog.open(ConfirmRemoveChecklistComponent, {
       data: {
-        checklist
+        removedChecklist
       }
     });
     return confirmRemoveChecklist.afterClosed()
       .pipe(
-        switchMap((confirmRemoveChecklist) => this.getFilteredChecklists().pipe(
-          map((checklists) => {
-            if (confirmRemoveChecklist) {
-              if (checklists.length > 1) {
-                const index = checklists.findIndex((c) => checklist._id === c._id);
-                if (index === 0) {
-                  this.setSelectedChecklist(checklists[index + 1]);
-                } else {
-                  this.setSelectedChecklist(checklists[index - 1]);
-                }
+        withLatestFrom(this.getFilteredChecklists(), this.store.select(getCurrentUser)),
+        map(([confirmRemoveChecklist, filteredChecklists, currentUser]: [Checklist, Checklist[], User]) => {
+          if (confirmRemoveChecklist) {
+            if (filteredChecklists.length > 1) {
+              const index = filteredChecklists.findIndex((c) => removedChecklist._id === c._id);
+              if (index === 0) {
+                this.setSelectedChecklist(filteredChecklists[index + 1]);
+              } else {
+                this.setSelectedChecklist(filteredChecklists[index - 1]);
               }
-              setTimeout(() => {
-                this.cheklistEntityService.delete(checklist);
-              }, 50);
-              return true;
-            } else {
-              return false;
             }
-          }),
-          first()
-        )),
+
+            if (removedChecklist.friendShares.length > 0) {
+              removedChecklist.friendShares.forEach((friend) => {
+                this.uiService.addNotification(friend.userId, currentUser._id, 'removed_checklist', [removedChecklist.checklistName]);
+              });
+            }
+
+            setTimeout(() => {
+              this.cheklistEntityService.delete(removedChecklist);
+            }, 50);
+
+            return true;
+          } else {
+            return false;
+          }
+        }),
+        first()
       );
 
   }

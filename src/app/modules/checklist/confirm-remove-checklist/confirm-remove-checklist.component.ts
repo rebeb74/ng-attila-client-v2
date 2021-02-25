@@ -10,7 +10,7 @@ import { Checklist } from 'src/app/shared/model/checklist.model';
 export class ConfirmRemoveChecklistComponent implements OnInit {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public passedData: { checklist: Checklist }
+    @Inject(MAT_DIALOG_DATA) public passedData: { removedChecklist: Checklist }
   ) { }
 
   ngOnInit(): void {

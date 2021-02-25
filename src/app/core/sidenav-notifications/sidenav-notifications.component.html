@@ -30,15 +30,14 @@
           </mat-card-content>
           <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
             <div fxFlex="50%" fxLayoutAlign="start">
-              <button class="accept-decline-btn" mat-mini-fab (click)="onAcceptFriendRequest(notification)"
+              <button mat-button (click)="onAcceptFriendRequest(notification)"
                 fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
             <div fxFlex="50%" fxLayoutAlign="end">
-              <button class="accept-decline-btn" mat-mini-fab (click)="onDeclineFriendRequest(notification)"
-                color="warn" fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">close</mat-icon>
+              <button mat-button (click)="onDeclineFriendRequest(notification)" fxLayoutAlign="center center">
+                <i class="far fa-times-circle accept-decline-icon warn"></i>
               </button>
             </div>
           </mat-card-actions>
@@ -54,14 +53,15 @@
           <mat-divider></mat-divider>
           <mat-card-content>
             <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
-              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_friend_request_accepted' | translate }}
+              (<span class="accent">{{ notification.senderEmail }}</span>)
+              {{ 'content_friend_request_accepted' | translate }}
             </p>
           </mat-card-content>
           <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
             <div fxFlex fxLayoutAlign="center">
-              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+              <button class="accept-decline-btn" mat-button (click)="deleteNotification(notification)"
                 fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
           </mat-card-actions>
@@ -77,14 +77,15 @@
           <mat-divider></mat-divider>
           <mat-card-content>
             <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
-              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_friend_request_declined' | translate }}
+              (<span class="accent">{{ notification.senderEmail }}</span>)
+              {{ 'content_friend_request_declined' | translate }}
             </p>
           </mat-card-content>
           <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
             <div fxFlex fxLayoutAlign="center">
-              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+              <button mat-button (click)="deleteNotification(notification)"
                 fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
           </mat-card-actions>
@@ -100,14 +101,15 @@
           <mat-divider></mat-divider>
           <mat-card-content>
             <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
-              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_removed_from_friends' | translate }}
+              (<span class="accent">{{ notification.senderEmail }}</span>)
+              {{ 'content_removed_from_friends' | translate }}
             </p>
           </mat-card-content>
           <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
             <div fxFlex fxLayoutAlign="center">
-              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+              <button mat-button (click)="deleteNotification(notification)"
                 fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
           </mat-card-actions>
@@ -123,14 +125,16 @@
           <mat-divider></mat-divider>
           <mat-card-content>
             <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
-              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_removed_shared_checklist' | translate }} <span class="accent">{{ (selectedChecklist$ | async).checklistName }}</span>
+              (<span class="accent">{{ notification.senderEmail }}</span>)
+              {{ 'content_removed_shared_checklist' | translate }}
             </p>
+            <p class="accent">{{ notification.passedData[0] }}</p>
           </mat-card-content>
           <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
             <div fxFlex fxLayoutAlign="center">
-              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+              <button mat-button (click)="deleteNotification(notification)"
                 fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
           </mat-card-actions>
@@ -146,14 +150,41 @@
           <mat-divider></mat-divider>
           <mat-card-content>
             <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
-              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_new_shared_checklist' | translate }} <span class="accent">{{ (selectedChecklist$ | async).checklistName }}</span>
+              (<span class="accent">{{ notification.senderEmail }}</span>)
+              {{ 'content_new_shared_checklist' | translate }} 
             </p>
+            <p class="accent">{{ notification.passedData[0] }}</p>
           </mat-card-content>
           <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
             <div fxFlex fxLayoutAlign="center">
-              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+              <button mat-button (click)="deleteNotification(notification)"
                 fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
+              </button>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card class="notif-card" *ngSwitchCase="'removed_checklist'">
+          <mat-card-title fxLayout>
+            {{ 'removed_checklist_title' | translate }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ getFormat(notification.createdOn) }}
+          </mat-card-subtitle>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
+              (<span class="accent">{{ notification.senderEmail }}</span>)
+              {{ 'content_removed_checklist' | translate }} 
+            </p>
+            <p class="accent">{{ notification.passedData[0] }}</p>
+          </mat-card-content>
+          <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex fxLayoutAlign="center">
+              <button mat-button (click)="deleteNotification(notification)"
+                fxLayoutAlign="center center">
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
           </mat-card-actions>
@@ -169,15 +200,17 @@
           <mat-divider></mat-divider>
           <mat-card-content>
             <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
-              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_checklist_name_updated' | translate }}
+              (<span class="accent">{{ notification.senderEmail }}</span>)
+              {{ 'content_checklist_name_updated' | translate }}
             </p>
-            <p><span class="warn">{{ notification.passedData[0] }} </span> <i class="fas fa-long-arrow-alt-right"></i> <span class="accent"> {{ notification.passedData[1] }}</span></p>
+            <p><span class="warn">{{ notification.passedData[0] }} </span> <i class="fas fa-long-arrow-alt-right"></i>
+              <span class="accent"> {{ notification.passedData[1] }}</span></p>
           </mat-card-content>
           <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
             <div fxFlex fxLayoutAlign="center">
-              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+              <button mat-button (click)="deleteNotification(notification)"
                 fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
           </mat-card-actions>
@@ -193,16 +226,17 @@
           <mat-divider></mat-divider>
           <mat-card-content>
             <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
-              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_add_event_from_friend' | translate }}
+              (<span class="accent">{{ notification.senderEmail }}</span>)
+              {{ 'content_add_event_from_friend' | translate }}
             </p>
             <p><span class="accent">{{ notification.passedData[0] }}</span></p>
             <p><span class="accent">{{ getFormat(notification.passedData[1]) }}</span></p>
           </mat-card-content>
           <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
             <div fxFlex fxLayoutAlign="center">
-              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+              <button mat-button (click)="deleteNotification(notification)"
                 fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
           </mat-card-actions>
@@ -218,16 +252,17 @@
           <mat-divider></mat-divider>
           <mat-card-content>
             <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
-              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_edit_event_from_friend' | translate }}
+              (<span class="accent">{{ notification.senderEmail }}</span>)
+              {{ 'content_edit_event_from_friend' | translate }}
             </p>
             <p><span class="accent">{{ notification.passedData[0] }}</span></p>
             <p><span class="accent">{{ getFormat(notification.passedData[1]) }}</span></p>
           </mat-card-content>
           <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
             <div fxFlex fxLayoutAlign="center">
-              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+              <button mat-button (click)="deleteNotification(notification)"
                 fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
           </mat-card-actions>
@@ -243,16 +278,17 @@
           <mat-divider></mat-divider>
           <mat-card-content>
             <p>{{ 'sender_friend_request' | translate }} <span class="accent">{{ notification.senderUsername }}</span>
-              (<span class="accent">{{ notification.senderEmail }}</span>) {{ 'content_remove_event_from_friend' | translate }}
+              (<span class="accent">{{ notification.senderEmail }}</span>)
+              {{ 'content_remove_event_from_friend' | translate }}
             </p>
             <p><span class="warn">{{ notification.passedData[0] }}</span></p>
             <p><span class="warn">{{ getFormat(notification.passedData[1]) }}</span></p>
           </mat-card-content>
           <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
             <div fxFlex fxLayoutAlign="center">
-              <button class="accept-decline-btn" mat-mini-fab (click)="deleteNotification(notification)"
+              <button mat-button (click)="deleteNotification(notification)"
                 fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
           </mat-card-actions>

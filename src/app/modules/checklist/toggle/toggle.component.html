@@ -8,7 +8,7 @@
     <mat-button-toggle-group #selectedToggle="matButtonToggleGroup" name="checklist-toggle"
       [value]="toggleValue$ | async" (change)="switchToggle(selectedToggle.value)">
       <mat-button-toggle value="all">{{ 'all_checklists' | translate }}</mat-button-toggle>
-      <mat-button-toggle value="myCheklists">{{ 'my_checklists' | translate }}</mat-button-toggle>
+      <mat-button-toggle value="myChecklists">{{ 'my_checklists' | translate }}</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
   <div fxLayoutAlign="center center" fxFlex="30%" fxHide.lt-md></div>

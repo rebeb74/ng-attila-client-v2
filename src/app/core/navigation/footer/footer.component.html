@@ -48,15 +48,15 @@
     </div>
   </div>
 
-  <div mat-fab *ngIf="(pageName$ | async) === '/calendar'" fxFlex="40%" fxLayoutAlign="center center">
-    <button mat-icon-button (click)="addEvent('calendar')" class="bot-add-button">
-      <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
-    </button>
+  <div mat-fab *ngIf="(pageName$ | async) === '/calendar'" fxFlex="30%" fxLayoutAlign="center center" class="bot-add-button">
+    <div (click)="addEvent('calendar')">
+      <i class="fas fa-plus-circle accent bot-add-icon"></i>
+    </div>
   </div>
-  <div mat-fab *ngIf="(pageName$ | async) === '/checklist'" fxFlex="20%" fxLayoutAlign="center center">
-    <button mat-icon-button (click)="addEvent('checklist')" class="bot-add-button">
-      <mat-icon fxLayoutAlign="center center" class="bot-add-icon" color="accent">add_circle</mat-icon>
-    </button>
+  <div mat-fab *ngIf="(pageName$ | async) === '/checklist'" fxFlex="30%" fxLayoutAlign="center center" class="bot-add-button">
+    <div (click)="addEvent('checklist')">
+      <i class="fas fa-plus-circle accent bot-add-icon"></i>
+    </div>
   </div>
 
   <div  *ngIf="(pageName$ | async) === '/checklist' || (pageName$ | async) === '/calendar'" fxFlex="40%" fxLayoutAlign="center center" fxLayout="column" routerLink="/checklist"

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DefaultDataService, DefaultDataServiceConfig, HttpUrlGenerator } from '@ngrx/data';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { Checklist } from '../../../shared/model/checklist.model';
 import { ChecklistService } from '../services/checklist.service';
 
@@ -27,6 +27,18 @@ export class ChecklistDataService extends DefaultDataService<Checklist>{
                     }, 50);
                 })
             );
+    }
+
+    getAll(): Observable<Checklist[]> {
+        return super.getAll().pipe(
+            withLatestFrom(this.checklistService.getSelectedChecklist(), this.checklistService.getFilteredChecklists()),
+            map(([checklists, selectedChecklist, _filteredChecklists]) => {
+                if (!selectedChecklist && checklists.length > 0) {
+                    this.checklistService.setSelectedChecklist(checklists[0]);
+                }
+                return checklists;
+            })
+        );
     }
 
 

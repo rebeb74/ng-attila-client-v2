@@ -15,9 +15,9 @@
               fxLayoutAlign="center center">
               <span fxFlex="85%" fxLayoutAlign="start">{{ friend.username }}</span>
               <div fxFlex="15%" fxLayout="row">
-                <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
-                  (click)="removeFriend(friend.userId)" color="warn" fxLayoutAlign="center center">
-                  <mat-icon class="accept-decline-icon">close</mat-icon>
+                <button fxLayoutAlign="end" mat-button
+                  (click)="removeFriend(friend.userId)" fxLayoutAlign="center center">
+                  <i class="far fa-times-circle accept-decline-icon warn"></i>
                 </button>
               </div>
             </mat-list-item>
@@ -39,9 +39,9 @@
               fxLayoutAlign="center center">
               <span fxFlex="85%" fxLayoutAlign="start">{{ friendRequest.notificationUsername }}</span>
               <div fxFlex="15%" fxLayout="row">
-                <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
+                <button fxLayoutAlign="end" mat-button
                   (click)="deleteNotification(friendRequest)" color="warn" fxLayoutAlign="center center">
-                  <mat-icon class="accept-decline-icon">close</mat-icon>
+                  <i class="far fa-times-circle accept-decline-icon warn"></i>
                 </button>
               </div>
             </mat-list-item>
@@ -62,15 +62,15 @@
             fxLayoutAlign="center center">
             <span fxFlex="70%" fxLayoutAlign="start">{{ friendRequest.senderUsername }}</span>
             <div fxFlex="15%" fxLayout="row">
-              <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
+              <button fxLayoutAlign="end"mat-button
                 (click)="onAcceptFriendRequest(friendRequest)" fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">done</mat-icon>
+                <i class="far fa-check-circle accept-decline-icon accent"></i>
               </button>
             </div>
             <div fxFlex="15%" fxLayout="row">
-              <button fxLayoutAlign="end" class="accept-decline-btn" mat-mini-fab
-                (click)="onDeclineFriendRequest(friendRequest)" color="warn" fxLayoutAlign="center center">
-                <mat-icon class="accept-decline-icon">close</mat-icon>
+              <button fxLayoutAlign="end" mat-button
+                (click)="onDeclineFriendRequest(friendRequest)" fxLayoutAlign="center center">
+                <i class="far fa-times-circle accept-decline-icon warn"></i>
               </button>
             </div>
           </mat-list-item>

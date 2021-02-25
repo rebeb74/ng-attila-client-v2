@@ -36,8 +36,10 @@ export class SidenavComponent implements OnInit {
   }
 
   switchLang(newLang) {
-    this.uiService.switchLang(newLang);
     this.onClose();
+    setTimeout(() => {
+      this.uiService.switchLang(newLang);
+    }, 400);
   }
 
   onClose() {

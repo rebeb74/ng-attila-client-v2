@@ -10,8 +10,9 @@
       </app-header>
       <main fxFlex.gt-sm fxLayoutAlign.gt-sm="center start">
           <router-outlet></router-outlet>
-      </main>
-      <app-footer fxFlex.gt-sm="200px" fxLayoutAlign.gt-sm="end end"></app-footer>
+          <app-footer fxHide.gt-sm fxFlex.gt-sm="200px" fxLayoutAlign.gt-sm="end end"></app-footer>
+        </main>
+        <app-footer fxHide.lt-md fxFlex.gt-sm="200px" fxLayoutAlign.gt-sm="end end"></app-footer>
     </mat-sidenav-content>
   </mat-sidenav-container>
   

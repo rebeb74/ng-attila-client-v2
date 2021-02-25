@@ -7,6 +7,18 @@
     <mat-icon>input</mat-icon>
     <span class="nav-caption">{{ 'login' | translate }}</span>
   </a>
+  <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="/" (click)="onClose()">
+    <mat-icon>home</mat-icon>
+    <span class="nav-caption">{{ 'home' | translate }}</span>
+  </a>
+  <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="/calendar" [routerLinkActive]="['calendar']" (click)="onClose()">
+    <mat-icon>event</mat-icon>
+    <span class="nav-caption">{{ 'calendar' | translate }}</span>
+  </a>
+  <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="/checklist" [routerLinkActive]="['checklist']" (click)="onClose()">
+    <mat-icon>list_alt</mat-icon>
+    <span class="nav-caption">{{ 'checklist' | translate }}</span>
+  </a>
   <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="/settings" [routerLinkActive]="['settings']" (click)="onClose()">
     <mat-icon>settings</mat-icon>
     <span class="nav-caption">{{ 'settings' | translate }}</span>
@@ -15,12 +27,10 @@
     <mat-icon>info</mat-icon>
     <span class="nav-caption">{{ 'contact_us' | translate }}</span>
   </a>
-  <mat-list-item *ngIf="isLoggedIn$ | async" (click)="onLogout()">
-    <button mat-icon-button>
-      <mat-icon>eject</mat-icon>
-      <span class="nav-caption">{{ 'logout' | translate }}</span>
-    </button>
-  </mat-list-item>
+  <a *ngIf="isLoggedIn$ | async" mat-list-item routerLink="/" (click)="onLogout()">
+    <mat-icon>eject</mat-icon>
+    <span class="nav-caption">{{ 'logout' | translate }}</span>
+  </a>
   <mat-list-item>
     <mat-select #selectedLang [value]="currentLang$ | async" (selectionChange)="switchLang(selectedLang.value)">
       <mat-option *ngFor="let l of (languages$ | async)" [value]="l">

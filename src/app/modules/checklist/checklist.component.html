@@ -10,11 +10,8 @@
       <span class="italic" *ngIf="(toggleChecklist$ | async) === 'all'">
         {{ 'no_checklist' | translate }}
       </span>
-      <span class="italic" *ngIf="(toggleChecklist$ | async) === 'private'">
+      <span class="italic" *ngIf="(toggleChecklist$ | async) === 'myChecklists'">
         {{ 'no_private_checklist' | translate }}
-      </span>
-      <span class="italic" *ngIf="(toggleChecklist$ | async) === 'public'">
-        {{ 'no_public_checklist' | translate }}
       </span>
     </mat-card-subtitle>
   </mat-card>
