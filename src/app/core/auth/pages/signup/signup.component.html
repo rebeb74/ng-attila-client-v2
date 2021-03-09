@@ -9,11 +9,11 @@
           <mat-hint>{{ "valid_email" | translate }}</mat-hint>
           <mat-error>{{ "missing_email" | translate }}</mat-error>
         </mat-form-field>
-        <mat-form-field [hintLabel]=" 'four_char_long' | translate">
-          <input type="text" matInput [placeholder]=" 'your_username' | translate" formControlName="username" minlength="6"
+        <mat-form-field [hintLabel]=" 'three_char_long' | translate">
+          <input type="text" matInput [placeholder]=" 'your_username' | translate" formControlName="username" minlength="3"
             name="username">
-          <mat-hint align="end">{{ signupForm.value?.username.length }} / 4</mat-hint>
-          <mat-error>{{ "four_char_long" | translate }}</mat-error>
+          <mat-hint align="end">{{ signupForm.value?.username.length }} / 3</mat-hint>
+          <mat-error>{{ "three_char_long" | translate }}</mat-error>
         </mat-form-field>
         <mat-form-field [hintLabel]=" 'six_char_long' | translate">
           <input type="password" matInput [placeholder]=" 'your_pw' | translate " formControlName="password" minlength="6">
@@ -23,10 +23,9 @@
         <mat-form-field>
           <input matInput [placeholder]=" 'your_bd' | translate" [matDatepicker]="picker" [max]="maxDate" [min]="minDate"
             formControlName="birthdate">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker-toggle class="toggle" matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker [touchUi]="true" #picker></mat-datepicker>
         </mat-form-field>
-        <!-- <mat-checkbox formControlName="agree" required color="primary">{{ "agree" | translate }}</mat-checkbox> -->
         <button *ngIf="!(isLoading$ | async)" mat-raised-button color="accent"
         [disabled]="signupForm.invalid">{{ "submit" | translate }}</button>
         <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>

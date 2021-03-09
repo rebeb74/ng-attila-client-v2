@@ -142,7 +142,7 @@ export class ChecklistService {
         withLatestFrom(this.store.select(getCurrentUser)),
         map(([checklist, currentUser]) => {
           if (!!checklist) {
-            if (checklist.friendShares === '') {
+            if (!checklist.friendShares) {
               checklist.friendShares = [];
             } else {
               checklist.friendShares.forEach((friend) => {

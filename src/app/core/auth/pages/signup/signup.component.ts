@@ -40,7 +40,7 @@ export class SignupComponent extends SubscriptionManagerComponent implements OnI
         validators: [Validators.required, Validators.email]
       }),
       username: new FormControl('', {
-        validators: [Validators.required, Validators.pattern('.{4,}')]
+        validators: [Validators.required, Validators.pattern('.{3,}')]
       }),
       password: new FormControl('', {
         validators: [Validators.required, Validators.pattern('.{6,}')]

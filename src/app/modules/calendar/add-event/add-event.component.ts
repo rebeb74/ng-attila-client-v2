@@ -23,6 +23,7 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
   selectedDate$: Observable<string>;
   alternList$: Observable<Friend[]>;
   currentCalendar$: Observable<string>;
+  currentUserFriends$: Observable<Friend[]>;
   addTaskForm: FormGroup;
   addMeetingForm: FormGroup;
   minDate = this.startOfDay(new Date());
@@ -38,6 +39,7 @@ export class AddEventComponent extends SubscriptionManagerComponent implements O
   }
 
   ngOnInit(): void {
+    this.currentUserFriends$ = this.store.select(getCurrentUser).pipe(map((currentUser) => currentUser.friend), first());
     this.currentCalendar$ = this.calendarStore.select(getCurrentCalendar);
     if (this.passedData.eventType === 'meeting') {
       this.tabIndex = 1;

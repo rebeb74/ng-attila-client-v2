@@ -51,6 +51,7 @@ mat-form-field {
   &-icon{
     font-size: 18px;
     padding-left: 10px;
+    cursor: pointer;
   }
 
   ::ng-deep.mat-chip-list-wrapper {

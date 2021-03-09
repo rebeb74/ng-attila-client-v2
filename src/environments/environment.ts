@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   // apiUrl: 'http://localhost:3000/api',
   // socketUrl: 'http://localhost:3000/',
-  apiUrl: 'http://192.168.1.117:3000/api',
-  socketUrl: 'http://192.168.1.117:3000/',
+  apiUrl: 'https://api.codeattila.ch:3000/api',
+  socketUrl: 'https://api.codeattila.ch:3000/',
   languages: ['fr', 'en', 'de'],
 };
 

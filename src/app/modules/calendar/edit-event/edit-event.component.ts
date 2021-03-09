@@ -24,6 +24,7 @@ export class EditEventComponent extends SubscriptionManagerComponent implements 
   selectedDate$: Observable<string>;
   alternList$: Observable<Friend[]>;
   currentCalendar$: Observable<string>;
+  currentUserFriends$: Observable<Friend[]>;
   addTaskForm: FormGroup;
   addMeetingForm: FormGroup;
   minDate = new Date();
@@ -38,6 +39,7 @@ export class EditEventComponent extends SubscriptionManagerComponent implements 
   }
 
   ngOnInit(): void {
+    this.currentUserFriends$ = this.store.select(getCurrentUser).pipe(map((currentUser) => currentUser.friend), first());
     this.currentCalendar$ = this.calendarStore.select(getCurrentCalendar);
     this.setLanguages();
     this.alternList$ = this.store.select(getCurrentUser)
@@ -125,7 +127,11 @@ export class EditEventComponent extends SubscriptionManagerComponent implements 
   }
 
   friendComparisonFunction(friend, value): boolean {
-    return friend.username === value.username;
+    if (!!friend) {
+      return friend.username === value.username;
+    } else {
+      return false;
+    }
   }
 
   onDestroy() {

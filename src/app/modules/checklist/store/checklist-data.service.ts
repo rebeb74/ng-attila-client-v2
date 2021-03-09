@@ -22,9 +22,9 @@ export class ChecklistDataService extends DefaultDataService<Checklist>{
         return super.add(checklist)
             .pipe(
                 tap((newChecklist) => {
-                    setTimeout(() => {
-                        this.checklistService.setSelectedChecklist(newChecklist);
-                    }, 50);
+                    // setTimeout(() => {
+                    this.checklistService.setSelectedChecklist(newChecklist);
+                    // }, 50);
                 })
             );
     }

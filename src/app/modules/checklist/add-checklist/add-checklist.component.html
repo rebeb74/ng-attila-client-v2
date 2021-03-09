@@ -13,6 +13,7 @@
                     {{ friend.username }}
                   </mat-option>
                 </mat-select>
+                <mat-hint *ngIf="(currentUserFriends$ | async).length === 0 ">{{ "only_if_have_a_friend_checklist" | translate }}</mat-hint>
               </mat-form-field>
           </mat-dialog-content>
   

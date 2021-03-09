@@ -36,6 +36,7 @@
                   {{ friend.username }}
                 </mat-option>
               </mat-select>
+              <mat-hint *ngIf="(currentUserFriends$ | async).length === 0 ">{{ "only_if_have_a_friend_calendar" | translate }}</mat-hint>
               <mat-hint *ngIf="(currentCalendar$ | async) !== 'myCalendar' ">{{ "only_add_yourself_as_altern" | translate }}</mat-hint>
             </mat-form-field>
             <mat-form-field>
