@@ -8,6 +8,7 @@ import { AppState } from 'src/app/core/store/app.reducer';
 import { Event } from 'src/app/shared/model/event.model';
 import { Friend } from 'src/app/shared/model/user.model';
 import { UIService } from 'src/app/shared/services/ui.service';
+import { UserEntityService } from 'src/app/shared/services/user-entity.service';
 import { AddEventComponent } from '../add-event/add-event.component';
 import { EditEventComponent } from '../edit-event/edit-event.component';
 import { CalendarState, getCurrentCalendar } from '../store/calendar.reducer';
@@ -21,7 +22,8 @@ export class CalendarService {
     private dialog: MatDialog,
     private store: Store<AppState>,
     private calendarStore: Store<CalendarState>,
-    private uiService: UIService
+    private uiService: UIService,
+    private userEntityService: UserEntityService
   ) { }
 
   addEvent(eventType): Observable<boolean> {
@@ -96,7 +98,8 @@ export class CalendarService {
   repeatTask(task: Event): Observable<Event> {
     return this.store.select(getCurrentUser)
       .pipe(
-        map((currentUser) => {
+        withLatestFrom(this.calendarStore.select(getCurrentCalendar), this.userEntityService.entities$),
+        map(([currentUser, currentCalendar, users]) => {
           const startTime = new Date(task.startTime);
           const newStartTime = new Date(startTime.setDate(startTime.getDate() + Number(task.repeat))).toString();
           task = {
@@ -105,17 +108,32 @@ export class CalendarService {
           };
 
           if (!!task.altern) {
-            const newUserId = task.altern.userId;
-            const newAltern: Friend = {
-              userId: currentUser._id,
-              email: currentUser.email,
-              username: currentUser.username
-            };
-            task = {
-              ...task,
-              userId: newUserId,
-              altern: newAltern
-            };
+            if (currentCalendar === 'myCalendar') {
+              const newUserId = task.altern.userId;
+              const newAltern: Friend = {
+                userId: currentUser._id,
+                email: currentUser.email,
+                username: currentUser.username
+              };
+              task = {
+                ...task,
+                userId: newUserId,
+                altern: newAltern
+              };
+            } else {
+              const currentCalendarUser = users.find((user) => user._id === currentCalendar);
+              const newUserId = currentUser._id;
+              const newAltern: Friend = {
+                userId: currentCalendarUser._id,
+                email: currentCalendarUser.email,
+                username: currentCalendarUser.username
+              };
+              task = {
+                ...task,
+                userId: newUserId,
+                altern: newAltern
+              };
+            }
           }
           this.eventEntityService.update(task);
           if (!!task.altern) {
