@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   // apiUrl: 'http://localhost:3000/api',
   // socketUrl: 'http://localhost:3000/',
-  apiUrl: 'https://api.codeattila.ch:3000/api',
-  socketUrl: 'https://api.codeattila.ch:3000/',
+  apiUrl: 'https://attila-srv.herokuapp.com/api',
+  socketUrl: 'https://attila-srv.herokuapp.com/',
   languages: ['fr', 'en', 'de'],
 };
 
