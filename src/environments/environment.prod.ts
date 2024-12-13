@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://attila-srv.herokuapp.com/api',
-  socketUrl: 'https://attila-srv.herokuapp.com/',
+  apiUrl: 'https://api.codeattila.ch/api',
+  socketUrl: 'https://api.codeattila.ch/',
   languages: ['fr', 'en', 'de'],
 };
