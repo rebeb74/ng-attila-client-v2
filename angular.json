@@ -18,7 +18,7 @@
               "lodash",
               "crypto-js"
             ],
-            "outputPath": "dist/ng-attila-client-v2",
+            "outputPath": "dist/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -34,7 +34,8 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [{
+              "fileReplacements": [
+                {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 },
@@ -50,7 +51,8 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [{
+              "budgets": [
+                {
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
